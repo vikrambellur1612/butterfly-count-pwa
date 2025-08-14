@@ -1,0 +1,467 @@
+/* Mobile-specific card effects */
+@media (max-width: 768px) {
+  .butterfly-card:hover {
+    transform: translateY(-6px) translateZ(0) rotateX(1deg);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+  
+  .list-card:hover {
+    transform: translateY(-8px) translateZ(0) rotateX(2deg) scale(1.01);
+    box-shadow: 
+      0 16px 32px rgba(0, 0, 0, 0.12),
+      0 6px 12px rgba(0, 0, 0, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8),
+      0 0 0 1px rgba(76, 175, 80, 0.2);
+  }
+  
+  /* Reduce motion for accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    .butterfly-card, .list-card {
+      transition: none;
+    }
+    
+    .butterfly-card:hover, .list-card:hover {
+      transform: none;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+  }
+}
+
+/* Mobile viewport handling */
+@supports (-webkit-touch-callout: none) {
+  .app-container {
+    min-height: -webkit-fill-available;
+  }
+}
+
+/* iOS Safari specific */
+@media screen and (max-width: 768px) {
+  /* Prevent iOS bounce scroll */
+  body {
+    overflow-x: hidden;
+    position: relative;
+    overscroll-behavior: none; /* Prevents pull-to-refresh */
+    /* Ensure proper scroll behavior */
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Prevent overscroll on main content areas */
+  .main-content,
+  .app-container,
+  .view {
+    overscroll-behavior: none;
+    overflow-x: hidden;
+  }
+  
+  /* Increase bottom padding for mobile */
+  .main-content {
+    padding-bottom: calc(140px + env(safe-area-inset-bottom));
+  }
+  
+  /* iOS status bar handling */
+  .app-header {
+    padding-top: max(env(safe-area-inset-top), 20px);
+    /* Ensure header stays in place */
+    position: -webkit-sticky;
+    position: sticky;
+  }
+  
+  /* iOS home indicator handling */
+  .bottom-nav {
+    padding-bottom: max(env(safe-area-inset-bottom), 8px);
+  }
+}
+
+/* Touch-friendly interactions */
+@media (max-width: 768px) {
+  /* Larger touch targets */
+  .touch-target,
+  .nav-item,
+  .butterfly-card,
+  .list-card,
+  .observation-card,
+  .search-result-item,
+  .suggestion-item {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Enhanced button sizes */
+  .primary-btn,
+  .secondary-btn {
+    padding: 14px 24px;
+    font-size: 1.1rem;
+  }
+  
+  .action-btn {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+  
+  /* Form inputs */
+  .form-input {
+    padding: 14px 16px;
+    font-size: 1.1rem;
+  }
+  
+  /* Search input */
+  .search-input {
+    padding: 14px 16px;
+    font-size: 1.1rem;
+  }
+  
+  /* Modal adjustments */
+  .modal {
+    padding: 0.5rem;
+  }
+  
+  .modal-content {
+    max-height: 95vh;
+    margin: 0;
+  }
+  
+  /* Butterfly grid responsive */
+  .butterfly-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    padding: 0.75rem;
+  }
+  
+  /* Stats cards mobile layout */
+  .stats-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+  
+  /* Form actions stack on mobile */
+  .form-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .form-actions .secondary-btn,
+  .form-actions .primary-btn {
+    width: 100%;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  /* Reduce padding for small screens */
+  .main-content {
+    padding: 0.75rem;
+  }
+  
+  .family-section {
+    margin-bottom: 1rem;
+  }
+  
+  .butterfly-grid,
+  .add-butterfly-form,
+  .about-section,
+  .observations-list {
+    padding: 1rem;
+  }
+  
+  /* Stack stats cards vertically on very small screens */
+  .stats-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Smaller modal on tiny screens */
+  .modal-header,
+  .modal-body {
+    padding: 1rem;
+  }
+  
+  /* Adjust navigation text */
+  .nav-item {
+    font-size: 0.7rem;
+    padding: 6px 8px;
+  }
+  
+  /* Header adjustments */
+  .app-title {
+    font-size: 1.3rem;
+  }
+  
+  /* Install banner responsive */
+  .banner-content {
+    font-size: 0.85rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+}
+
+/* Keyboard handling */
+.keyboard-open .bottom-nav {
+  display: none;
+}
+
+/* Visual viewport API support */
+@supports (height: 100dvh) {
+  .app-container {
+    min-height: 100dvh;
+  }
+}
+
+/* Landscape orientation */
+@media (orientation: landscape) and (max-height: 600px) {
+  .main-content {
+    padding-bottom: 60px;
+  }
+  
+  .stats-cards {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .butterfly-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  /* Crisp borders and shadows */
+  .butterfly-card,
+  .list-card,
+  .stat-card,
+  .observation-card {
+    border-width: 0.5px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color: #121212;
+    --surface-color: #1e1e1e;
+    --text-primary: #ffffff;
+    --text-secondary: #aaaaaa;
+    --border-color: #333333;
+    --shadow: 0 2px 4px rgba(0,0,0,0.3);
+    --shadow-lg: 0 4px 12px rgba(0,0,0,0.4);
+  }
+  
+  .app-header {
+    background: #1a4d1f;
+  }
+  
+  .install-banner,
+  .update-notification {
+    background: #1a4d1f;
+  }
+  
+  .primary-light {
+    background: #2d5a32;
+  }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .butterfly-card,
+  .list-card,
+  .nav-item,
+  .primary-btn,
+  .secondary-btn,
+  .action-btn {
+    transition: none;
+  }
+  
+  .butterfly-card:hover {
+    transform: none;
+  }
+  
+  .primary-btn:hover {
+    transform: none;
+  }
+  
+  .modal-content {
+    animation: none;
+  }
+  
+  .toast,
+  .install-banner,
+  .update-notification {
+    transition: opacity 0.1s ease;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  :root {
+    --border-color: #000000;
+    --shadow: 0 2px 4px rgba(0,0,0,0.5);
+  }
+  
+  .butterfly-card,
+  .list-card,
+  .stat-card,
+  .observation-card {
+    border-width: 2px;
+  }
+  
+  .primary-btn {
+    border: 2px solid #000000;
+  }
+  
+  .nav-item.active {
+    background: #000000;
+    color: #ffffff;
+  }
+}
+
+/* Print styles */
+@media print {
+  .app-header,
+  .bottom-nav,
+  .install-banner,
+  .update-notification,
+  .modal {
+    display: none !important;
+  }
+  
+  .main-content {
+    padding: 0;
+    margin: 0;
+    max-width: 100%;
+  }
+  
+  .butterfly-card,
+  .list-card,
+  .stat-card {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #000000;
+  }
+  
+  .butterfly-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Focus states for keyboard navigation */
+@media (hover: none) and (pointer: coarse) {
+  /* Touch device specific styles */
+  .butterfly-card:hover,
+  .list-card:hover,
+  .observation-card:hover {
+    transform: none;
+    box-shadow: var(--shadow);
+  }
+  
+  .primary-btn:hover,
+  .secondary-btn:hover,
+  .action-btn:hover {
+    transform: none;
+  }
+}
+
+/* Enhanced focus styles for accessibility */
+.butterfly-card:focus,
+.list-card:focus,
+.nav-item:focus,
+.primary-btn:focus,
+.secondary-btn:focus,
+.action-btn:focus,
+.form-input:focus,
+.search-input:focus {
+  outline: 3px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Remove focus outline on touch devices */
+@media (hover: none) {
+  .butterfly-card:focus,
+  .list-card:focus,
+  .nav-item:focus {
+    outline: none;
+  }
+}
+
+/* Tablet optimizations */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .butterfly-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .stats-cards {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .modal-content {
+    max-width: 600px;
+  }
+}
+
+/* Large tablet/small desktop */
+@media (min-width: 1025px) and (max-width: 1200px) {
+  .butterfly-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .main-content {
+    padding: 1.5rem;
+  }
+}
+
+/* PWA standalone mode specific styles */
+@media (display-mode: standalone) {
+  /* Hide install banner when app is installed */
+  .install-banner {
+    display: none !important;
+  }
+  
+  /* Adjust for standalone mode */
+  body {
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+  }
+  
+  /* Allow text selection in specific areas */
+  .butterfly-detail,
+  .about-content,
+  .form-input,
+  .search-input {
+    user-select: text;
+    -webkit-user-select: text;
+  }
+}
+
+/* iOS PWA specific adjustments */
+@media (display-mode: standalone) and (-webkit-touch-callout: none) {
+  .app-container {
+    padding-top: constant(safe-area-inset-top);
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  .bottom-nav {
+    padding-bottom: constant(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Animation performance optimizations for mobile */
+@media (max-width: 768px) {
+  .butterfly-card,
+  .list-card,
+  .nav-item {
+    will-change: transform;
+  }
+  
+  .modal-content {
+    will-change: transform, opacity;
+  }
+}
+
+/* Battery saving mode */
+@media (prefers-reduced-motion: reduce) {
+  .loading-spinner {
+    animation: none;
+  }
+  
+  .loading-spinner::after {
+    content: "⏳";
+  }
+}

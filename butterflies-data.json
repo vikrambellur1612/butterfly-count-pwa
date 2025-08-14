@@ -1,0 +1,2026 @@
+[
+  {
+    "id": 1,
+    "family": "Hesperiidae",
+    "subfamily": "Coeliadinae",
+    "tribe": "–",
+    "scientificName": "Badamia exclamationis",
+    "commonName": "Brown Awl"
+  },
+  {
+    "id": 2,
+    "family": "Hesperiidae",
+    "subfamily": "Coeliadinae",
+    "tribe": "–",
+    "scientificName": "Burara jaina",
+    "commonName": "Common Orange Awlet"
+  },
+  {
+    "id": 3,
+    "family": "Hesperiidae",
+    "subfamily": "Coeliadinae",
+    "tribe": "–",
+    "scientificName": "Bibasis sena",
+    "commonName": "Orange-tailed Awl"
+  },
+  {
+    "id": 4,
+    "family": "Hesperiidae",
+    "subfamily": "Coeliadinae",
+    "tribe": "–",
+    "scientificName": "Hasora badra",
+    "commonName": "Common Awl"
+  },
+  {
+    "id": 5,
+    "family": "Hesperiidae",
+    "subfamily": "Coeliadinae",
+    "tribe": "–",
+    "scientificName": "Hasora chromus",
+    "commonName": "Common Banded Awl"
+  },
+  {
+    "id": 6,
+    "family": "Hesperiidae",
+    "subfamily": "Coeliadinae",
+    "tribe": "–",
+    "scientificName": "Hasora taminatus",
+    "commonName": "White-banded Awl"
+  },
+  {
+    "id": 7,
+    "family": "Hesperiidae",
+    "subfamily": "Coeliadinae",
+    "tribe": "–",
+    "scientificName": "Hasora vitta",
+    "commonName": "Plain Banded Awl"
+  },
+  {
+    "id": 8,
+    "family": "Hesperiidae",
+    "subfamily": "Coeliadinae",
+    "tribe": "–",
+    "scientificName": "Hasora spp.",
+    "commonName": "Awl species"
+  },
+  {
+    "id": 9,
+    "family": "Hesperiidae",
+    "subfamily": "Hesperiinae",
+    "tribe": "Aeromachini",
+    "scientificName": "Aeromachus pygmaeus",
+    "commonName": "Pygmy Scrub Hopper"
+  },
+  {
+    "id": 10,
+    "family": "Hesperiidae",
+    "subfamily": "Hesperiinae",
+    "tribe": "Aeromachini",
+    "scientificName": "Ampittia dioscorides",
+    "commonName": "Bush Hopper"
+  },
+  {
+    "id": 11,
+    "family": "Hesperiidae",
+    "subfamily": "Hesperiinae",
+    "tribe": "Aeromachini",
+    "scientificName": "Arnetta vindhiana",
+    "commonName": "Vindhyan Bob"
+  },
+  {
+    "id": 12,
+    "family": "Hesperiidae",
+    "subfamily": "Hesperiinae",
+    "tribe": "Aeromachini",
+    "scientificName": "Erionota torus",
+    "commonName": "Rounded Palm-redeye"
+  },
+  {
+    "id": 13,
+    "family": "Hesperiidae",
+    "subfamily": "Hesperiinae",
+    "tribe": "Aeromachini",
+    "scientificName": "Gangara thyrsis",
+    "commonName": "Giant Redeye"
+  },
+  {
+    "id": 14,
+    "family": "Hesperiidae",
+    "subfamily": "Hesperiinae",
+    "tribe": "Aeromachini",
+    "scientificName": "Halpe porus",
+    "commonName": "Bi-spot Banded Ace"
+  },
+  {
+    "id": 15,
+    "family": "Hesperiidae",
+    "subfamily": "Hesperiinae",
+    "tribe": "Aeromachini",
+    "scientificName": "Iambrix salsala",
+    "commonName": "Chestnut Bob"
+  },
+  {
+    "id": 16,
+    "family": "Hesperiidae",
+    "subfamily": "Hesperiinae",
+    "tribe": "Aeromachini",
+    "scientificName": "Matapa aria",
+    "commonName": "Common Branded Redeye"
+  },
+  {
+    "id": 17,
+    "family": "Hesperiidae",
+    "subfamily": "Hesperiinae",
+    "tribe": "Aeromachini",
+    "scientificName": "Suastus gremius",
+    "commonName": "Oriental Palm Bob"
+  },
+  {
+    "id": 18,
+    "family": "Hesperiidae",
+    "subfamily": "Hesperiinae",
+    "tribe": "Aeromachini",
+    "scientificName": "Udaspes folus",
+    "commonName": "Grass Demon"
+  },
+  {
+    "id": 19,
+    "family": "Hesperiidae",
+    "subfamily": "Hesperiinae",
+    "tribe": "Baorini",
+    "scientificName": "Baorini spp.",
+    "commonName": "Swift species"
+  },
+  {
+    "id": 20,
+    "family": "Hesperiidae",
+    "subfamily": "Hesperiinae",
+    "tribe": "Baorini",
+    "scientificName": "Baoris farri",
+    "commonName": "Complete Paint-brush Swift"
+  },
+  {
+    "id": 21,
+    "family": "Hesperiidae",
+    "subfamily": "Hesperiinae",
+    "tribe": "Baorini",
+    "scientificName": "Borbo bevani",
+    "commonName": "Lesser Rice Swift"
+  },
+  {
+    "id": 22,
+    "family": "Hesperiidae",
+    "subfamily": "Hesperiinae",
+    "tribe": "Baorini",
+    "scientificName": "Borbo cinnara",
+    "commonName": "Rice Swift"
+  },
+  {
+    "id": 23,
+    "family": "Hesperiidae",
+    "subfamily": "Hesperiinae",
+    "tribe": "Baorini",
+    "scientificName": "Caltoris canaraica",
+    "commonName": "Karwar Swift"
+  },
+  {
+    "id": 24,
+    "family": "Hesperiidae",
+    "subfamily": "Hesperiinae",
+    "tribe": "Baorini",
+    "scientificName": "Caltoris kumara",
+    "commonName": "Blank Swift"
+  },
+  {
+    "id": 25,
+    "family": "Hesperiidae",
+    "subfamily": "Hesperiinae",
+    "tribe": "Baorini",
+    "scientificName": "Caltoris spp.",
+    "commonName": "Caltoris swift species"
+  },
+  {
+    "id": 26,
+    "family": "Hesperiidae",
+    "subfamily": "Hesperiinae",
+    "tribe": "Baorini",
+    "scientificName": "Parnara spp.",
+    "commonName": "Parnara swift"
+  },
+  {
+    "id": 27,
+    "family": "Hesperiidae",
+    "subfamily": "Hesperiinae",
+    "tribe": "Baorini",
+    "scientificName": "Pelopidas agna",
+    "commonName": "Obscure Branded Swift"
+  },
+  {
+    "id": 28,
+    "family": "Hesperiidae",
+    "subfamily": "Hesperiinae",
+    "tribe": "Baorini",
+    "scientificName": "Pelopidas conjuncta",
+    "commonName": "Conjoined Swift"
+  },
+  {
+    "id": 29,
+    "family": "Hesperiidae",
+    "subfamily": "Hesperiinae",
+    "tribe": "Baorini",
+    "scientificName": "Pelopidas mathias",
+    "commonName": "Small Branded Swift"
+  },
+  {
+    "id": 30,
+    "family": "Hesperiidae",
+    "subfamily": "Hesperiinae",
+    "tribe": "Baorini",
+    "scientificName": "Pelopidas spp.",
+    "commonName": "Pelopidas swift"
+  },
+  {
+    "id": 31,
+    "family": "Hesperiidae",
+    "subfamily": "Hesperiinae",
+    "tribe": "Taractrocerini",
+    "scientificName": "Oriens goloides",
+    "commonName": "Smaller Dartlet"
+  },
+  {
+    "id": 32,
+    "family": "Hesperiidae",
+    "subfamily": "Hesperiinae",
+    "tribe": "Taractrocerini",
+    "scientificName": "Potanthus spp.",
+    "commonName": "Dart species"
+  },
+  {
+    "id": 33,
+    "family": "Hesperiidae",
+    "subfamily": "Hesperiinae",
+    "tribe": "Taractrocerini",
+    "scientificName": "Taractrocera maevius",
+    "commonName": "Grey-veined Grass Dart"
+  },
+  {
+    "id": 34,
+    "family": "Hesperiidae",
+    "subfamily": "Hesperiinae",
+    "tribe": "Taractrocerini",
+    "scientificName": "Telicota bambusae",
+    "commonName": "Dark Palm-Dart"
+  },
+  {
+    "id": 35,
+    "family": "Hesperiidae",
+    "subfamily": "Hesperiinae",
+    "tribe": "Taractrocerini",
+    "scientificName": "Telicota colon",
+    "commonName": "Pale Palm-Dart"
+  },
+  {
+    "id": 36,
+    "family": "Hesperiidae",
+    "subfamily": "Hesperiinae",
+    "tribe": "Taractrocerini",
+    "scientificName": "Telicota spp.",
+    "commonName": "Palm-Dart species"
+  },
+  {
+    "id": 37,
+    "family": "Hesperiidae",
+    "subfamily": "Hesperiinae",
+    "tribe": "Taractrocerini",
+    "scientificName": "Cephrenes acalle",
+    "commonName": "Plain Palm-Dart"
+  },
+  {
+    "id": 38,
+    "family": "Hesperiidae",
+    "subfamily": "Pyrginae",
+    "tribe": "Carcharodini",
+    "scientificName": "Gomalia elma",
+    "commonName": "African Marbled Skipper"
+  },
+  {
+    "id": 39,
+    "family": "Hesperiidae",
+    "subfamily": "Pyrginae",
+    "tribe": "Carcharodini",
+    "scientificName": "Spialia galba",
+    "commonName": "Asian Grizzled Skipper"
+  },
+  {
+    "id": 40,
+    "family": "Hesperiidae",
+    "subfamily": "Pyrginae",
+    "tribe": "Celaenorrhinini",
+    "scientificName": "Celaenorrhinus ambareesa",
+    "commonName": "Dakhan Spotted Flat"
+  },
+  {
+    "id": 41,
+    "family": "Hesperiidae",
+    "subfamily": "Pyrginae",
+    "tribe": "Celaenorrhinini",
+    "scientificName": "Celaenorrhinus fusca",
+    "commonName": "Dusky Spotted Flat"
+  },
+  {
+    "id": 42,
+    "family": "Hesperiidae",
+    "subfamily": "Pyrginae",
+    "tribe": "Celaenorrhinini",
+    "scientificName": "Celaenorrhinus leucocera",
+    "commonName": "Common Spotted Flat"
+  },
+  {
+    "id": 43,
+    "family": "Hesperiidae",
+    "subfamily": "Pyrginae",
+    "tribe": "Celaenorrhinini",
+    "scientificName": "Celaenorrhinus putra",
+    "commonName": "Restricted Spotted Flat"
+  },
+  {
+    "id": 44,
+    "family": "Hesperiidae",
+    "subfamily": "Pyrginae",
+    "tribe": "Celaenorrhinini",
+    "scientificName": "Celaenorrhinus spp.",
+    "commonName": "Spotted Flat species"
+  },
+  {
+    "id": 45,
+    "family": "Hesperiidae",
+    "subfamily": "Pyrginae",
+    "tribe": "Celaenorrhinini",
+    "scientificName": "Pseudocoladenia dan",
+    "commonName": "Fulvous Pied Flat"
+  },
+  {
+    "id": 46,
+    "family": "Hesperiidae",
+    "subfamily": "Pyrginae",
+    "tribe": "Celaenorrhinini",
+    "scientificName": "Sarangesa dasahara",
+    "commonName": "Common Small Flat"
+  },
+  {
+    "id": 47,
+    "family": "Hesperiidae",
+    "subfamily": "Pyrginae",
+    "tribe": "Celaenorrhinini",
+    "scientificName": "Sarangesa purendra",
+    "commonName": "Spotted Small Flat"
+  },
+  {
+    "id": 48,
+    "family": "Hesperiidae",
+    "subfamily": "Pyrginae",
+    "tribe": "Tagiadini",
+    "scientificName": "Caprona agama",
+    "commonName": "Spotted Angle"
+  },
+  {
+    "id": 49,
+    "family": "Hesperiidae",
+    "subfamily": "Pyrginae",
+    "tribe": "Tagiadini",
+    "scientificName": "Caprona ransonnettii",
+    "commonName": "Golden Angle"
+  },
+  {
+    "id": 50,
+    "family": "Hesperiidae",
+    "subfamily": "Pyrginae",
+    "tribe": "Tagiadini",
+    "scientificName": "Caprona alida",
+    "commonName": "Alida Angle"
+  },
+  {
+    "id": 51,
+    "family": "Hesperiidae",
+    "subfamily": "Pyrginae",
+    "tribe": "Tagiadini",
+    "scientificName": "Caprona spp.",
+    "commonName": "Caprona Angle species"
+  },
+  {
+    "id": 52,
+    "family": "Hesperiidae",
+    "subfamily": "Pyrginae",
+    "tribe": "Tagiadini",
+    "scientificName": "Coladenia indrani",
+    "commonName": "Tricolour Pied Flat"
+  },
+  {
+    "id": 53,
+    "family": "Hesperiidae",
+    "subfamily": "Pyrginae",
+    "tribe": "Tagiadini",
+    "scientificName": "Tagiades gana",
+    "commonName": "Suffused Snow Flat"
+  },
+  {
+    "id": 54,
+    "family": "Hesperiidae",
+    "subfamily": "Pyrginae",
+    "tribe": "Tagiadini",
+    "scientificName": "Tagiades japetus",
+    "commonName": "Common Snow Flat"
+  },
+  {
+    "id": 55,
+    "family": "Hesperiidae",
+    "subfamily": "Pyrginae",
+    "tribe": "Tagiadini",
+    "scientificName": "Tagiades litigiosa",
+    "commonName": "Water Snow Flat"
+  },
+  {
+    "id": 56,
+    "family": "Hesperiidae",
+    "subfamily": "Pyrginae",
+    "tribe": "Tagiadini",
+    "scientificName": "Tagiades spp.",
+    "commonName": "Snow Flat species"
+  },
+  {
+    "id": 57,
+    "family": "Hesperiidae",
+    "subfamily": "Pyrginae",
+    "tribe": "Tagiadini",
+    "scientificName": "Tapena thwaitesi",
+    "commonName": "Black Angle"
+  },
+  {
+    "id": 58,
+    "family": "Lycaenidae",
+    "subfamily": "Miletinae",
+    "tribe": "Spalgini",
+    "scientificName": "Spalgis epius",
+    "commonName": "Apefly"
+  },
+  {
+    "id": 59,
+    "family": "Lycaenidae",
+    "subfamily": "Aphnaeinae",
+    "tribe": "Aphnaeini",
+    "scientificName": "Cigaritis ictis",
+    "commonName": "Common Shot Silverline"
+  },
+  {
+    "id": 60,
+    "family": "Lycaenidae",
+    "subfamily": "Aphnaeinae",
+    "tribe": "Aphnaeini",
+    "scientificName": "Cigaritis lilacinus",
+    "commonName": "Lilac Silverline"
+  },
+  {
+    "id": 61,
+    "family": "Lycaenidae",
+    "subfamily": "Aphnaeinae",
+    "tribe": "Aphnaeini",
+    "scientificName": "Cigaritis lohita",
+    "commonName": "Long-banded Silverline"
+  },
+  {
+    "id": 62,
+    "family": "Lycaenidae",
+    "subfamily": "Aphnaeinae",
+    "tribe": "Aphnaeini",
+    "scientificName": "Cigaritis schistacea",
+    "commonName": "Plumbeous Silverline"
+  },
+  {
+    "id": 63,
+    "family": "Lycaenidae",
+    "subfamily": "Aphnaeinae",
+    "tribe": "Aphnaeini",
+    "scientificName": "Cigaritis vulcanus",
+    "commonName": "Common Silverline"
+  },
+  {
+    "id": 64,
+    "family": "Lycaenidae",
+    "subfamily": "Aphnaeinae",
+    "tribe": "Aphnaeini",
+    "scientificName": "Cigaritis spp.",
+    "commonName": "Silverline species"
+  },
+  {
+    "id": 65,
+    "family": "Lycaenidae",
+    "subfamily": "Curetinae",
+    "tribe": "–",
+    "scientificName": "Curetis acuta",
+    "commonName": "Acute Sunbeam"
+  },
+  {
+    "id": 66,
+    "family": "Lycaenidae",
+    "subfamily": "Curetinae",
+    "tribe": "–",
+    "scientificName": "Curetis thetis",
+    "commonName": "Indian Sunbeam"
+  },
+  {
+    "id": 67,
+    "family": "Lycaenidae",
+    "subfamily": "Curetinae",
+    "tribe": "–",
+    "scientificName": "Curetis spp.",
+    "commonName": "Sunbeam species"
+  },
+  {
+    "id": 68,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Lycaenesthini",
+    "scientificName": "Anthene lycaenina",
+    "commonName": "Pointed Ciliate Blue"
+  },
+  {
+    "id": 69,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Acytolepis puspa",
+    "commonName": "Common Hedge Blue"
+  },
+  {
+    "id": 70,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Azanus jesous",
+    "commonName": "African Babul Blue"
+  },
+  {
+    "id": 71,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Azanus ubaldus",
+    "commonName": "Bright Babul Blue"
+  },
+  {
+    "id": 72,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Azanus uranus",
+    "commonName": "Dull Babul Blue"
+  },
+  {
+    "id": 73,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Azanus spp.",
+    "commonName": "Babul Blue species"
+  },
+  {
+    "id": 74,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Caleta decidia",
+    "commonName": "Angled Pierrot"
+  },
+  {
+    "id": 75,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Castalius rosimon",
+    "commonName": "Common Pierrot"
+  },
+  {
+    "id": 76,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Discolampa ethion",
+    "commonName": "Banded Blue Pierrot"
+  },
+  {
+    "id": 77,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Catochrysops strabo",
+    "commonName": "Forget-me-not"
+  },
+  {
+    "id": 78,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Celastrina lavendularis",
+    "commonName": "Plain Hedge Blue"
+  },
+  {
+    "id": 79,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Chilades lajus",
+    "commonName": "Lime Blue"
+  },
+  {
+    "id": 80,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Chilades pandava",
+    "commonName": "Plains Cupid"
+  },
+  {
+    "id": 81,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Chilades parrhasius",
+    "commonName": "Small Cupid"
+  },
+  {
+    "id": 82,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Everes lacturnus",
+    "commonName": "Orange-crowned Cupid"
+  },
+  {
+    "id": 83,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Euchrysops cnejus",
+    "commonName": "Gram Blue"
+  },
+  {
+    "id": 84,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Freyeria putli",
+    "commonName": "Black-spotted Grass Jewel"
+  },
+  {
+    "id": 85,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Freyeria trochylus",
+    "commonName": "Orange-spotted Grass Jewel"
+  },
+  {
+    "id": 86,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Freyeria spp.",
+    "commonName": "Grass Jewel"
+  },
+  {
+    "id": 87,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Jamides alecto",
+    "commonName": "Metallic Cerulean"
+  },
+  {
+    "id": 88,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Jamides bochus",
+    "commonName": "Dark Cerulean"
+  },
+  {
+    "id": 89,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Jamides celeno",
+    "commonName": "Common Cerulean"
+  },
+  {
+    "id": 90,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Jamides spp.",
+    "commonName": "Cerulean species"
+  },
+  {
+    "id": 91,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Lampides boeticus",
+    "commonName": "Pea Blue"
+  },
+  {
+    "id": 92,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Leptotes plinius",
+    "commonName": "Zebra Blue"
+  },
+  {
+    "id": 93,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Lycaenopsis-group spp.",
+    "commonName": "Hedge blues"
+  },
+  {
+    "id": 94,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Megisba malaya",
+    "commonName": "Malayan"
+  },
+  {
+    "id": 95,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Nacaduba kurava",
+    "commonName": "Transparent Six-Lineblue"
+  },
+  {
+    "id": 96,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Petrelaea dana",
+    "commonName": "Dingy Lineblue"
+  },
+  {
+    "id": 97,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Prosotas dubiosa",
+    "commonName": "Tailless Lineblue"
+  },
+  {
+    "id": 98,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Prosotas nora",
+    "commonName": "Common Lineblue"
+  },
+  {
+    "id": 99,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Prosotas noreia",
+    "commonName": "White-tipped Lineblue"
+  },
+  {
+    "id": 100,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Prosotas spp.",
+    "commonName": "Lineblue species"
+  },
+  {
+    "id": 101,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Pseudozizeeria maha",
+    "commonName": "Pale Grass Blue"
+  },
+  {
+    "id": 102,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Zizeeria-group spp.",
+    "commonName": "Grass Blue species"
+  },
+  {
+    "id": 103,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Talicada nyseus",
+    "commonName": "Red Pierrot"
+  },
+  {
+    "id": 104,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Tarucus ananda",
+    "commonName": "Dark Pierrot"
+  },
+  {
+    "id": 105,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Tarucus balkanica",
+    "commonName": "Little Tiger Pierrot"
+  },
+  {
+    "id": 106,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Tarucus callinara",
+    "commonName": "Spotted Pierrot"
+  },
+  {
+    "id": 107,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Tarucus nara",
+    "commonName": "Striped Pierrot"
+  },
+  {
+    "id": 108,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Tarucus spp.",
+    "commonName": "Tarucus species"
+  },
+  {
+    "id": 109,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Zizeeria karsandra",
+    "commonName": "Dark Grass Blue"
+  },
+  {
+    "id": 110,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Zizina otis",
+    "commonName": "Lesser Grass Blue"
+  },
+  {
+    "id": 111,
+    "family": "Lycaenidae",
+    "subfamily": "Polyommatinae",
+    "tribe": "Polyommatini",
+    "scientificName": "Zizula hylax",
+    "commonName": "Tiny Grass Blue"
+  },
+  {
+    "id": 112,
+    "family": "Lycaenidae",
+    "subfamily": "Theclinae",
+    "tribe": "Amblypodiini",
+    "scientificName": "Amblypodia anita",
+    "commonName": "Purple Leaf Blue"
+  },
+  {
+    "id": 113,
+    "family": "Lycaenidae",
+    "subfamily": "Theclinae",
+    "tribe": "Amblypodiini",
+    "scientificName": "Iraota timoleon",
+    "commonName": "Silverstreak Blue"
+  },
+  {
+    "id": 114,
+    "family": "Lycaenidae",
+    "subfamily": "Theclinae",
+    "tribe": "Arhopalini",
+    "scientificName": "Arhopala amantes",
+    "commonName": "Large Oakblue"
+  },
+  {
+    "id": 115,
+    "family": "Lycaenidae",
+    "subfamily": "Theclinae",
+    "tribe": "Arhopalini",
+    "scientificName": "Arhopala centaurus",
+    "commonName": "Centaur Oakblue"
+  },
+  {
+    "id": 116,
+    "family": "Lycaenidae",
+    "subfamily": "Theclinae",
+    "tribe": "Arhopalini",
+    "scientificName": "Arhopala spp.",
+    "commonName": "Oakblue species"
+  },
+  {
+    "id": 117,
+    "family": "Lycaenidae",
+    "subfamily": "Theclinae",
+    "tribe": "Arhopalini",
+    "scientificName": "Surendra quercetorum",
+    "commonName": "Common Acacia Blue"
+  },
+  {
+    "id": 118,
+    "family": "Lycaenidae",
+    "subfamily": "Theclinae",
+    "tribe": "Deudorigini",
+    "scientificName": "Deudorix epijarbas",
+    "commonName": "Cornelian"
+  },
+  {
+    "id": 119,
+    "family": "Lycaenidae",
+    "subfamily": "Theclinae",
+    "tribe": "Deudorigini",
+    "scientificName": "Rapala iarbus",
+    "commonName": "Common Red Flash"
+  },
+  {
+    "id": 120,
+    "family": "Lycaenidae",
+    "subfamily": "Theclinae",
+    "tribe": "Deudorigini",
+    "scientificName": "Rapala manea",
+    "commonName": "Slate Flash"
+  },
+  {
+    "id": 121,
+    "family": "Lycaenidae",
+    "subfamily": "Theclinae",
+    "tribe": "Deudorigini",
+    "scientificName": "Rapala varuna",
+    "commonName": "Indigo Flash"
+  },
+  {
+    "id": 122,
+    "family": "Lycaenidae",
+    "subfamily": "Theclinae",
+    "tribe": "Deudorigini",
+    "scientificName": "Rapala spp.",
+    "commonName": "Flash species"
+  },
+  {
+    "id": 123,
+    "family": "Lycaenidae",
+    "subfamily": "Theclinae",
+    "tribe": "Deudorigini",
+    "scientificName": "Virachola isocrates",
+    "commonName": "Common Guava Blue"
+  },
+  {
+    "id": 124,
+    "family": "Lycaenidae",
+    "subfamily": "Theclinae",
+    "tribe": "Deudorigini",
+    "scientificName": "Virachola perse",
+    "commonName": "Large Guava Blue"
+  },
+  {
+    "id": 125,
+    "family": "Lycaenidae",
+    "subfamily": "Theclinae",
+    "tribe": "Horagini",
+    "scientificName": "Rathinda amor",
+    "commonName": "Monkey Puzzle"
+  },
+  {
+    "id": 126,
+    "family": "Lycaenidae",
+    "subfamily": "Theclinae",
+    "tribe": "Iolaini",
+    "scientificName": "Pratapa deva",
+    "commonName": "White Tufted Royal"
+  },
+  {
+    "id": 127,
+    "family": "Lycaenidae",
+    "subfamily": "Theclinae",
+    "tribe": "Iolaini",
+    "scientificName": "Tajuria cippus",
+    "commonName": "Peacock Royal"
+  },
+  {
+    "id": 128,
+    "family": "Lycaenidae",
+    "subfamily": "Theclinae",
+    "tribe": "Iolaini",
+    "scientificName": "Tajuria jehana",
+    "commonName": "Plains Blue Royal"
+  },
+  {
+    "id": 129,
+    "family": "Lycaenidae",
+    "subfamily": "Theclinae",
+    "tribe": "Loxurini",
+    "scientificName": "Loxura atymnus",
+    "commonName": "Yamfly"
+  },
+  {
+    "id": 130,
+    "family": "Lycaenidae",
+    "subfamily": "Theclinae",
+    "tribe": "Zesiini",
+    "scientificName": "Zesius chrysomallus",
+    "commonName": "Redspot"
+  },
+  {
+    "id": 131,
+    "family": "Nymphalidae",
+    "subfamily": "Biblidinae",
+    "tribe": "Biblidini",
+    "scientificName": "Ariadne ariadne",
+    "commonName": "Angled Castor"
+  },
+  {
+    "id": 132,
+    "family": "Nymphalidae",
+    "subfamily": "Biblidinae",
+    "tribe": "Biblidini",
+    "scientificName": "Ariadne merione",
+    "commonName": "Common Castor"
+  },
+  {
+    "id": 133,
+    "family": "Nymphalidae",
+    "subfamily": "Biblidinae",
+    "tribe": "Biblidini",
+    "scientificName": "Ariadne spp.",
+    "commonName": "Castor species"
+  },
+  {
+    "id": 134,
+    "family": "Nymphalidae",
+    "subfamily": "Biblidinae",
+    "tribe": "Biblidini",
+    "scientificName": "Byblia ilithyia",
+    "commonName": "Joker"
+  },
+  {
+    "id": 135,
+    "family": "Nymphalidae",
+    "subfamily": "Charaxinae",
+    "tribe": "Charaxini",
+    "scientificName": "Charaxes agrarius",
+    "commonName": "Anomalous Nawab"
+  },
+  {
+    "id": 136,
+    "family": "Nymphalidae",
+    "subfamily": "Charaxinae",
+    "tribe": "Charaxini",
+    "scientificName": "Charaxes bharata",
+    "commonName": "Indian Nawab"
+  },
+  {
+    "id": 137,
+    "family": "Nymphalidae",
+    "subfamily": "Charaxinae",
+    "tribe": "Charaxini",
+    "scientificName": "Charaxes psaphon",
+    "commonName": "Plain Tawny Rajah"
+  },
+  {
+    "id": 138,
+    "family": "Nymphalidae",
+    "subfamily": "Charaxinae",
+    "tribe": "Charaxini",
+    "scientificName": "Charaxes solon",
+    "commonName": "Black Rajah"
+  },
+  {
+    "id": 139,
+    "family": "Nymphalidae",
+    "subfamily": "Danainae",
+    "tribe": "Danaini",
+    "scientificName": "Danaus chrysippus",
+    "commonName": "Plain Tiger"
+  },
+  {
+    "id": 140,
+    "family": "Nymphalidae",
+    "subfamily": "Danainae",
+    "tribe": "Danaini",
+    "scientificName": "Danaus genutia",
+    "commonName": "Striped Tiger"
+  },
+  {
+    "id": 141,
+    "family": "Nymphalidae",
+    "subfamily": "Danainae",
+    "tribe": "Danaini",
+    "scientificName": "Danaus melanippus",
+    "commonName": "White Tiger"
+  },
+  {
+    "id": 142,
+    "family": "Nymphalidae",
+    "subfamily": "Danainae",
+    "tribe": "Danaini",
+    "scientificName": "Euploea core",
+    "commonName": "Common Crow"
+  },
+  {
+    "id": 143,
+    "family": "Nymphalidae",
+    "subfamily": "Danainae",
+    "tribe": "Danaini",
+    "scientificName": "Euploea klugii",
+    "commonName": "King Crow"
+  },
+  {
+    "id": 144,
+    "family": "Nymphalidae",
+    "subfamily": "Danainae",
+    "tribe": "Danaini",
+    "scientificName": "Euploea sylvester",
+    "commonName": "Double-branded Crow"
+  },
+  {
+    "id": 145,
+    "family": "Nymphalidae",
+    "subfamily": "Danainae",
+    "tribe": "Danaini",
+    "scientificName": "Euploea spp.",
+    "commonName": "Crow species"
+  },
+  {
+    "id": 146,
+    "family": "Nymphalidae",
+    "subfamily": "Danainae",
+    "tribe": "Danaini",
+    "scientificName": "Parantica aglea",
+    "commonName": "Glassy Tiger"
+  },
+  {
+    "id": 147,
+    "family": "Nymphalidae",
+    "subfamily": "Danainae",
+    "tribe": "Danaini",
+    "scientificName": "Tirumala limniace",
+    "commonName": "Blue Tiger"
+  },
+  {
+    "id": 148,
+    "family": "Nymphalidae",
+    "subfamily": "Danainae",
+    "tribe": "Danaini",
+    "scientificName": "Tirumala septentrionis",
+    "commonName": "Dark Blue Tiger"
+  },
+  {
+    "id": 149,
+    "family": "Nymphalidae",
+    "subfamily": "Danainae",
+    "tribe": "Danaini",
+    "scientificName": "Tirumala spp.",
+    "commonName": "Blue Tiger species"
+  },
+  {
+    "id": 150,
+    "family": "Nymphalidae",
+    "subfamily": "Heliconiinae",
+    "tribe": "Acraeini",
+    "scientificName": "Acraea terpsicore",
+    "commonName": "Tawny Coster"
+  },
+  {
+    "id": 151,
+    "family": "Nymphalidae",
+    "subfamily": "Heliconiinae",
+    "tribe": "Vagrantini",
+    "scientificName": "Phalanta phalantha",
+    "commonName": "Common Leopard"
+  },
+  {
+    "id": 152,
+    "family": "Nymphalidae",
+    "subfamily": "Libytheinae",
+    "tribe": "Libytheini",
+    "scientificName": "Libythea laius",
+    "commonName": "Lobed Beak"
+  },
+  {
+    "id": 153,
+    "family": "Nymphalidae",
+    "subfamily": "Libytheinae",
+    "tribe": "Libytheini",
+    "scientificName": "Libythea myrrha",
+    "commonName": "Club Beak"
+  },
+  {
+    "id": 154,
+    "family": "Nymphalidae",
+    "subfamily": "Limenitidinae",
+    "tribe": "Adoliadini",
+    "scientificName": "Euthalia aconthea",
+    "commonName": "Common Baron"
+  },
+  {
+    "id": 155,
+    "family": "Nymphalidae",
+    "subfamily": "Limenitidinae",
+    "tribe": "Adoliadini",
+    "scientificName": "Euthalia lubentina",
+    "commonName": "Gaudy Baron"
+  },
+  {
+    "id": 156,
+    "family": "Nymphalidae",
+    "subfamily": "Limenitidinae",
+    "tribe": "Adoliadini",
+    "scientificName": "Symphaedra nais",
+    "commonName": "Baronet"
+  },
+  {
+    "id": 157,
+    "family": "Nymphalidae",
+    "subfamily": "Limenitidinae",
+    "tribe": "Limenitidini",
+    "scientificName": "Moduza procris",
+    "commonName": "Commander"
+  },
+  {
+    "id": 158,
+    "family": "Nymphalidae",
+    "subfamily": "Limenitidinae",
+    "tribe": "Neptini",
+    "scientificName": "Neptis hylas",
+    "commonName": "Common Sailer"
+  },
+  {
+    "id": 159,
+    "family": "Nymphalidae",
+    "subfamily": "Limenitidinae",
+    "tribe": "Neptini",
+    "scientificName": "Neptis jumbah",
+    "commonName": "Chestnut-streaked Sailer"
+  },
+  {
+    "id": 160,
+    "family": "Nymphalidae",
+    "subfamily": "Limenitidinae",
+    "tribe": "Neptini",
+    "scientificName": "Neptis spp.",
+    "commonName": "Sailer species"
+  },
+  {
+    "id": 161,
+    "family": "Nymphalidae",
+    "subfamily": "Limenitidinae",
+    "tribe": "Neptini",
+    "scientificName": "Pantoporia hordonia",
+    "commonName": "Common Lascar"
+  },
+  {
+    "id": 162,
+    "family": "Nymphalidae",
+    "subfamily": "Limenitidinae",
+    "tribe": "Neptini",
+    "scientificName": "Phaedyma columella",
+    "commonName": "Short-banded Sailer"
+  },
+  {
+    "id": 163,
+    "family": "Nymphalidae",
+    "subfamily": "Nymphalinae",
+    "tribe": "Junoniini",
+    "scientificName": "Hypolimnas bolina",
+    "commonName": "Great Eggfly"
+  },
+  {
+    "id": 164,
+    "family": "Nymphalidae",
+    "subfamily": "Nymphalinae",
+    "tribe": "Junoniini",
+    "scientificName": "Hypolimnas bolina Female",
+    "commonName": "Great Eggfly Female"
+  },
+  {
+    "id": 165,
+    "family": "Nymphalidae",
+    "subfamily": "Nymphalinae",
+    "tribe": "Junoniini",
+    "scientificName": "Hypolimnas bolina Male",
+    "commonName": "Great Eggfly Male"
+  },
+  {
+    "id": 166,
+    "family": "Nymphalidae",
+    "subfamily": "Nymphalinae",
+    "tribe": "Junoniini",
+    "scientificName": "Hypolimnas misippus",
+    "commonName": "Danaid Eggfly"
+  },
+  {
+    "id": 167,
+    "family": "Nymphalidae",
+    "subfamily": "Nymphalinae",
+    "tribe": "Junoniini",
+    "scientificName": "Hypolimnas misippus Female",
+    "commonName": "Danaid Eggfly Female"
+  },
+  {
+    "id": 168,
+    "family": "Nymphalidae",
+    "subfamily": "Nymphalinae",
+    "tribe": "Junoniini",
+    "scientificName": "Hypolimnas misippus Male",
+    "commonName": "Danaid Eggfly Male"
+  },
+  {
+    "id": 169,
+    "family": "Nymphalidae",
+    "subfamily": "Nymphalinae",
+    "tribe": "Junoniini",
+    "scientificName": "Junonia almana",
+    "commonName": "Peacock Pansy"
+  },
+  {
+    "id": 170,
+    "family": "Nymphalidae",
+    "subfamily": "Nymphalinae",
+    "tribe": "Junoniini",
+    "scientificName": "Junonia atlites",
+    "commonName": "Grey Pansy"
+  },
+  {
+    "id": 171,
+    "family": "Nymphalidae",
+    "subfamily": "Nymphalinae",
+    "tribe": "Junoniini",
+    "scientificName": "Junonia hierta",
+    "commonName": "Yellow Pansy"
+  },
+  {
+    "id": 172,
+    "family": "Nymphalidae",
+    "subfamily": "Nymphalinae",
+    "tribe": "Junoniini",
+    "scientificName": "Junonia iphita",
+    "commonName": "Chocolate Pansy"
+  },
+  {
+    "id": 173,
+    "family": "Nymphalidae",
+    "subfamily": "Nymphalinae",
+    "tribe": "Junoniini",
+    "scientificName": "Junonia lemonias",
+    "commonName": "Lemon Pansy"
+  },
+  {
+    "id": 174,
+    "family": "Nymphalidae",
+    "subfamily": "Nymphalinae",
+    "tribe": "Junoniini",
+    "scientificName": "Junonia orithya",
+    "commonName": "Blue Pansy"
+  },
+  {
+    "id": 175,
+    "family": "Nymphalidae",
+    "subfamily": "Nymphalinae",
+    "tribe": "Kallimini",
+    "scientificName": "Kallima horsfieldii",
+    "commonName": "Sahyadri Blue Oakleaf"
+  },
+  {
+    "id": 176,
+    "family": "Nymphalidae",
+    "subfamily": "Nymphalinae",
+    "tribe": "Nymphalini",
+    "scientificName": "Vanessa cardui",
+    "commonName": "Painted Lady"
+  },
+  {
+    "id": 177,
+    "family": "Nymphalidae",
+    "subfamily": "Satyrinae",
+    "tribe": "Elymniini",
+    "scientificName": "Elymnias caudata",
+    "commonName": "Tailed Palmfly"
+  },
+  {
+    "id": 178,
+    "family": "Nymphalidae",
+    "subfamily": "Satyrinae",
+    "tribe": "Elymniini",
+    "scientificName": "Elymnias caudata Female",
+    "commonName": "Tailed Palmfly Female"
+  },
+  {
+    "id": 179,
+    "family": "Nymphalidae",
+    "subfamily": "Satyrinae",
+    "tribe": "Elymniini",
+    "scientificName": "Elymnias caudata Male",
+    "commonName": "Tailed Palmfly Male"
+  },
+  {
+    "id": 180,
+    "family": "Nymphalidae",
+    "subfamily": "Satyrinae",
+    "tribe": "Elymniini",
+    "scientificName": "Elymnias hypermnestra",
+    "commonName": "Common Palmfly"
+  },
+  {
+    "id": 181,
+    "family": "Nymphalidae",
+    "subfamily": "Satyrinae",
+    "tribe": "Elymniini",
+    "scientificName": "Elymnias hypermnestra Female",
+    "commonName": "Common Palmfly Female"
+  },
+  {
+    "id": 182,
+    "family": "Nymphalidae",
+    "subfamily": "Satyrinae",
+    "tribe": "Elymniini",
+    "scientificName": "Elymnias hypermnestra Male",
+    "commonName": "Common Palmfly Male"
+  },
+  {
+    "id": 183,
+    "family": "Nymphalidae",
+    "subfamily": "Satyrinae",
+    "tribe": "Melanitini",
+    "scientificName": "Melanitis leda",
+    "commonName": "Common Evening Brown"
+  },
+  {
+    "id": 184,
+    "family": "Nymphalidae",
+    "subfamily": "Satyrinae",
+    "tribe": "Satyrini",
+    "scientificName": "Lethe drypetis",
+    "commonName": "Two-eyed Treebrown"
+  },
+  {
+    "id": 185,
+    "family": "Nymphalidae",
+    "subfamily": "Satyrinae",
+    "tribe": "Satyrini",
+    "scientificName": "Lethe europa",
+    "commonName": "Bamboo Treebrown"
+  },
+  {
+    "id": 186,
+    "family": "Nymphalidae",
+    "subfamily": "Satyrinae",
+    "tribe": "Satyrini",
+    "scientificName": "Lethe rohria",
+    "commonName": "Common Treebrown"
+  },
+  {
+    "id": 187,
+    "family": "Nymphalidae",
+    "subfamily": "Satyrinae",
+    "tribe": "Satyrini",
+    "scientificName": "Lethe spp.",
+    "commonName": "Lethe species"
+  },
+  {
+    "id": 188,
+    "family": "Nymphalidae",
+    "subfamily": "Satyrinae",
+    "tribe": "Satyrini",
+    "scientificName": "Mycalesis mineus",
+    "commonName": "Dark-branded Bushbrown"
+  },
+  {
+    "id": 189,
+    "family": "Nymphalidae",
+    "subfamily": "Satyrinae",
+    "tribe": "Satyrini",
+    "scientificName": "Mycalesis perseus",
+    "commonName": "Common Bushbrown"
+  },
+  {
+    "id": 190,
+    "family": "Nymphalidae",
+    "subfamily": "Satyrinae",
+    "tribe": "Satyrini",
+    "scientificName": "Mycalesis subdita",
+    "commonName": "Tamil Bushbrown"
+  },
+  {
+    "id": 191,
+    "family": "Nymphalidae",
+    "subfamily": "Satyrinae",
+    "tribe": "Satyrini",
+    "scientificName": "Mycalesis visala",
+    "commonName": "Long-branded Bushbrown"
+  },
+  {
+    "id": 192,
+    "family": "Nymphalidae",
+    "subfamily": "Satyrinae",
+    "tribe": "Satyrini",
+    "scientificName": "Mycalesis spp.",
+    "commonName": "Bushbrown species"
+  },
+  {
+    "id": 193,
+    "family": "Nymphalidae",
+    "subfamily": "Satyrinae",
+    "tribe": "Satyrini",
+    "scientificName": "Orsotriaena medus",
+    "commonName": "Medus Brown"
+  },
+  {
+    "id": 194,
+    "family": "Nymphalidae",
+    "subfamily": "Satyrinae",
+    "tribe": "Satyrini",
+    "scientificName": "Ypthima asterope",
+    "commonName": "Common Three-ring"
+  },
+  {
+    "id": 195,
+    "family": "Nymphalidae",
+    "subfamily": "Satyrinae",
+    "tribe": "Satyrini",
+    "scientificName": "Ypthima baldus",
+    "commonName": "Common Five-ring"
+  },
+  {
+    "id": 196,
+    "family": "Nymphalidae",
+    "subfamily": "Satyrinae",
+    "tribe": "Satyrini",
+    "scientificName": "Ypthima huebneri",
+    "commonName": "Common Four-ring"
+  },
+  {
+    "id": 197,
+    "family": "Nymphalidae",
+    "subfamily": "Satyrinae",
+    "tribe": "Satyrini",
+    "scientificName": "Ypthima inica",
+    "commonName": "Lesser Three-ring"
+  },
+  {
+    "id": 198,
+    "family": "Nymphalidae",
+    "subfamily": "Satyrinae",
+    "tribe": "Satyrini",
+    "scientificName": "Ypthima spp.",
+    "commonName": "Ring species"
+  },
+  {
+    "id": 199,
+    "family": "Papilionidae",
+    "subfamily": "Papilioninae",
+    "tribe": "Leptocircini",
+    "scientificName": "Graphium agamemnon",
+    "commonName": "Tailed Jay"
+  },
+  {
+    "id": 200,
+    "family": "Papilionidae",
+    "subfamily": "Papilioninae",
+    "tribe": "Leptocircini",
+    "scientificName": "Graphium doson",
+    "commonName": "Common Jay"
+  },
+  {
+    "id": 201,
+    "family": "Papilionidae",
+    "subfamily": "Papilioninae",
+    "tribe": "Leptocircini",
+    "scientificName": "Graphium nomius",
+    "commonName": "Spot Swordtail"
+  },
+  {
+    "id": 202,
+    "family": "Papilionidae",
+    "subfamily": "Papilioninae",
+    "tribe": "Leptocircini",
+    "scientificName": "Graphium sarpedon",
+    "commonName": "Common Bluebottle"
+  },
+  {
+    "id": 203,
+    "family": "Papilionidae",
+    "subfamily": "Papilioninae",
+    "tribe": "Leptocircini",
+    "scientificName": "Graphium teredon",
+    "commonName": "Narrow-banded Bluebottle"
+  },
+  {
+    "id": 204,
+    "family": "Papilionidae",
+    "subfamily": "Papilioninae",
+    "tribe": "Leptocircini",
+    "scientificName": "Graphium spp.",
+    "commonName": "Graphium species"
+  },
+  {
+    "id": 205,
+    "family": "Papilionidae",
+    "subfamily": "Papilioninae",
+    "tribe": "Papilionini",
+    "scientificName": "Papilio clytia",
+    "commonName": "Common Mime"
+  },
+  {
+    "id": 206,
+    "family": "Papilionidae",
+    "subfamily": "Papilioninae",
+    "tribe": "Papilionini",
+    "scientificName": "Papilio clytia form dissimilis",
+    "commonName": "Common Mime form dissimilis"
+  },
+  {
+    "id": 207,
+    "family": "Papilionidae",
+    "subfamily": "Papilioninae",
+    "tribe": "Papilionini",
+    "scientificName": "Papilio clytia form clytia",
+    "commonName": "Common Mime form clytia"
+  },
+  {
+    "id": 208,
+    "family": "Papilionidae",
+    "subfamily": "Papilioninae",
+    "tribe": "Papilionini",
+    "scientificName": "Papilio crino",
+    "commonName": "Common Banded Peacock"
+  },
+  {
+    "id": 209,
+    "family": "Papilionidae",
+    "subfamily": "Papilioninae",
+    "tribe": "Papilionini",
+    "scientificName": "Papilio demoleus",
+    "commonName": "Lime Swallowtail"
+  },
+  {
+    "id": 210,
+    "family": "Papilionidae",
+    "subfamily": "Papilioninae",
+    "tribe": "Papilionini",
+    "scientificName": "Papilio daksha",
+    "commonName": "Large-spotted Helen"
+  },
+  {
+    "id": 211,
+    "family": "Papilionidae",
+    "subfamily": "Papilioninae",
+    "tribe": "Papilionini",
+    "scientificName": "Papilio polymnestor/Papilio agenor",
+    "commonName": "Blue Mormon/Great Mormon"
+  },
+  {
+    "id": 212,
+    "family": "Papilionidae",
+    "subfamily": "Papilioninae",
+    "tribe": "Papilionini",
+    "scientificName": "Papilio polytes",
+    "commonName": "Common Mormon"
+  },
+  {
+    "id": 213,
+    "family": "Papilionidae",
+    "subfamily": "Papilioninae",
+    "tribe": "Papilionini",
+    "scientificName": "Papilio polytes Female f. cyrus",
+    "commonName": "Common Mormon Female form Cyrus"
+  },
+  {
+    "id": 214,
+    "family": "Papilionidae",
+    "subfamily": "Papilioninae",
+    "tribe": "Papilionini",
+    "scientificName": "Papilio polytes Female f. romulus",
+    "commonName": "Common Mormon Female form Romulus"
+  },
+  {
+    "id": 215,
+    "family": "Papilionidae",
+    "subfamily": "Papilioninae",
+    "tribe": "Papilionini",
+    "scientificName": "Papilio polytes Female f. stichius",
+    "commonName": "Common Mormon Female form Stichius"
+  },
+  {
+    "id": 216,
+    "family": "Papilionidae",
+    "subfamily": "Papilioninae",
+    "tribe": "Papilionini",
+    "scientificName": "Papilio polytes Male",
+    "commonName": "Common Mormon Male"
+  },
+  {
+    "id": 217,
+    "family": "Papilionidae",
+    "subfamily": "Papilioninae",
+    "tribe": "Troidini",
+    "scientificName": "Pachliopta aristolochiae",
+    "commonName": "Common Rose"
+  },
+  {
+    "id": 218,
+    "family": "Papilionidae",
+    "subfamily": "Papilioninae",
+    "tribe": "Troidini",
+    "scientificName": "Pachliopta hector",
+    "commonName": "Crimson Rose"
+  },
+  {
+    "id": 219,
+    "family": "Papilionidae",
+    "subfamily": "Papilioninae",
+    "tribe": "Troidini",
+    "scientificName": "Troides minos",
+    "commonName": "Sahyadri Birdwing"
+  },
+  {
+    "id": 220,
+    "family": "Pieridae",
+    "subfamily": "Coliadinae",
+    "tribe": "–",
+    "scientificName": "Catopsilia pomona",
+    "commonName": "Lemon Emigrant"
+  },
+  {
+    "id": 221,
+    "family": "Pieridae",
+    "subfamily": "Coliadinae",
+    "tribe": "–",
+    "scientificName": "Catopsilia pyranthe",
+    "commonName": "Mottled Emigrant"
+  },
+  {
+    "id": 222,
+    "family": "Pieridae",
+    "subfamily": "Coliadinae",
+    "tribe": "–",
+    "scientificName": "Catopsilia spp.",
+    "commonName": "Emigrant species"
+  },
+  {
+    "id": 223,
+    "family": "Pieridae",
+    "subfamily": "Coliadinae",
+    "tribe": "–",
+    "scientificName": "Eurema blanda",
+    "commonName": "Three-spot Grass Yellow"
+  },
+  {
+    "id": 224,
+    "family": "Pieridae",
+    "subfamily": "Coliadinae",
+    "tribe": "–",
+    "scientificName": "Eurema brigitta",
+    "commonName": "Small Grass Yellow"
+  },
+  {
+    "id": 225,
+    "family": "Pieridae",
+    "subfamily": "Coliadinae",
+    "tribe": "–",
+    "scientificName": "Eurema hecabe",
+    "commonName": "Common Grass Yellow"
+  },
+  {
+    "id": 226,
+    "family": "Pieridae",
+    "subfamily": "Coliadinae",
+    "tribe": "–",
+    "scientificName": "Eurema laeta",
+    "commonName": "Spotless Grass Yellow"
+  },
+  {
+    "id": 227,
+    "family": "Pieridae",
+    "subfamily": "Coliadinae",
+    "tribe": "–",
+    "scientificName": "Eurema spp.",
+    "commonName": "Grass yellow species"
+  },
+  {
+    "id": 228,
+    "family": "Pieridae",
+    "subfamily": "Pierinae",
+    "tribe": "Anthocharidini",
+    "scientificName": "Hebomoia glaucippe",
+    "commonName": "Great Orange-tip"
+  },
+  {
+    "id": 229,
+    "family": "Pieridae",
+    "subfamily": "Pierinae",
+    "tribe": "Leptosiaini",
+    "scientificName": "Leptosia nina",
+    "commonName": "Psyche"
+  },
+  {
+    "id": 230,
+    "family": "Pieridae",
+    "subfamily": "Pierinae",
+    "tribe": "Nepheroniini",
+    "scientificName": "Pareronia hippia",
+    "commonName": "Indian Wanderer"
+  },
+  {
+    "id": 231,
+    "family": "Pieridae",
+    "subfamily": "Pierinae",
+    "tribe": "Nepheroniini",
+    "scientificName": "Pareronia hippia Female",
+    "commonName": "Indian Wanderer Female"
+  },
+  {
+    "id": 232,
+    "family": "Pieridae",
+    "subfamily": "Pierinae",
+    "tribe": "Nepheroniini",
+    "scientificName": "Pareronia hippia Male",
+    "commonName": "Indian Wanderer Male"
+  },
+  {
+    "id": 233,
+    "family": "Pieridae",
+    "subfamily": "Pierinae",
+    "tribe": "Pierini",
+    "scientificName": "Appias albina",
+    "commonName": "Common Albatross"
+  },
+  {
+    "id": 234,
+    "family": "Pieridae",
+    "subfamily": "Pierinae",
+    "tribe": "Pierini",
+    "scientificName": "Appias indra",
+    "commonName": "Plain Puffin"
+  },
+  {
+    "id": 235,
+    "family": "Pieridae",
+    "subfamily": "Pierinae",
+    "tribe": "Pierini",
+    "scientificName": "Appias libythea",
+    "commonName": "Striped Albatross"
+  },
+  {
+    "id": 236,
+    "family": "Pieridae",
+    "subfamily": "Pierinae",
+    "tribe": "Pierini",
+    "scientificName": "Appias olferna",
+    "commonName": "Black-veined Albatross"
+  },
+  {
+    "id": 237,
+    "family": "Pieridae",
+    "subfamily": "Pierinae",
+    "tribe": "Pierini",
+    "scientificName": "Belenois aurota",
+    "commonName": "Pioneer"
+  },
+  {
+    "id": 238,
+    "family": "Pieridae",
+    "subfamily": "Pierinae",
+    "tribe": "Pierini",
+    "scientificName": "Cepora nerissa",
+    "commonName": "Common Gull"
+  },
+  {
+    "id": 239,
+    "family": "Pieridae",
+    "subfamily": "Pierinae",
+    "tribe": "Pierini",
+    "scientificName": "Delias eucharis",
+    "commonName": "Indian Jezebel"
+  },
+  {
+    "id": 240,
+    "family": "Pieridae",
+    "subfamily": "Pierinae",
+    "tribe": "Pierini",
+    "scientificName": "Delias hyparete",
+    "commonName": "Painted Jezebel"
+  },
+  {
+    "id": 241,
+    "family": "Pieridae",
+    "subfamily": "Pierinae",
+    "tribe": "Pierini",
+    "scientificName": "Pieris brassicae",
+    "commonName": "Large Cabbage White"
+  },
+  {
+    "id": 242,
+    "family": "Pieridae",
+    "subfamily": "Pierinae",
+    "tribe": "Pierini",
+    "scientificName": "Pieris canidia",
+    "commonName": "Asian Cabbage White"
+  },
+  {
+    "id": 243,
+    "family": "Pieridae",
+    "subfamily": "Pierinae",
+    "tribe": "Teracolini",
+    "scientificName": "Colotis amata",
+    "commonName": "Small Salmon Arab"
+  },
+  {
+    "id": 244,
+    "family": "Pieridae",
+    "subfamily": "Pierinae",
+    "tribe": "Teracolini",
+    "scientificName": "Colotis aurora",
+    "commonName": "Plain Orange-tip"
+  },
+  {
+    "id": 245,
+    "family": "Pieridae",
+    "subfamily": "Pierinae",
+    "tribe": "Teracolini",
+    "scientificName": "Colotis danae",
+    "commonName": "Crimson-tip"
+  },
+  {
+    "id": 246,
+    "family": "Pieridae",
+    "subfamily": "Pierinae",
+    "tribe": "Teracolini",
+    "scientificName": "Colotis etrida",
+    "commonName": "Little Orange-tip"
+  },
+  {
+    "id": 247,
+    "family": "Pieridae",
+    "subfamily": "Pierinae",
+    "tribe": "Teracolini",
+    "scientificName": "Colotis fausta",
+    "commonName": "Large Salmon Arab"
+  },
+  {
+    "id": 248,
+    "family": "Pieridae",
+    "subfamily": "Pierinae",
+    "tribe": "Teracolini",
+    "scientificName": "Colotis vestalis",
+    "commonName": "White Arab"
+  },
+  {
+    "id": 249,
+    "family": "Pieridae",
+    "subfamily": "Pierinae",
+    "tribe": "Teracolini",
+    "scientificName": "Colotis spp.",
+    "commonName": "Arab species"
+  },
+  {
+    "id": 250,
+    "family": "Pieridae",
+    "subfamily": "Pierinae",
+    "tribe": "Teracolini",
+    "scientificName": "Ixias marianne",
+    "commonName": "White Orange-tip"
+  },
+  {
+    "id": 251,
+    "family": "Pieridae",
+    "subfamily": "Pierinae",
+    "tribe": "Teracolini",
+    "scientificName": "Ixias pyrene",
+    "commonName": "Yellow Orange-tip"
+  },
+  {
+    "id": 252,
+    "family": "Riodinidae",
+    "subfamily": "Nemeobiinae",
+    "tribe": "Abisarini",
+    "scientificName": "Abisara bifasciata",
+    "commonName": "Double-banded Judy"
+  },
+  {
+    "id": 253,
+    "family": "Riodinidae",
+    "subfamily": "Nemeobiinae",
+    "tribe": "Nemeobiini",
+    "scientificName": "Zemeros flegyas",
+    "commonName": "Punchinello"
+  }
+]
