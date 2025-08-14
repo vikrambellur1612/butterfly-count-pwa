@@ -2,7 +2,7 @@
   "name": "Butterfly Count",
   "short_name": "ButterflyCount",
   "description": "Progressive Web App for butterfly observation and counting during nature walks",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",

@@ -1,8 +1,8 @@
 // Service Worker for Butterfly Count PWA
 
-const CACHE_NAME = 'butterfly-count-v1.5.0';
-const STATIC_CACHE = 'butterfly-count-static-v1.5.0';
-const DYNAMIC_CACHE = 'butterfly-count-dynamic-v1.5.0';
+const CACHE_NAME = 'butterfly-count-v1.5.1';
+const STATIC_CACHE = 'butterfly-count-static-v1.5.1';
+const DYNAMIC_CACHE = 'butterfly-count-dynamic-v1.5.1';
 
 // Files to cache for offline functionality
 const STATIC_FILES = [
@@ -18,6 +18,7 @@ const STATIC_FILES = [
   './icons/icon-192x192.png',
   './icons/icon-512x512.png',
   './icons/favicon.svg',
+  './icons/favicon.png',
   './icons/apple-touch-icon-180x180.png',
   './icons/apple-touch-icon-152x152.png',
   './icons/apple-touch-icon-144x144.png',
@@ -237,8 +238,8 @@ self.addEventListener('push', (event) => {
   const data = event.data.json();
   const options = {
     body: data.body,
-    icon: './icons/icon-192x192.svg',
-    badge: './icons/icon-192x192.svg',
+    icon: './icons/icon-192x192.png',
+    badge: './icons/icon-192x192.png',
     vibrate: [200, 100, 200],
     data: data.data || {},
     actions: [
