@@ -2147,10 +2147,14 @@ class ButterflyCountApp {
 
     // Add click handler for species name to show detail modal
     if (speciesNameLink) {
-      speciesNameLink.addEventListener('click', (e) => {
+      speciesNameLink.addEventListener('click', async (e) => {
         e.stopPropagation();
         const butterflyId = speciesNameLink.getAttribute('data-butterfly-id');
         if (butterflyId) {
+          // Wait for butterfly data to load if it hasn't already
+          if (BUTTERFLY_DATA.length === 0) {
+            await loadButterflyData();
+          }
           const butterfly = getButterflyById(butterflyId);
           if (butterfly) {
             this.showButterflyDetail(butterfly);
