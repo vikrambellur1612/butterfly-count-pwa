@@ -2,7 +2,7 @@
 
 class ButterflyCountApp {
   constructor() {
-    this.version = '1.6.9';
+    this.version = '1.7.0';
     this.currentView = 'butterflies';
     this.currentButterflyView = 'family'; // 'family' or 'species'
     this.currentList = null;
@@ -21,6 +21,9 @@ class ButterflyCountApp {
     
     // Wait for butterfly data to load
     await this.ensureButterflyDataLoaded();
+    
+    // Validate observation data integrity
+    await this.validateObservationData();
     
     this.renderButterflies();
     this.updateTotalSpeciesCount();
@@ -41,6 +44,49 @@ class ButterflyCountApp {
       console.log(`Butterfly data loaded: ${BUTTERFLY_DATA.length} species`);
     } else {
       console.error('Failed to load butterfly data');
+    }
+  }
+
+  // Validate observation data integrity
+  async validateObservationData() {
+    try {
+      let fixedCount = 0;
+      const invalidObservations = [];
+      
+      for (const obs of this.observations) {
+        const butterfly = getButterflyById(obs.butterflyId);
+        if (!butterfly) {
+          // Try to find by name
+          const butterflyByName = getButterflyByName(obs.butterflyName);
+          if (butterflyByName) {
+            console.log(`Fixing observation ID: ${obs.butterflyId} -> ${butterflyByName.id} for ${obs.butterflyName}`);
+            obs.butterflyId = butterflyByName.id;
+            await this.updateInStore('observations', obs);
+            fixedCount++;
+          } else {
+            invalidObservations.push(obs);
+            console.warn('Invalid observation found:', {
+              id: obs.id,
+              butterflyName: obs.butterflyName,
+              butterflyId: obs.butterflyId,
+              listId: obs.listId
+            });
+          }
+        }
+      }
+      
+      if (fixedCount > 0) {
+        console.log(`Fixed ${fixedCount} observation(s) with incorrect butterfly IDs`);
+        this.observations = await this.getAllFromStore('observations');
+        this.showToast(`Fixed ${fixedCount} observation data issue(s)`, 'info', 5000);
+      }
+      
+      if (invalidObservations.length > 0) {
+        console.warn(`Found ${invalidObservations.length} observations with unresolvable species names`);
+      }
+      
+    } catch (error) {
+      console.error('Error validating observation data:', error);
     }
   }
 
@@ -2075,6 +2121,33 @@ class ButterflyCountApp {
     }
   }
 
+  // Fix observation butterfly ID when there's a mismatch
+  async fixObservationButterflyId(speciesName, correctButterflyId) {
+    try {
+      const observationsToFix = this.observations.filter(obs => 
+        obs.butterflyName === speciesName && !getButterflyById(obs.butterflyId)
+      );
+      
+      if (observationsToFix.length > 0) {
+        console.log(`Fixing ${observationsToFix.length} observations for species: ${speciesName}`);
+        
+        for (const obs of observationsToFix) {
+          obs.butterflyId = correctButterflyId;
+          await this.updateInStore('observations', obs);
+        }
+        
+        // Reload observations
+        this.observations = await this.getAllFromStore('observations');
+        this.renderObservations();
+        
+        this.showToast(`Fixed butterfly ID for ${speciesName}`, 'success');
+        console.log(`Successfully fixed butterfly IDs for ${speciesName}`);
+      }
+    } catch (error) {
+      console.error('Error fixing observation butterfly ID:', error);
+    }
+  }
+
   // Render observations
   renderObservations() {
     const container = document.getElementById('observationsList');
@@ -2188,12 +2261,34 @@ class ButterflyCountApp {
             // Wait for butterfly data to load if it hasn't already
             await this.ensureButterflyDataLoaded();
             
-            const butterfly = getButterflyById(butterflyId);
+            // Debug: Convert butterflyId to number and check data
+            const numericId = parseInt(butterflyId);
+            console.log('Looking for butterfly with ID:', numericId, 'from observations');
+            console.log('Total butterflies in data:', BUTTERFLY_DATA.length);
+            console.log('Butterfly IDs range:', 
+              Math.min(...BUTTERFLY_DATA.map(b => b.id)), 
+              'to', 
+              Math.max(...BUTTERFLY_DATA.map(b => b.id))
+            );
+            
+            const butterfly = getButterflyById(numericId);
             if (butterfly) {
+              console.log('Found butterfly:', butterfly.commonName);
               this.showButterflyDetail(butterfly);
             } else {
-              console.error('Butterfly not found with ID:', butterflyId);
-              this.showToast('Species details not found', 'error');
+              console.error('Butterfly not found with ID:', numericId);
+              console.log('Available IDs sample:', BUTTERFLY_DATA.slice(0, 5).map(b => ({id: b.id, name: b.commonName})));
+              
+              // Try to find by name as fallback
+              const butterflyByName = getButterflyByName(speciesName);
+              if (butterflyByName) {
+                console.log('Found by name instead:', butterflyByName.commonName, 'ID:', butterflyByName.id);
+                this.showButterflyDetail(butterflyByName);
+                // Update the observation with correct ID
+                this.fixObservationButterflyId(speciesName, butterflyByName.id);
+              } else {
+                this.showToast('Species details not found', 'error');
+              }
             }
           } catch (error) {
             console.error('Error loading species details:', error);

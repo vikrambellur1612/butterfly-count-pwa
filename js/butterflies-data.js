@@ -248,7 +248,9 @@ function getButterflyByFamily(familyName) {
 
 // Get butterfly by ID
 function getButterflyById(id) {
-  return BUTTERFLY_DATA.find(butterfly => butterfly.id === id);
+  // Convert to number to handle both string and number IDs
+  const numericId = parseInt(id);
+  return BUTTERFLY_DATA.find(butterfly => butterfly.id === numericId);
 }
 
 // Get butterfly by name (exact match)
