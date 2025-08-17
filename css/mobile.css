@@ -291,6 +291,32 @@
 /* Enhanced Dark mode support with mobile-specific adjustments - DISABLED TO FORCE LIGHT MODE ALWAYS */
 /*
 @media (prefers-color-scheme: dark) {
+  ... all dark mode styles are commented out ...
+}
+*/
+
+/* Enhanced Light Mode for Mobile - Force proper contrast and visibility */
+@media (max-width: 768px) {
+  /* Ensure all headers are visible on mobile */
+  .section-header h2,
+  .lists-container h3,
+  .observations-list h3,
+  #observationsTitle {
+    color: #212529 !important;
+    font-weight: 600;
+  }
+  
+  /* Ensure cards have light backgrounds on mobile */
+  .family-card,
+  .list-card,
+  .observation-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
+    color: #212529 !important;
+    border: 1px solid #e2e8f0;
+  }
+  
+  /* Fix navigation contrast for light mode */
+@media (prefers-color-scheme: dark) {
   /* Additional mobile-specific dark mode overrides */
   .app-header {
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
@@ -802,5 +828,26 @@
     width: 36px;
     height: 36px;
     font-size: 0.9rem;
+  }
+}
+
+/* Enhanced Light Mode for Mobile - Force proper contrast and visibility */
+@media (max-width: 768px) {
+  /* Ensure all headers are visible on mobile */
+  .section-header h2,
+  .lists-container h3,
+  .observations-list h3,
+  #observationsTitle {
+    color: #212529 !important;
+    font-weight: 600;
+  }
+  
+  /* Ensure cards have light backgrounds on mobile */
+  .family-card,
+  .list-card,
+  .observation-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
+    color: #212529 !important;
+    border: 1px solid #e2e8f0;
   }
 }

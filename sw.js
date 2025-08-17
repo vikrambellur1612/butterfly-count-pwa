@@ -1,8 +1,8 @@
 // Service Worker for Butterfly Count PWA
 
-const CACHE_NAME = 'butterfly-count-v1.7.2';
-const STATIC_CACHE = 'butterfly-count-static-v1.7.2';
-const DYNAMIC_CACHE = 'butterfly-count-dynamic-v1.7.2';
+const CACHE_NAME = 'butterfly-count-v1.7.4';
+const STATIC_CACHE = 'butterfly-count-static-v1.7.4';
+const DYNAMIC_CACHE = 'butterfly-count-dynamic-v1.7.4';
 
 // Files to cache for offline functionality
 const STATIC_FILES = [
@@ -15,10 +15,10 @@ const STATIC_FILES = [
   './js/butterflies-data.js',
   './butterflies-data.json',
   './manifest.json',
-  './icons/icon-192x192.png?v=1.6.9',
-  './icons/icon-512x512.png?v=1.6.9',
-  './icons/favicon.svg?v=1.6.9',
-  './icons/favicon.png?v=1.6.9',
+  './icons/icon-192x192.png?v=1.7.4',
+  './icons/icon-512x512.png?v=1.7.4',
+  './icons/favicon.svg?v=1.7.4',
+  './icons/favicon.png?v=1.7.4',
   './icons/apple-touch-icon-180x180.png?v=1.6.9',
   './icons/apple-touch-icon-152x152.png?v=1.6.9',
   './icons/apple-touch-icon-144x144.png?v=1.6.9',

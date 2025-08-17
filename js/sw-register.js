@@ -10,8 +10,16 @@ if ('serviceWorker' in navigator) {
       .then((registration) => {
         console.log('Butterfly Count ServiceWorker registered:', registration.scope);
         
-        // Check for updates periodically
-        setInterval(() => registration.update(), 60000);
+        // Check for updates periodically (more aggressive)
+        setInterval(() => registration.update(), 30000); // Check every 30 seconds
+        
+        // Force immediate cache refresh for critical files
+        if (registration.active) {
+          registration.active.postMessage({ 
+            type: 'FORCE_CACHE_REFRESH',
+            version: '1.7.3'
+          });
+        }
         
         // Handle updates
         registration.addEventListener('updatefound', () => {
@@ -134,7 +142,7 @@ function showCacheUpdateNotification(message) {
     if ('Notification' in window && Notification.permission === 'granted') {
       new Notification('Butterfly Count Updated', {
         body: 'Fresh icons loaded! Please reinstall the PWA for the best experience.',
-        icon: './icons/icon-192x192.png?v=1.6.9'
+        icon: './icons/icon-192x192.png?v=1.7.3'
       });
     }
   }
