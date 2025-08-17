@@ -24,7 +24,8 @@
   --info-color: #3b82f6;
 }
 
-/* Dark Mode Variables */
+/* Dark Mode Variables - DISABLED TO FORCE LIGHT MODE ALWAYS */
+/*
 @media (prefers-color-scheme: dark) {
   :root {
     --primary-color: #4ade80;
@@ -47,6 +48,7 @@
     --info-color: #60a5fa;
   }
 }
+*/
 
 html {
   scroll-behavior: smooth;
@@ -2365,7 +2367,8 @@ select.form-input {
     margin-top: 4px;
 }
 
-/* Dark mode adjustments for family cards */
+/* Dark mode adjustments for family cards - DISABLED TO FORCE LIGHT MODE ALWAYS */
+/*
 @media (prefers-color-scheme: dark) {
     .family-card {
         background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
@@ -3092,6 +3095,7 @@ select.form-input {
         color: var(--primary-color);
     }
 }
+*/
 
 /* Mobile responsive adjustments */
 @media (max-width: 768px) {
@@ -3786,17 +3790,20 @@ select.form-input {
   border-left: 3px solid #4ade80;
 }
 
-/* Dark mode adjustments for subfamily sections */
+/* Dark mode adjustments for subfamily sections - DISABLED TO FORCE LIGHT MODE ALWAYS */
+/*
 @media (prefers-color-scheme: dark) {
   /* Fix Lists section headers visibility in dark mode */
   #listsView .section-header h2,
   #activeLists h3,
-  #closedLists h3 {
+  #closedLists h3,
+  .lists-container h3 {
     color: #e2e8f0 !important;
   }
 
   /* Fix Count section observation title visibility in dark mode */
-  #observationsTitle {
+  #observationsTitle,
+  .observations-list h3 {
     color: #e2e8f0 !important;
   }
 
@@ -3886,6 +3893,7 @@ select.form-input {
     color: #cbd5e1;
   }
 }
+*/
 
 /* Butterfly Photo Styles */
 .butterfly-photo-section {

@@ -288,7 +288,8 @@
   }
 }
 
-/* Enhanced Dark mode support with mobile-specific adjustments */
+/* Enhanced Dark mode support with mobile-specific adjustments - DISABLED TO FORCE LIGHT MODE ALWAYS */
+/*
 @media (prefers-color-scheme: dark) {
   /* Additional mobile-specific dark mode overrides */
   .app-header {
@@ -432,12 +433,14 @@
   /* Additional fixes for Lists section headers visibility in dark mode */
   #listsView .section-header h2,
   #activeLists h3,
-  #closedLists h3 {
+  #closedLists h3,
+  .lists-container h3 {
     color: #e2e8f0 !important;
   }
 
   /* Fix Count section observation title visibility in dark mode */
-  #observationsTitle {
+  #observationsTitle,
+  .observations-list h3 {
     color: #e2e8f0 !important;
   }
 
@@ -479,6 +482,7 @@
     border: 1px solid var(--border-color);
   }
 }
+*/
 
 /* Reduce motion for accessibility */
 @media (prefers-reduced-motion: reduce) {
