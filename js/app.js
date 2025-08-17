@@ -2,7 +2,7 @@
 
 class ButterflyCountApp {
   constructor() {
-    this.version = '3.0.0';
+    this.version = '3.1.0';
     this.currentView = 'butterflies';
     this.currentButterflyView = 'family'; // 'family' or 'species'
     this.currentList = null;
@@ -1235,7 +1235,6 @@ class ButterflyCountApp {
               <span class="stat-number">${totalCount}</span>
               <span class="stat-label">Total Count</span>
             </div>
-            ${list.status === 'active' ? '<div class="click-hint">📊 View Details & Stats</div>' : ''}
           </div>
         </div>
         <div class="list-actions">

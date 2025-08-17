@@ -1,8 +1,8 @@
 // Service Worker for Butterfly Count PWA
 
-const CACHE_NAME = 'butterfly-count-v3.0.0';
-const STATIC_CACHE = 'butterfly-count-static-v3.0.0';
-const DYNAMIC_CACHE = 'butterfly-count-dynamic-v3.0.0';
+const CACHE_NAME = 'butterfly-count-v3.1.0';
+const STATIC_CACHE = 'butterfly-count-static-v3.1.0';
+const DYNAMIC_CACHE = 'butterfly-count-dynamic-v3.1.0';
 
 // Files to cache for offline functionality
 const STATIC_FILES = [
@@ -70,14 +70,14 @@ self.addEventListener('install', (event) => {
 
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
-  console.log('Service Worker activating - v3.0.0');
+  console.log('Service Worker activating - v3.1.0');
   
   event.waitUntil(
     caches.keys()
       .then((cacheNames) => {
         return Promise.all(
           cacheNames.map((cacheName) => {
-            // Delete ALL old caches - force complete refresh for v3.0.0
+            // Delete ALL old caches - force complete refresh for v3.1.0
             if (cacheName !== CACHE_NAME && cacheName !== STATIC_CACHE && cacheName !== DYNAMIC_CACHE) {
               console.log('Deleting old cache:', cacheName);
               return caches.delete(cacheName);
@@ -86,17 +86,17 @@ self.addEventListener('activate', (event) => {
         );
       })
       .then(() => {
-        console.log('All old caches cleaned up for v3.0.0');
+        console.log('All old caches cleaned up for v3.1.0');
         return self.clients.claim();
       })
       .then(() => {
-        // Force reload message for v3.0.0 with new features
+        // Force reload message for v3.1.0 with new features
         return self.clients.matchAll().then((clients) => {
           clients.forEach((client) => {
             client.postMessage({
               type: 'CACHE_UPDATED',
-              version: '3.0.0',
-              message: 'PWA updated to v3.0.0 - Clickable butterfly names & forced light mode - please refresh'
+              version: '3.1.0',
+              message: 'PWA updated to v3.1.0 - Enhanced design consistency with green banners - please refresh'
             });
           });
         });

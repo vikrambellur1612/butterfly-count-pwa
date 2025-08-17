@@ -1,14 +1,20 @@
-# Butterfly Count PWA - Netlify Deployment
+# Butterfly Count PWA - v3.1.0
 
-This folder contains all the files needed for deploying the Butterfly Count Progressive Web App to Netlify.
+This folder contains all the files for the Butterfly Count Progressive Web App v3.1.0 with enhanced design consistency and user experience improvements.
 
-## Version 1.6.5 Features
+## Version 3.1.0 Features
 
-### 🌙 Enhanced Dark Mode Support
-- **Automatic Theme Detection**: Seamlessly switches between light and dark themes based on device preference
-- **Complete UI Coverage**: All components optimized for dark mode visibility
-- **Consistent Color Scheme**: Professional dark theme with green accent colors
-- **Mobile Responsive**: Enhanced mobile-specific dark mode styling
+### � Enhanced Design & UX (v3.1.0)
+- **Green Banner Design System**: Beautiful consistent green banners throughout the app
+- **Lists Section Redesign**: Removed cluttered "My Butterfly Lists" header, added attractive green banners for Active and Closed Lists
+- **Clean Toggle Buttons**: Removed grey banner background from Family/Species view toggle for cleaner appearance
+- **Professional Visual Hierarchy**: Consistent design language with gradient backgrounds and modern styling
+- **Mobile Optimized**: Fully responsive banner design that works perfectly on all device sizes
+
+### ⭐ Core Features (v3.0.0+)
+- **Clickable Butterfly Names**: Tap species names in observation cards to view detailed information
+- **Forced Light Mode**: Consistent, professional appearance optimized for outdoor use
+- **Enhanced Mobile UX**: Improved list cards with proper text containment and colored stat labels
 
 ### 📊 Improved Organization
 - **Family View**: Interactive cards showing actual species counts
