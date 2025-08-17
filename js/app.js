@@ -2,7 +2,7 @@
 
 class ButterflyCountApp {
   constructor() {
-    this.version = '1.6.4';
+    this.version = '3.0.0';
     this.currentView = 'butterflies';
     this.currentButterflyView = 'family'; // 'family' or 'species'
     this.currentList = null;
@@ -2121,7 +2121,7 @@ class ButterflyCountApp {
       <div class="obs-content">
         <div class="obs-main-info">
           <div class="obs-names">
-            <span class="obs-common-name">${speciesName}</span>
+            <span class="obs-common-name clickable-species" data-butterfly-id="${latestObs.butterflyId}">${speciesName}</span>
             <span class="obs-scientific-name"><em>${scientificName}</em></span>
           </div>
           <div class="obs-stats-inline">
@@ -2143,6 +2143,30 @@ class ButterflyCountApp {
     const editBtn = card.querySelector('.action-btn-small.secondary');
     const addMoreBtn = card.querySelector('.action-btn-small.primary');
     const deleteBtn = card.querySelector('.action-btn-small.danger');
+    const speciesNameLink = card.querySelector('.clickable-species');
+
+    // Add click handler for species name to show detail modal
+    if (speciesNameLink) {
+      speciesNameLink.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const butterflyId = speciesNameLink.getAttribute('data-butterfly-id');
+        if (butterflyId) {
+          const numericId = parseInt(butterflyId);
+          const butterfly = getButterflyById(numericId);
+          if (butterfly) {
+            this.showButterflyDetail(butterfly);
+          } else {
+            // Try to find by name as fallback
+            const butterflyByName = getButterflyByName(speciesName);
+            if (butterflyByName) {
+              this.showButterflyDetail(butterflyByName);
+            } else {
+              this.showToast('Species details not found', 'error');
+            }
+          }
+        }
+      });
+    }
 
     if (editBtn) {
       editBtn.addEventListener('click', (e) => {
@@ -2186,7 +2210,7 @@ class ButterflyCountApp {
       <div class="obs-content">
         <div class="obs-main-info">
           <div class="obs-names">
-            <span class="obs-common-name">${observation.butterflyName}</span>
+            <span class="obs-common-name clickable-species" data-butterfly-id="${observation.butterflyId}">${observation.butterflyName}</span>
             <span class="obs-scientific-name"><em>${scientificName}</em></span>
           </div>
           <div class="obs-stats-inline">
@@ -2208,6 +2232,30 @@ class ButterflyCountApp {
     const editBtn = card.querySelector('.action-btn-small.secondary');
     const addMoreBtn = card.querySelector('.action-btn-small.primary');
     const deleteBtn = card.querySelector('.action-btn-small.danger');
+    const speciesNameLink = card.querySelector('.clickable-species');
+
+    // Add click handler for species name to show detail modal
+    if (speciesNameLink) {
+      speciesNameLink.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const butterflyId = speciesNameLink.getAttribute('data-butterfly-id');
+        if (butterflyId) {
+          const numericId = parseInt(butterflyId);
+          const butterfly = getButterflyById(numericId);
+          if (butterfly) {
+            this.showButterflyDetail(butterfly);
+          } else {
+            // Try to find by name as fallback
+            const butterflyByName = getButterflyByName(observation.butterflyName);
+            if (butterflyByName) {
+              this.showButterflyDetail(butterflyByName);
+            } else {
+              this.showToast('Species details not found', 'error');
+            }
+          }
+        }
+      });
+    }
 
     if (editBtn) {
       editBtn.addEventListener('click', (e) => {

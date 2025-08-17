@@ -1,8 +1,8 @@
 {
   "name": "Butterfly Count",
   "short_name": "Butterfly Count",
-  "description": "Progressive Web App for butterfly observation and counting during nature walks",
-  "version": "1.6.4",
+  "description": "Progressive Web App for butterfly observation and counting during nature walks - v3.0.0 with clickable species names and forced light mode",
+  "version": "3.0.0",
   "start_url": "./",
   "display": "standalone",
   "theme_color": "#4CAF50",

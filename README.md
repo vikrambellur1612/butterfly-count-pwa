@@ -2,14 +2,20 @@
 
 This folder contains all the files needed for deploying the Butterfly Count Progressive Web App to Netlify.
 
-## Version 1.6.4 Features
+## Version 3.0.0 Features
+
+### 🆕 NEW in v3.0.0
+- **🔗 Clickable Butterfly Names**: All butterfly names in observation cards are now clickable and open detailed species modals with images
+- **☀️ Forced Light Mode**: App stays in light mode regardless of device theme settings
+- **🎯 Enhanced User Experience**: Better interaction with species information directly from observations
+- **🔄 Complete Cache Refresh**: All static and dynamic caches cleared and rebuilt for optimal performance
 
 ### 🦋 Enhanced Butterfly Database
 - **253 butterfly species** from IFB.csv dataset across 6 major families
 - **Subfamily organization** with detailed taxonomic information
 - **Tribe classifications** where available
 - Enhanced search and filter functionality
-- Rich species detail modals with scientific names
+- Rich species detail modals with scientific names and dynamically fetched images
 
 ### 📊 Improved Organization
 - **Family View**: Interactive cards showing actual species counts

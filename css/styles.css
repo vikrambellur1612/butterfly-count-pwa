@@ -1,6 +1,12 @@
 /* Main styles for Butterfly Count PWA */
 
+/* Force light mode - override system preferences */
+* {
+  color-scheme: light only !important;
+}
+
 :root {
+  color-scheme: light !important;
   --primary-color: #4CAF50;
   --primary-dark: #388E3C;
   --primary-light: #C8E6C9;
@@ -20,6 +26,8 @@
 html {
   scroll-behavior: smooth;
   overflow-x: hidden;
+  /* Force light mode */
+  color-scheme: light !important;
   /* Prevent elastic scrolling on iOS */
   -webkit-overflow-scrolling: touch;
   /* Prevent zoom on iOS */
@@ -30,6 +38,8 @@ html {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  /* Force light mode for all elements */
+  color-scheme: light !important;
   /* Prevent horizontal scrolling */
   max-width: 100%;
 }
@@ -39,6 +49,8 @@ body {
   line-height: 1.6;
   color: var(--text-primary);
   background-color: var(--background-color);
+  /* Force light mode */
+  color-scheme: light !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overscroll-behavior: none; /* Prevents pull-to-refresh */
@@ -1141,6 +1153,29 @@ select.form-input {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transform: translateY(-1px);
   border-color: var(--primary-color);
+}
+
+/* Clickable species names in observations */
+.clickable-species {
+  color: var(--primary-color) !important;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: var(--transition);
+  position: relative;
+}
+
+.clickable-species:hover {
+  background-color: var(--primary-light);
+  color: var(--primary-dark) !important;
+  text-decoration: underline;
+}
+
+.clickable-species:active {
+  background-color: var(--primary-color);
+  color: white !important;
 }
 
 /* Compact Card Content */

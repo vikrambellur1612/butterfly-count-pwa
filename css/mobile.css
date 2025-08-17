@@ -1,3 +1,16 @@
+/* Mobile-specific styles with light mode enforcement */
+
+/* Force light mode for mobile devices */
+@media (max-width: 768px) {
+  * {
+    color-scheme: light only !important;
+  }
+  
+  html, body {
+    color-scheme: light !important;
+  }
+}
+
 /* Mobile-specific card effects */
 @media (max-width: 768px) {
   .butterfly-card:hover {
