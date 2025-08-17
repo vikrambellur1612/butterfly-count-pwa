@@ -2,14 +2,13 @@
 
 This folder contains all the files needed for deploying the Butterfly Count Progressive Web App to Netlify.
 
-## Version 1.6.4 Features
+## Version 1.6.5 Features
 
-### 🦋 Enhanced Butterfly Database
-- **253 butterfly species** from IFB.csv dataset across 6 major families
-- **Subfamily organization** with detailed taxonomic information
-- **Tribe classifications** where available
-- Enhanced search and filter functionality
-- Rich species detail modals with scientific names
+### 🌙 Enhanced Dark Mode Support
+- **Automatic Theme Detection**: Seamlessly switches between light and dark themes based on device preference
+- **Complete UI Coverage**: All components optimized for dark mode visibility
+- **Consistent Color Scheme**: Professional dark theme with green accent colors
+- **Mobile Responsive**: Enhanced mobile-specific dark mode styling
 
 ### 📊 Improved Organization
 - **Family View**: Interactive cards showing actual species counts
@@ -46,14 +45,14 @@ This folder contains all the files needed for deploying the Butterfly Count Prog
 - **Pieridae** (Whites, Yellows, and Sulphurs) - 24 species
 - **Riodinidae** (Metalmark Butterflies) - 2 species
 
-### New in Version 1.6.4
+### New in Version 1.6.5
 
-**Critical Bug Fix & Mobile Form Improvements:**
-- **Fixed Navigation Error**: Corrected function name from `showView` to `switchView` in Add Observations button
-- **Enhanced Mobile Form Experience**: 
-  - Consistent input field heights (48px minimum) across all form elements
-  - Uniform padding and font sizes for better touch interaction on mobile devices
-  - Improved responsive form layout with grid system for desktop/tablet views
+**Dark Mode Implementation & Enhanced UX:**
+- **Comprehensive Dark Mode Support**: Automatic theme detection with complete UI coverage
+- **Professional Dark Theme**: Deep gray backgrounds with green accent colors for optimal contrast
+- **Mobile-Optimized Dark Mode**: Enhanced mobile-specific styling for dark theme
+- **CSS Variables System**: Maintainable theming architecture using custom properties
+- **Zero JavaScript Impact**: Pure CSS solution for seamless theme switching
   - Enhanced iOS Safari compatibility with proper input styling
   - Better visual consistency between text inputs, selects, and date/time pickers
 
@@ -98,7 +97,7 @@ This folder contains all the files needed for deploying the Butterfly Count Prog
 ### Previous Updates
 - Updated branding and removed specific organization references
 - New app icon and favicon based on provided butterfly image
-- Version bump to 1.6.4 with updated cache versioning
+- Version bump to 1.6.5 with dark mode support and updated cache versioning
 - ✅ Complete data migration from IFB.csv
 - ✅ Subfamily organization with descriptions
 - ✅ Tribe information where available

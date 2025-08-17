@@ -4,17 +4,48 @@
   --primary-color: #4CAF50;
   --primary-dark: #388E3C;
   --primary-light: #C8E6C9;
+  --primary-hover: #45A049;
   --secondary-color: #FF9800;
   --background-color: #f8f9fa;
   --surface-color: #ffffff;
+  --surface-light: #f8fafc;
   --text-primary: #212529;
   --text-secondary: #6c757d;
+  --text-muted: #9ca3af;
   --border-color: #dee2e6;
   --shadow: 0 2px 4px rgba(0,0,0,0.1);
   --shadow-lg: 0 4px 12px rgba(0,0,0,0.15);
   --border-radius: 8px;
   --border-radius-lg: 12px;
   --transition: all 0.3s ease;
+  --success-color: #22c55e;
+  --warning-color: #f59e0b;
+  --error-color: #ef4444;
+  --info-color: #3b82f6;
+}
+
+/* Dark Mode Variables */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --primary-color: #4ade80;
+    --primary-dark: #22c55e;
+    --primary-light: #166534;
+    --primary-hover: #16a34a;
+    --secondary-color: #fb923c;
+    --background-color: #0f172a;
+    --surface-color: #1e293b;
+    --surface-light: #334155;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --border-color: #475569;
+    --shadow: 0 2px 4px rgba(0,0,0,0.3);
+    --shadow-lg: 0 4px 12px rgba(0,0,0,0.5);
+    --success-color: #22c55e;
+    --warning-color: #fbbf24;
+    --error-color: #f87171;
+    --info-color: #60a5fa;
+  }
 }
 
 html {
@@ -2329,6 +2360,7 @@ select.form-input {
     
     .family-card:hover {
         border-color: #4ade80;
+        background: linear-gradient(135deg, #334155 0%, #475569 100%);
     }
     
     .family-name {
@@ -2350,41 +2382,295 @@ select.form-input {
     .characteristic-tag {
         background: rgba(74, 222, 128, 0.2);
         color: #4ade80;
-        border-color: rgba(74, 222, 128, 0.3);
+        border: 1px solid rgba(74, 222, 128, 0.3);
     }
-    
-    .family-info {
-        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+
+    /* Navigation dark mode */
+    .app-header {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        border-bottom-color: #475569;
     }
-    
-    .family-info h4 {
-        color: #e2e8f0;
+
+    .bottom-nav {
+        background: var(--surface-color);
+        border-top-color: var(--border-color);
+        backdrop-filter: blur(10px);
     }
-    
-    .family-info p {
-        color: #cbd5e1;
+
+    .nav-item {
+        color: var(--text-secondary);
     }
-    
-    .family-species-list .species-item {
-        background: #1e293b;
-        border-color: #475569;
-        color: #e2e8f0;
+
+    .nav-item.active {
+        color: var(--primary-color);
+        background: rgba(74, 222, 128, 0.1);
     }
-    
-    .family-species-list .species-item:hover {
-        border-color: #4ade80;
+
+    /* Forms dark mode */
+    .form-input {
+        background: var(--surface-light);
+        color: var(--text-primary);
+        border-color: var(--border-color);
     }
-    
-    .family-species-list .species-name {
-        color: #e2e8f0;
+
+    .form-input:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.1);
     }
-    
-    .family-species-list .species-scientific {
-        color: #94a3b8;
+
+    .add-butterfly-form {
+        background: linear-gradient(135deg, var(--surface-color) 0%, var(--surface-light) 100%);
+        border-color: var(--border-color);
     }
-    
-    .family-species-list .species-authority {
-        color: #64748b;
+
+    /* Buttons dark mode */
+    .primary-btn {
+        background: var(--primary-color);
+        color: #0f172a;
+        border-color: var(--primary-color);
+    }
+
+    .primary-btn:hover {
+        background: var(--primary-hover);
+        color: #0f172a;
+    }
+
+    .secondary-btn {
+        background: var(--surface-light);
+        color: var(--text-primary);
+        border-color: var(--border-color);
+    }
+
+    .secondary-btn:hover {
+        background: var(--border-color);
+    }
+
+    /* List cards dark mode */
+    .list-card {
+        background: linear-gradient(135deg, var(--surface-color) 0%, var(--surface-light) 100%);
+        border-color: var(--border-color);
+    }
+
+    .list-card:hover {
+        border-color: var(--primary-color);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .list-name {
+        color: var(--text-primary);
+    }
+
+    .list-status-badge {
+        background: rgba(74, 222, 128, 0.2);
+        color: var(--primary-color);
+        border: 1px solid rgba(74, 222, 128, 0.3);
+    }
+
+    .list-status-badge.closed {
+        background: rgba(148, 163, 184, 0.2);
+        color: var(--text-secondary);
+        border: 1px solid rgba(148, 163, 184, 0.3);
+    }
+
+    .list-meta p {
+        color: var(--text-secondary);
+    }
+
+    .list-rare-species {
+        color: var(--warning-color) !important;
+    }
+
+    .stat-card-compact {
+        background: var(--surface-light);
+        border: 1px solid var(--border-color);
+    }
+
+    .stat-number {
+        color: var(--primary-color);
+    }
+
+    .stat-label {
+        color: var(--text-secondary);
+    }
+
+    /* Observation cards dark mode */
+    .observation-card {
+        background: linear-gradient(135deg, var(--surface-color) 0%, var(--surface-light) 100%);
+        border-color: var(--border-color);
+    }
+
+    .observation-card:hover {
+        border-color: var(--primary-color);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .obs-common-name {
+        color: var(--text-primary);
+    }
+
+    .obs-scientific-name {
+        color: var(--text-secondary);
+    }
+
+    .stat-badge.count {
+        background: var(--primary-color);
+        color: #0f172a;
+    }
+
+    .stat-badge.obs {
+        background: var(--surface-light);
+        color: var(--text-secondary);
+        border: 1px solid var(--border-color);
+    }
+
+    .stat-badge.comment {
+        background: rgba(251, 191, 36, 0.2);
+        color: var(--warning-color);
+        border: 1px solid rgba(251, 191, 36, 0.3);
+    }
+
+    .obs-time-compact {
+        color: var(--text-secondary);
+    }
+
+    .action-btn-small {
+        background: var(--surface-color);
+        border-color: var(--border-color);
+        color: var(--text-secondary);
+    }
+
+    .action-btn-small.primary {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+        background: var(--surface-color);
+    }
+
+    .action-btn-small.primary:hover {
+        background: var(--primary-color);
+        color: #0f172a;
+    }
+
+    .action-btn-small.secondary:hover {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+        background: rgba(74, 222, 128, 0.1);
+    }
+
+    .action-btn-small.danger {
+        border-color: rgba(248, 113, 113, 0.5);
+        color: var(--error-color);
+    }
+
+    .action-btn-small.danger:hover {
+        border-color: var(--error-color);
+        background: rgba(239, 68, 68, 0.1);
+    }
+
+    /* Empty states dark mode */
+    .empty-state {
+        color: var(--text-secondary);
+    }
+
+    .empty-state-enhanced {
+        background: linear-gradient(135deg, var(--surface-light) 0%, var(--surface-color) 100%);
+        border-color: var(--border-color);
+    }
+
+    .empty-state-enhanced h4 {
+        color: var(--text-primary);
+    }
+
+    .empty-state-enhanced p {
+        color: var(--text-secondary);
+    }
+
+    /* Modal dark mode */
+    .modal {
+        background: rgba(0, 0, 0, 0.7);
+    }
+
+    .modal-content {
+        background: var(--surface-color);
+        border: 1px solid var(--border-color);
+    }
+
+    .modal-header {
+        border-bottom-color: var(--border-color);
+    }
+
+    .modal-title {
+        color: var(--text-primary);
+    }
+
+    .modal-body {
+        color: var(--text-primary);
+    }
+
+    .close-btn {
+        color: var(--text-secondary);
+    }
+
+    .close-btn:hover {
+        color: var(--text-primary);
+        background: var(--surface-light);
+    }
+
+    /* Stats cards dark mode */
+    .stat-card {
+        background: linear-gradient(135deg, var(--surface-color) 0%, var(--surface-light) 100%);
+        border: 1px solid var(--border-color);
+    }
+
+    .stat-value {
+        color: var(--text-primary);
+    }
+
+    /* Install banner dark mode */
+    .install-banner {
+        background: var(--surface-color);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+    }
+
+    .banner-content {
+        color: var(--text-primary);
+    }
+
+    /* Toast notifications dark mode */
+    .toast {
+        background: var(--surface-color);
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+    }
+
+    .toast.success {
+        border-left-color: var(--success-color);
+    }
+
+    .toast.error {
+        border-left-color: var(--error-color);
+    }
+
+    .toast.warning {
+        border-left-color: var(--warning-color);
+    }
+
+    /* Suggestions dropdown dark mode */
+    .suggestions {
+        background: var(--surface-color);
+        border-color: var(--border-color);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .suggestion-item {
+        color: var(--text-primary);
+        border-bottom-color: var(--border-color);
+    }
+
+    .suggestion-item:hover,
+    .suggestion-item.highlighted {
+        background: var(--surface-light);
+        color: var(--primary-color);
     }
 }
 

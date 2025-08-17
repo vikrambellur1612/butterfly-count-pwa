@@ -288,29 +288,64 @@
   }
 }
 
-/* Dark mode support */
+/* Enhanced Dark mode support with mobile-specific adjustments */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background-color: #121212;
-    --surface-color: #1e1e1e;
-    --text-primary: #ffffff;
-    --text-secondary: #aaaaaa;
-    --border-color: #333333;
-    --shadow: 0 2px 4px rgba(0,0,0,0.3);
-    --shadow-lg: 0 4px 12px rgba(0,0,0,0.4);
-  }
-  
+  /* Additional mobile-specific dark mode overrides */
   .app-header {
-    background: #1a4d1f;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-bottom: 1px solid #475569;
   }
   
   .install-banner,
   .update-notification {
-    background: #1a4d1f;
+    background: var(--surface-color);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
   }
   
   .primary-light {
-    background: #2d5a32;
+    background: var(--surface-light);
+  }
+
+  /* Mobile-specific form improvements for dark mode */
+  .form-input {
+    background: var(--surface-light) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+  }
+
+  .form-input:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.1) !important;
+  }
+
+  /* Mobile navigation dark mode */
+  .nav-item {
+    color: var(--text-secondary);
+  }
+
+  .nav-item:hover {
+    color: var(--primary-color);
+    background: rgba(74, 222, 128, 0.1);
+  }
+
+  .nav-item.active {
+    color: var(--primary-color);
+    background: rgba(74, 222, 128, 0.15);
+  }
+
+  /* Mobile cards dark mode */
+  .butterfly-card,
+  .list-card,
+  .stat-card {
+    background: linear-gradient(135deg, var(--surface-color) 0%, var(--surface-light) 100%);
+    border-color: var(--border-color);
+  }
+
+  .butterfly-card:hover,
+  .list-card:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   }
 }
 

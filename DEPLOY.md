@@ -1,18 +1,22 @@
-# Netlify Deployment Checklist ✅
+# Ne## Core Files
+- [x] `index.html` - Main application page
+- [x] `manifest.json` - PWA manifest (v1.6.5)
+- [x] `sw.js` - Service worker (v1.6.5)
+- [x] `netlify.toml` - Netlify configuration Deployment Checklist ✅
 
 ## Pre-Deployment Verification
 
 ### ✅ Required Files Present
 - [x] `index.html` - Main application
-- [x] `manifest.json` - PWA manifest (v1.6.4)
-- [x] `sw.js` - Service worker (v1.6.4)
+- [x] `manifest.json` - PWA manifest (v1.6.5)
+- [x] `sw.js` - Service worker (v1.6.5)
 - [x] `netlify.toml` - Deployment configuration
 - [x] `butterflies-data.json` - Butterfly dataset (253 species)
 
 ### ✅ Application Assets
 - [x] `css/styles.css` - Main stylesheet with subfamily styling
 - [x] `css/mobile.css` - Mobile responsive styles
-- [x] `js/app.js` - Application logic (v1.6.4)
+- [x] `js/app.js` - Application logic (v1.6.5)
 - [x] `js/butterflies-data.js` - Enhanced data handling
 - [x] `js/sw-register.js` - Service worker registration
 - [x] `icons/` - Complete PWA icon set
@@ -24,12 +28,12 @@
 - [x] Icons for all device sizes
 - [x] Caching strategy implemented
 
-### ✅ Version Updates (1.6.4)
-- [x] App version updated in `js/app.js`
-- [x] Service worker cache version updated
+### ✅ Version Updates (1.6.5)
+- [x] Cache name updated in `sw.js`
 - [x] Manifest version updated
-- [x] HTML version info updated
-- [x] Butterfly data JSON added to cache
+- [x] App version updated in `js/app.js`
+- [x] Dark mode implementation complete
+- [x] HTML version display updated
 
 ## Deployment Instructions
 
