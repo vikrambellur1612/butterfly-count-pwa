@@ -2,7 +2,7 @@
 
 class ButterflyCountApp {
   constructor() {
-    this.version = '1.6.7';
+    this.version = '1.6.8';
     this.currentView = 'butterflies';
     this.currentButterflyView = 'family'; // 'family' or 'species'
     this.currentList = null;
@@ -54,9 +54,12 @@ class ButterflyCountApp {
       // Clear any old cached data that might be incompatible
       this.clearOldCache();
       
+      // Force icon cache refresh for PWA
+      this.clearIconCaches();
+      
       // Show update notification if this isn't the first install
       if (storedVersion) {
-        this.showToast(`App updated to version ${this.version}!`, 'success');
+        this.showToast(`App updated to version ${this.version}! New icons loaded. For best experience, please reinstall the PWA.`, 'success', 10000);
       }
     }
   }
@@ -77,6 +80,36 @@ class ButterflyCountApp {
       console.log('Old cache data cleared');
     } catch (error) {
       console.error('Error clearing old cache:', error);
+    }
+  }
+
+  // Clear icon caches to force fresh PWA icons
+  async clearIconCaches() {
+    try {
+      if ('caches' in window) {
+        const cacheNames = await caches.keys();
+        const iconCachePromises = cacheNames.map(async (cacheName) => {
+          const cache = await caches.open(cacheName);
+          const keys = await cache.keys();
+          const iconKeys = keys.filter(request => 
+            request.url.includes('/icons/') || 
+            request.url.includes('apple-touch-icon') ||
+            request.url.includes('favicon')
+          );
+          
+          const deletePromises = iconKeys.map(key => cache.delete(key));
+          await Promise.all(deletePromises);
+          
+          if (iconKeys.length > 0) {
+            console.log(`Cleared ${iconKeys.length} icon entries from cache: ${cacheName}`);
+          }
+        });
+        
+        await Promise.all(iconCachePromises);
+        console.log('Icon caches cleared successfully');
+      }
+    } catch (error) {
+      console.error('Error clearing icon caches:', error);
     }
   }
 
@@ -2151,13 +2184,20 @@ class ButterflyCountApp {
         e.stopPropagation();
         const butterflyId = speciesNameLink.getAttribute('data-butterfly-id');
         if (butterflyId) {
-          // Wait for butterfly data to load if it hasn't already
-          if (BUTTERFLY_DATA.length === 0) {
-            await loadButterflyData();
-          }
-          const butterfly = getButterflyById(butterflyId);
-          if (butterfly) {
-            this.showButterflyDetail(butterfly);
+          try {
+            // Wait for butterfly data to load if it hasn't already
+            await this.ensureButterflyDataLoaded();
+            
+            const butterfly = getButterflyById(butterflyId);
+            if (butterfly) {
+              this.showButterflyDetail(butterfly);
+            } else {
+              console.error('Butterfly not found with ID:', butterflyId);
+              this.showToast('Species details not found', 'error');
+            }
+          } catch (error) {
+            console.error('Error loading species details:', error);
+            this.showToast('Error loading species details', 'error');
           }
         }
       });

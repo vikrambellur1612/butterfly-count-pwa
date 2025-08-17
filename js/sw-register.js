@@ -28,6 +28,14 @@ if ('serviceWorker' in navigator) {
       .catch((err) => {
         console.log('ServiceWorker registration failed:', err);
       });
+      
+    // Listen for messages from service worker
+    navigator.serviceWorker.addEventListener('message', (event) => {
+      if (event.data.type === 'CACHE_UPDATED') {
+        console.log('Cache updated:', event.data);
+        showCacheUpdateNotification(event.data.message);
+      }
+    });
   });
 }
 
@@ -113,6 +121,22 @@ function showUpdateNotification() {
     setTimeout(() => {
       updateNotification.classList.add('hidden');
     }, 10000);
+  }
+}
+
+// Show cache update notification for icons
+function showCacheUpdateNotification(message) {
+  if (typeof showToast === 'function') {
+    showToast('App updated! Fresh icons loaded. Reinstall PWA for best experience.', 'success', 8000);
+  } else {
+    console.log('Cache update:', message);
+    // Fallback notification
+    if ('Notification' in window && Notification.permission === 'granted') {
+      new Notification('Butterfly Count Updated', {
+        body: 'Fresh icons loaded! Please reinstall the PWA for the best experience.',
+        icon: './icons/icon-192x192.png?v=1.6.8'
+      });
+    }
   }
 }
 

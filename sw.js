@@ -1,8 +1,8 @@
 // Service Worker for Butterfly Count PWA
 
-const CACHE_NAME = 'butterfly-count-v1.6.7';
-const STATIC_CACHE = 'butterfly-count-static-v1.6.1';
-const DYNAMIC_CACHE = 'butterfly-count-dynamic-v1.6.1';
+const CACHE_NAME = 'butterfly-count-v1.6.8';
+const STATIC_CACHE = 'butterfly-count-static-v1.6.8';
+const DYNAMIC_CACHE = 'butterfly-count-dynamic-v1.6.8';
 
 // Files to cache for offline functionality
 const STATIC_FILES = [
@@ -15,16 +15,24 @@ const STATIC_FILES = [
   './js/butterflies-data.js',
   './butterflies-data.json',
   './manifest.json',
-  './icons/icon-192x192.png',
-  './icons/icon-512x512.png',
-  './icons/favicon.svg',
-  './icons/favicon.png',
-  './icons/apple-touch-icon-180x180.png',
-  './icons/apple-touch-icon-152x152.png',
-  './icons/apple-touch-icon-144x144.png',
-  './icons/apple-touch-icon-120x120.png',
-  './icons/favicon-32x32.png',
-  './icons/favicon-16x16.png'
+  './icons/icon-192x192.png?v=1.6.8',
+  './icons/icon-512x512.png?v=1.6.8',
+  './icons/favicon.svg?v=1.6.8',
+  './icons/favicon.png?v=1.6.8',
+  './icons/apple-touch-icon-180x180.png?v=1.6.8',
+  './icons/apple-touch-icon-152x152.png?v=1.6.8',
+  './icons/apple-touch-icon-144x144.png?v=1.6.8',
+  './icons/apple-touch-icon-120x120.png?v=1.6.8',
+  './icons/favicon-32x32.png?v=1.6.8',
+  './icons/favicon-16x16.png?v=1.6.8',
+  './icons/icon-72x72.png?v=1.6.8',
+  './icons/icon-96x96.png?v=1.6.8',
+  './icons/icon-128x128.png?v=1.6.8',
+  './icons/icon-144x144.png?v=1.6.8',
+  './icons/icon-152x152.png?v=1.6.8',
+  './icons/icon-384x384.png?v=1.6.8',
+  './icons/shortcut-count.png?v=1.6.8',
+  './icons/shortcut-list.png?v=1.6.8'
 ];
 
 // Dynamic files that can be cached as needed
@@ -69,6 +77,7 @@ self.addEventListener('activate', (event) => {
       .then((cacheNames) => {
         return Promise.all(
           cacheNames.map((cacheName) => {
+            // Delete all old caches including those with different versions
             if (cacheName !== STATIC_CACHE && cacheName !== DYNAMIC_CACHE) {
               console.log('Deleting old cache:', cacheName);
               return caches.delete(cacheName);
@@ -78,7 +87,20 @@ self.addEventListener('activate', (event) => {
       })
       .then(() => {
         console.log('Old caches cleaned up');
+        // Force immediate activation and skip waiting
         return self.clients.claim();
+      })
+      .then(() => {
+        // Send message to all clients to reload for fresh icons
+        return self.clients.matchAll().then((clients) => {
+          clients.forEach((client) => {
+            client.postMessage({
+              type: 'CACHE_UPDATED',
+              version: '1.6.8',
+              message: 'New icons available - please refresh'
+            });
+          });
+        });
       })
   );
 });
