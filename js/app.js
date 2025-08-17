@@ -2,7 +2,7 @@
 
 class ButterflyCountApp {
   constructor() {
-    this.version = '1.6.2';
+    this.version = '1.6.3';
     this.currentView = 'butterflies';
     this.currentButterflyView = 'family'; // 'family' or 'species'
     this.currentList = null;
@@ -1159,11 +1159,8 @@ class ButterflyCountApp {
         </div>
         <div class="list-actions">
           ${list.status === 'active' ? 
-            `${observations.length === 0 ? 
-              `<button class="action-btn add-observations primary-btn" data-list-id="${list.id}">🦋 Add Observations</button>
-               <button class="action-btn close-list secondary-btn" data-list-id="${list.id}">Close the List</button>` :
-              `<button class="action-btn close-list prominent-btn" data-list-id="${list.id}">Close the List</button>`
-            }` :
+            `<button class="action-btn add-observations primary-btn" data-list-id="${list.id}">🦋 Add Observations</button>
+             <button class="action-btn close-list secondary-btn" data-list-id="${list.id}">Close the List</button>` :
             `<div class="closed-list-actions">
               <button class="action-btn view-stats" data-list-id="${list.id}">View Stats</button>
               <button class="action-btn download-csv" data-list-id="${list.id}">📥 Download CSV</button>
@@ -1201,11 +1198,12 @@ class ButterflyCountApp {
     }
 
     if (addObservationsBtn) {
-      addObservationsBtn.addEventListener('click', (e) => {
+      const self = this;
+      addObservationsBtn.addEventListener('click', function(e) {
         e.stopPropagation();
         // Set this list as selected and navigate to count view
-        this.selectedCountViewList = list.id;
-        this.showView('count');
+        self.selectedCountViewList = list.id;
+        self.showView('count');
       });
     }
 
