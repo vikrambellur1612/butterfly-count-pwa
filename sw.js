@@ -1,6 +1,6 @@
 // Service Worker for Butterfly Count PWA
 
-const CACHE_NAME = 'butterfly-count-v1.6.3';
+const CACHE_NAME = 'butterfly-count-v1.6.4';
 const STATIC_CACHE = 'butterfly-count-static-v1.6.1';
 const DYNAMIC_CACHE = 'butterfly-count-dynamic-v1.6.1';
 

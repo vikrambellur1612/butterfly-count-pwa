@@ -2,7 +2,7 @@
 
 This folder contains all the files needed for deploying the Butterfly Count Progressive Web App to Netlify.
 
-## Version 1.6.3 Features
+## Version 1.6.4 Features
 
 ### 🦋 Enhanced Butterfly Database
 - **253 butterfly species** from IFB.csv dataset across 6 major families
@@ -46,7 +46,23 @@ This folder contains all the files needed for deploying the Butterfly Count Prog
 - **Pieridae** (Whites, Yellows, and Sulphurs) - 24 species
 - **Riodinidae** (Metalmark Butterflies) - 2 species
 
-### New in Version 1.6.3
+### New in Version 1.6.4
+
+**Critical Bug Fix & Mobile Form Improvements:**
+- **Fixed Navigation Error**: Corrected function name from `showView` to `switchView` in Add Observations button
+- **Enhanced Mobile Form Experience**: 
+  - Consistent input field heights (48px minimum) across all form elements
+  - Uniform padding and font sizes for better touch interaction on mobile devices
+  - Improved responsive form layout with grid system for desktop/tablet views
+  - Enhanced iOS Safari compatibility with proper input styling
+  - Better visual consistency between text inputs, selects, and date/time pickers
+
+**Responsive Form Layout:**
+- **Mobile**: Single column layout with optimized spacing and touch targets
+- **Tablet/Desktop**: Smart grid layout (2-column) for efficient space usage
+- **Cross-browser Compatibility**: Consistent appearance across all devices and browsers
+
+### Previous Updates (Version 1.6.3)
 
 **Bug Fixes & Improvements:**
 - **Fixed "Add Observations" Button**: Resolved JavaScript error when clicking "Add Observations" from Lists page
@@ -82,7 +98,7 @@ This folder contains all the files needed for deploying the Butterfly Count Prog
 ### Previous Updates
 - Updated branding and removed specific organization references
 - New app icon and favicon based on provided butterfly image
-- Version bump to 1.6.3 with updated cache versioning
+- Version bump to 1.6.4 with updated cache versioning
 - ✅ Complete data migration from IFB.csv
 - ✅ Subfamily organization with descriptions
 - ✅ Tribe information where available

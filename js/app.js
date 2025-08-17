@@ -2,7 +2,7 @@
 
 class ButterflyCountApp {
   constructor() {
-    this.version = '1.6.3';
+    this.version = '1.6.4';
     this.currentView = 'butterflies';
     this.currentButterflyView = 'family'; // 'family' or 'species'
     this.currentList = null;
@@ -1203,7 +1203,7 @@ class ButterflyCountApp {
         e.stopPropagation();
         // Set this list as selected and navigate to count view
         self.selectedCountViewList = list.id;
-        self.showView('count');
+        self.switchView('count');
       });
     }
 

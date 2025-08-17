@@ -98,10 +98,67 @@
     font-size: 0.9rem;
   }
   
-  /* Form inputs */
+  /* Enhanced form inputs for mobile */
   .form-input {
     padding: 14px 16px;
-    font-size: 1.1rem;
+    font-size: 1rem;
+    min-height: 48px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+  
+  /* Specific mobile styling for different input types */
+  .form-input[type="text"],
+  .form-input[type="number"],
+  .form-input[type="date"],
+  .form-input[type="time"] {
+    min-height: 48px;
+    font-size: 1rem;
+  }
+  
+  /* Mobile-specific select styling */
+  .form-input select,
+  select.form-input {
+    min-height: 48px;
+    font-size: 1rem;
+    padding-right: 40px;
+  }
+  
+  /* iOS Safari specific fixes */
+  input[type="date"].form-input,
+  input[type="time"].form-input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: var(--surface-color);
+  }
+  
+  /* Form group responsive spacing */
+  .form-group {
+    margin-bottom: 1.25rem;
+  }
+  
+  .form-group label {
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+  }
+
+  /* Add butterfly form mobile optimizations */
+  .add-butterfly-form {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+  }
+
+  /* Enhanced mobile form layout */
+  .add-butterfly-form .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .add-butterfly-form .form-input {
+    border-radius: 8px;
+    border-width: 1px;
   }
   
   /* Search input */
