@@ -1178,6 +1178,8 @@ class ButterflyCountApp {
   createListCard(list) {
     const card = document.createElement('div');
     card.className = 'list-card';
+    // Add data attribute for styling differentiation
+    card.setAttribute('data-list-status', list.status);
     
     const date = new Date(list.dateTime);
     const indianDateTime = this.formatIndianDateTime(date);
@@ -1239,10 +1241,11 @@ class ButterflyCountApp {
         <div class="list-actions">
           ${list.status === 'active' ? 
             `<button class="action-btn add-observations primary-btn" data-list-id="${list.id}">🦋 Add Observations</button>
-             <button class="action-btn close-list secondary-btn" data-list-id="${list.id}">Close the List</button>` :
+             <button class="action-btn view-details secondary-btn" data-list-id="${list.id}">📊 View Details</button>
+             <button class="action-btn close-list tertiary-btn" data-list-id="${list.id}">✅ Close List</button>` :
             `<div class="closed-list-actions">
-              <button class="action-btn view-stats" data-list-id="${list.id}">View Stats</button>
-              <button class="action-btn download-csv" data-list-id="${list.id}">📥 Download CSV</button>
+              <button class="action-btn view-stats primary-btn" data-list-id="${list.id}">📊 View Stats</button>
+              <button class="action-btn download-csv secondary-btn" data-list-id="${list.id}">📥 Download CSV</button>
             </div>`
           }
         </div>
@@ -1252,6 +1255,7 @@ class ButterflyCountApp {
     // Event listeners for list actions
     const closeBtn = card.querySelector('.close-list');
     const viewStatsBtn = card.querySelector('.view-stats');
+    const viewDetailsBtn = card.querySelector('.view-details');
     const downloadCsvBtn = card.querySelector('.download-csv');
     const addObservationsBtn = card.querySelector('.add-observations');
     const listNameElement = card.querySelector('.list-name');
@@ -1260,8 +1264,8 @@ class ButterflyCountApp {
     if (list.status === 'active') {
       card.style.cursor = 'pointer';
       card.addEventListener('click', (e) => {
-        // Don't trigger if clicking on the close button
-        if (e.target.closest('.close-list')) {
+        // Don't trigger if clicking on buttons
+        if (e.target.closest('button') || e.target.closest('.action-btn')) {
           return;
         }
         this.showListStats(list);
@@ -1270,6 +1274,14 @@ class ButterflyCountApp {
       // Add specific click handler for the list name
       if (listNameElement) {
         listNameElement.addEventListener('click', (e) => {
+          e.stopPropagation();
+          this.showListStats(list);
+        });
+      }
+
+      // Add specific click handler for the view details button
+      if (viewDetailsBtn) {
+        viewDetailsBtn.addEventListener('click', (e) => {
           e.stopPropagation();
           this.showListStats(list);
         });
