@@ -1071,190 +1071,170 @@ body {
 .observation-card {
   background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
   border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 1.25rem;
+  border-radius: 8px;
+  padding: 0.75rem;
   display: flex;
-  flex-direction: column;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  margin-bottom: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  margin-bottom: 0.5rem;
+  min-height: 60px;
 }
 
 .observation-card:hover {
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
   border-color: var(--primary-color);
 }
 
-/* Card Header - Species Names */
-.obs-header {
-  border-bottom: 1px solid #e2e8f0;
-  padding-bottom: 0.75rem;
-  margin-bottom: 1rem;
-}
-
-.obs-common-name {
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin: 0 0 0.25rem 0;
-  color: var(--text-primary);
-  line-height: 1.3;
-}
-
-.obs-scientific-name {
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-  margin: 0;
-  line-height: 1.2;
-}
-
-.obs-scientific-name em {
-  font-style: italic;
-  font-weight: 500;
-}
-
-/* Details Section */
-.obs-details-section {
-  flex: 1;
-  margin-bottom: 1rem;
-}
-
-.obs-stats {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.stat-item {
-  text-align: center;
-  padding: 0.75rem;
-  background: var(--surface-light);
-  border-radius: 8px;
-  border: 1px solid #f0f4f8;
-}
-
-.stat-value {
-  display: block;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--primary-color);
-  margin-bottom: 0.25rem;
-}
-
-.stat-label {
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.obs-meta {
-  margin: 0.75rem 0;
-}
-
-.obs-time {
-  color: var(--text-secondary);
-  margin: 0 0 0.5rem 0;
-  font-size: 0.9rem;
-  line-height: 1.4;
-}
-
-.obs-comments {
-  color: var(--text-secondary);
-  margin: 0;
-  font-size: 0.9rem;
-  line-height: 1.4;
-  font-style: italic;
-}
-
-/* Action Buttons */
-.obs-actions {
-  display: flex;
-  gap: 0.75rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid #f0f4f8;
-}
-
-.action-btn {
+/* Compact Card Content */
+.obs-content {
   flex: 1;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  border: 1px solid;
-  border-radius: 8px;
+  justify-content: space-between;
+  gap: 1rem;
+  min-width: 0; /* Allow text truncation */
+}
+
+.obs-main-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.obs-names {
+  flex: 1;
+  min-width: 0;
+}
+
+.obs-common-name {
+  display: block;
+  font-size: 0.95rem;
   font-weight: 600;
-  font-size: 0.9rem;
-  transition: all 0.2s ease;
-  cursor: pointer;
-  text-align: center;
+  color: var(--text-primary);
+  margin: 0 0 0.25rem 0;
+  line-height: 1.2;
   white-space: nowrap;
-  text-decoration: none;
-  outline: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.action-btn:focus {
-  outline: 2px solid var(--primary-color);
-  outline-offset: 2px;
+.obs-scientific-name {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.1;
+  font-style: italic;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.action-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.obs-stats-inline {
+  display: flex;
+  gap: 0.25rem;
+  flex-shrink: 0;
 }
 
-.action-btn.primary {
+.stat-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  min-width: 24px;
+}
+
+.stat-badge.count {
   background: var(--primary-color);
   color: white;
-  border-color: var(--primary-color);
-  box-shadow: 0 2px 4px rgba(76, 175, 80, 0.2);
 }
 
-.action-btn.primary:hover:not(:disabled) {
-  background: var(--primary-hover);
-  border-color: var(--primary-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+.stat-badge.obs {
+  background: #f0f4f8;
+  color: var(--text-secondary);
 }
 
-.action-btn.secondary {
+.stat-badge.comment {
+  background: #fef3c7;
+  color: #92400e;
+  padding: 0.25rem;
+  font-size: 0.8rem;
+}
+
+.obs-time-compact {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  flex-shrink: 0;
+  text-align: right;
+  min-width: 70px;
+}
+
+/* Compact Action Buttons */
+.obs-actions-compact {
+  display: flex;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+
+.action-btn-small {
+  width: 32px;
+  height: 32px;
+  border: 1px solid;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
   background: white;
-  color: var(--text-primary);
-  border-color: #d1d5db;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.action-btn.secondary:hover:not(:disabled) {
-  background: #f9fafb;
+.action-btn-small:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 1px;
+}
+
+.action-btn-small.primary {
   border-color: var(--primary-color);
   color: var(--primary-color);
-  box-shadow: 0 2px 4px rgba(76, 175, 80, 0.15);
-}
-
-.action-btn.danger {
   background: white;
-  color: #dc2626;
+}
+
+.action-btn-small.primary:hover:not(:disabled) {
+  background: var(--primary-color);
+  color: white;
+  transform: scale(1.1);
+}
+
+.action-btn-small.secondary {
+  border-color: #d1d5db;
+  color: var(--text-secondary);
+}
+
+.action-btn-small.secondary:hover:not(:disabled) {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  background: #f9fafb;
+}
+
+.action-btn-small.danger {
   border-color: #fecaca;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  color: #dc2626;
 }
 
-.action-btn.danger:hover:not(:disabled) {
-  background: #fef2f2;
+.action-btn-small.danger:hover:not(:disabled) {
   border-color: #dc2626;
-  box-shadow: 0 2px 4px rgba(220, 38, 38, 0.15);
-}
-
-.btn-icon {
-  font-size: 1rem;
-  line-height: 1;
-}
-
-.btn-text {
-  font-size: 0.85rem;
-  font-weight: 600;
+  background: #fef2f2;
+  transform: scale(1.05);
 }
 
 /* About page styles */

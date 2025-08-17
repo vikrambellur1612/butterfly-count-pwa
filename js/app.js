@@ -2136,55 +2136,37 @@ class ButterflyCountApp {
     const butterfly = getButterflyById(latestObs.butterflyId);
     const scientificName = butterfly ? butterfly.scientificName : 'Unknown';
     
-    // Collect all comments
-    const allComments = observations
-      .filter(obs => obs.comments)
-      .map(obs => obs.comments)
-      .join('; ');
+    // Collect all comments (abbreviated for compact view)
+    const hasComments = observations.some(obs => obs.comments);
     
     const latestDateTime = new Date(latestObs.dateTime);
     
     card.innerHTML = `
-      <div class="obs-header">
-        <h4 class="obs-common-name">${speciesName}</h4>
-        <p class="obs-scientific-name"><em>${scientificName}</em></p>
-      </div>
-      <div class="obs-details-section">
-        <div class="obs-stats">
-          <div class="stat-item">
-            <span class="stat-value">${totalCount}</span>
-            <span class="stat-label">Total Count</span>
+      <div class="obs-content">
+        <div class="obs-main-info">
+          <div class="obs-names">
+            <span class="obs-common-name">${speciesName}</span>
+            <span class="obs-scientific-name"><em>${scientificName}</em></span>
           </div>
-          <div class="stat-item">
-            <span class="stat-value">${numberOfObservations}</span>
-            <span class="stat-label">Observations</span>
+          <div class="obs-stats-inline">
+            <span class="stat-badge count">${totalCount}</span>
+            <span class="stat-badge obs">${numberOfObservations}</span>
+            ${hasComments ? '<span class="stat-badge comment">💬</span>' : ''}
           </div>
         </div>
-        <div class="obs-meta">
-          <p class="obs-time"><strong>Latest:</strong> ${this.formatIndianDateTime(latestDateTime).fullDateTime} IST</p>
-          ${allComments ? `<p class="obs-comments"><strong>Comments:</strong> ${allComments}</p>` : ''}
-        </div>
+        <div class="obs-time-compact">${this.formatIndianDateTime(latestDateTime).time}</div>
       </div>
-      <div class="obs-actions">
-        <button class="action-btn primary add-more-obs" data-species="${speciesName}" title="Add more of this species">
-          <span class="btn-icon">➕</span>
-          <span class="btn-text">Add More</span>
-        </button>
-        <button class="action-btn secondary edit-obs" data-species="${speciesName}" title="Edit latest observation">
-          <span class="btn-icon">✏️</span>
-          <span class="btn-text">Edit</span>
-        </button>
-        <button class="action-btn danger delete-obs" data-species="${speciesName}" title="Delete latest observation">
-          <span class="btn-icon">🗑️</span>
-          <span class="btn-text">Delete</span>
-        </button>
+      <div class="obs-actions-compact">
+        <button class="action-btn-small primary" data-species="${speciesName}" title="Add more">➕</button>
+        <button class="action-btn-small secondary" data-species="${speciesName}" title="Edit">✏️</button>
+        <button class="action-btn-small danger" data-species="${speciesName}" title="Delete">🗑️</button>
       </div>
     `;
 
     // Add event listeners for action buttons
-    const editBtn = card.querySelector('.edit-obs');
-    const addMoreBtn = card.querySelector('.add-more-obs');
-    const deleteBtn = card.querySelector('.delete-obs');
+    const editBtn = card.querySelector('.action-btn-small.secondary');
+    const addMoreBtn = card.querySelector('.action-btn-small.primary');
+    const deleteBtn = card.querySelector('.action-btn-small.danger');
 
     if (editBtn) {
       editBtn.addEventListener('click', (e) => {
@@ -2225,46 +2207,31 @@ class ButterflyCountApp {
     const dateTime = new Date(observation.dateTime);
     
     card.innerHTML = `
-      <div class="obs-header">
-        <h4 class="obs-common-name">${observation.butterflyName}</h4>
-        <p class="obs-scientific-name"><em>${scientificName}</em></p>
-      </div>
-      <div class="obs-details-section">
-        <div class="obs-stats">
-          <div class="stat-item">
-            <span class="stat-value">${observation.count}</span>
-            <span class="stat-label">Count</span>
+      <div class="obs-content">
+        <div class="obs-main-info">
+          <div class="obs-names">
+            <span class="obs-common-name">${observation.butterflyName}</span>
+            <span class="obs-scientific-name"><em>${scientificName}</em></span>
           </div>
-          <div class="stat-item">
-            <span class="stat-value">1</span>
-            <span class="stat-label">Observations</span>
+          <div class="obs-stats-inline">
+            <span class="stat-badge count">${observation.count}</span>
+            <span class="stat-badge obs">1</span>
+            ${observation.comments ? '<span class="stat-badge comment" title="Has comments">💬</span>' : ''}
           </div>
         </div>
-        <div class="obs-meta">
-          <p class="obs-time"><strong>Recorded:</strong> ${this.formatIndianDateTime(dateTime).fullDateTime} IST</p>
-          ${observation.comments ? `<p class="obs-comments"><strong>Comments:</strong> ${observation.comments}</p>` : ''}
-        </div>
+        <div class="obs-time-compact">${this.formatIndianDateTime(dateTime).time}</div>
       </div>
-      <div class="obs-actions">
-        <button class="action-btn primary add-more-obs" data-obs-id="${observation.id}" title="Add more of this species">
-          <span class="btn-icon">➕</span>
-          <span class="btn-text">Add More</span>
-        </button>
-        <button class="action-btn secondary edit-obs" data-obs-id="${observation.id}" title="Edit observation">
-          <span class="btn-icon">✏️</span>
-          <span class="btn-text">Edit</span>
-        </button>
-        <button class="action-btn danger delete-obs" data-obs-id="${observation.id}" title="Delete observation">
-          <span class="btn-icon">🗑️</span>
-          <span class="btn-text">Delete</span>
-        </button>
+      <div class="obs-actions-compact">
+        <button class="action-btn-small primary" data-obs-id="${observation.id}" title="Add more">➕</button>
+        <button class="action-btn-small secondary" data-obs-id="${observation.id}" title="Edit">✏️</button>
+        <button class="action-btn-small danger" data-obs-id="${observation.id}" title="Delete">🗑️</button>
       </div>
     `;
 
     // Add event listeners for action buttons
-    const editBtn = card.querySelector('.edit-obs');
-    const addMoreBtn = card.querySelector('.add-more-obs');
-    const deleteBtn = card.querySelector('.delete-obs');
+    const editBtn = card.querySelector('.action-btn-small.secondary');
+    const addMoreBtn = card.querySelector('.action-btn-small.primary');
+    const deleteBtn = card.querySelector('.action-btn-small.danger');
 
     if (editBtn) {
       editBtn.addEventListener('click', (e) => {
