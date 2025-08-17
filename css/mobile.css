@@ -465,3 +465,85 @@
     content: "⏳";
   }
 }
+
+/* Mobile-specific observation card styles */
+@media (max-width: 768px) {
+  .observation-card {
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .obs-header {
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .obs-common-name {
+    font-size: 1.1rem;
+  }
+
+  .obs-scientific-name {
+    font-size: 0.9rem;
+  }
+
+  .obs-stats {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .stat-item {
+    padding: 0.5rem;
+  }
+
+  .stat-value {
+    font-size: 1.3rem;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+  }
+
+  .obs-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .action-btn {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .action-btn.primary {
+    order: -1; /* Move Add More button to top */
+  }
+
+  .btn-icon {
+    font-size: 1.1rem;
+  }
+
+  .btn-text {
+    font-size: 0.9rem;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  .observation-card {
+    padding: 0.75rem;
+  }
+
+  .obs-stats {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .obs-actions {
+    gap: 0.5rem;
+  }
+
+  .action-btn {
+    padding: 0.65rem;
+    font-size: 0.85rem;
+  }
+}

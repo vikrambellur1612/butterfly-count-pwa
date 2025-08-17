@@ -2,7 +2,7 @@
 
 This folder contains all the files needed for deploying the Butterfly Count Progressive Web App to Netlify.
 
-## Version 1.6.0 Features
+## Version 1.6.1 Features
 
 ### 🦋 Enhanced Butterfly Database
 - **253 butterfly species** from IFB.csv dataset across 6 major families
@@ -46,7 +46,14 @@ This folder contains all the files needed for deploying the Butterfly Count Prog
 - **Pieridae** (Whites, Yellows, and Sulphurs) - 24 species
 - **Riodinidae** (Metalmark Butterflies) - 2 species
 
-### New in Version 1.6.0
+### New in Version 1.6.1
+- **Enhanced Observation Cards**: Completely redesigned observation cards with improved layout and user experience
+- **Scientific Name Display**: Both common and scientific names now prominently displayed in proper nomenclature
+- **Improved CTA Buttons**: Redesigned action buttons with icons and better accessibility
+- **Mobile Optimization**: Enhanced responsive design for better mobile experience
+- **Visual Polish**: Better typography, spacing, and visual hierarchy
+
+### Previous Version (1.6.0)
 - **Dynamic Photo Fetching**: Automatically loads butterfly species photos from Wikipedia and other sources
 - **Improved App Icon**: Updated to use the new "Butterfly Count.jpeg" image for all platforms
 - **Enhanced Error Handling**: Robust fallback system for photo loading with local SVG backup
@@ -58,7 +65,7 @@ This folder contains all the files needed for deploying the Butterfly Count Prog
 ### Previous Updates
 - Updated branding and removed specific organization references
 - New app icon and favicon based on provided butterfly image
-- Version bump to 1.6.0 with updated cache versioning
+- Version bump to 1.6.1 with updated cache versioning
 - ✅ Complete data migration from IFB.csv
 - ✅ Subfamily organization with descriptions
 - ✅ Tribe information where available

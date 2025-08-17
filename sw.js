@@ -1,8 +1,8 @@
 // Service Worker for Butterfly Count PWA
 
-const CACHE_NAME = 'butterfly-count-v1.6.0';
-const STATIC_CACHE = 'butterfly-count-static-v1.6.0';
-const DYNAMIC_CACHE = 'butterfly-count-dynamic-v1.6.0';
+const CACHE_NAME = 'butterfly-count-v1.6.1';
+const STATIC_CACHE = 'butterfly-count-static-v1.6.1';
+const DYNAMIC_CACHE = 'butterfly-count-dynamic-v1.6.1';
 
 // Files to cache for offline functionality
 const STATIC_FILES = [

@@ -2,7 +2,7 @@
 
 class ButterflyCountApp {
   constructor() {
-    this.version = '1.6.0';
+    this.version = '1.6.1';
     this.currentView = 'butterflies';
     this.currentButterflyView = 'family'; // 'family' or 'species'
     this.currentList = null;
@@ -2132,6 +2132,10 @@ class ButterflyCountApp {
       current.dateTime > latest.dateTime ? current : latest
     );
     
+    // Get butterfly details to show scientific name
+    const butterfly = getButterflyById(latestObs.butterflyId);
+    const scientificName = butterfly ? butterfly.scientificName : 'Unknown';
+    
     // Collect all comments
     const allComments = observations
       .filter(obs => obs.comments)
@@ -2141,17 +2145,39 @@ class ButterflyCountApp {
     const latestDateTime = new Date(latestObs.dateTime);
     
     card.innerHTML = `
-      <div class="obs-info">
-        <h4 class="obs-butterfly">${speciesName}</h4>
-        <p class="obs-details">Total Count: ${totalCount}</p>
-        <p class="obs-count">Number of Observations: ${numberOfObservations}</p>
-        <p class="obs-time">Latest: ${this.formatIndianDateTime(latestDateTime).fullDateTime} IST</p>
-        ${allComments ? `<p class="obs-comments">Comments: ${allComments}</p>` : ''}
+      <div class="obs-header">
+        <h4 class="obs-common-name">${speciesName}</h4>
+        <p class="obs-scientific-name"><em>${scientificName}</em></p>
+      </div>
+      <div class="obs-details-section">
+        <div class="obs-stats">
+          <div class="stat-item">
+            <span class="stat-value">${totalCount}</span>
+            <span class="stat-label">Total Count</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value">${numberOfObservations}</span>
+            <span class="stat-label">Observations</span>
+          </div>
+        </div>
+        <div class="obs-meta">
+          <p class="obs-time"><strong>Latest:</strong> ${this.formatIndianDateTime(latestDateTime).fullDateTime} IST</p>
+          ${allComments ? `<p class="obs-comments"><strong>Comments:</strong> ${allComments}</p>` : ''}
+        </div>
       </div>
       <div class="obs-actions">
-        <button class="action-btn edit-obs" data-species="${speciesName}" title="Edit latest observation">Edit</button>
-        <button class="action-btn add-more-obs" data-species="${speciesName}" title="Add more of this species">+</button>
-        <button class="action-btn delete-obs" data-species="${speciesName}" title="Delete latest observation">Delete</button>
+        <button class="action-btn primary add-more-obs" data-species="${speciesName}" title="Add more of this species">
+          <span class="btn-icon">➕</span>
+          <span class="btn-text">Add More</span>
+        </button>
+        <button class="action-btn secondary edit-obs" data-species="${speciesName}" title="Edit latest observation">
+          <span class="btn-icon">✏️</span>
+          <span class="btn-text">Edit</span>
+        </button>
+        <button class="action-btn danger delete-obs" data-species="${speciesName}" title="Delete latest observation">
+          <span class="btn-icon">🗑️</span>
+          <span class="btn-text">Delete</span>
+        </button>
       </div>
     `;
 
@@ -2192,19 +2218,46 @@ class ButterflyCountApp {
     const card = document.createElement('div');
     card.className = 'observation-card';
     
+    // Get butterfly details to show scientific name
+    const butterfly = getButterflyById(observation.butterflyId);
+    const scientificName = butterfly ? butterfly.scientificName : 'Unknown';
+    
     const dateTime = new Date(observation.dateTime);
     
     card.innerHTML = `
-      <div class="obs-info">
-        <h4 class="obs-butterfly">${observation.butterflyName}</h4>
-        <p class="obs-details">Count: ${observation.count}</p>
-        <p class="obs-time">${this.formatIndianDateTime(dateTime).fullDateTime} IST</p>
-        ${observation.comments ? `<p class="obs-comments">Comments: ${observation.comments}</p>` : ''}
+      <div class="obs-header">
+        <h4 class="obs-common-name">${observation.butterflyName}</h4>
+        <p class="obs-scientific-name"><em>${scientificName}</em></p>
+      </div>
+      <div class="obs-details-section">
+        <div class="obs-stats">
+          <div class="stat-item">
+            <span class="stat-value">${observation.count}</span>
+            <span class="stat-label">Count</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value">1</span>
+            <span class="stat-label">Observations</span>
+          </div>
+        </div>
+        <div class="obs-meta">
+          <p class="obs-time"><strong>Recorded:</strong> ${this.formatIndianDateTime(dateTime).fullDateTime} IST</p>
+          ${observation.comments ? `<p class="obs-comments"><strong>Comments:</strong> ${observation.comments}</p>` : ''}
+        </div>
       </div>
       <div class="obs-actions">
-        <button class="action-btn edit-obs" data-obs-id="${observation.id}" title="Edit observation">Edit</button>
-        <button class="action-btn add-more-obs" data-obs-id="${observation.id}" title="Add more of this species">+</button>
-        <button class="action-btn delete-obs" data-obs-id="${observation.id}" title="Delete observation">Delete</button>
+        <button class="action-btn primary add-more-obs" data-obs-id="${observation.id}" title="Add more of this species">
+          <span class="btn-icon">➕</span>
+          <span class="btn-text">Add More</span>
+        </button>
+        <button class="action-btn secondary edit-obs" data-obs-id="${observation.id}" title="Edit observation">
+          <span class="btn-icon">✏️</span>
+          <span class="btn-text">Edit</span>
+        </button>
+        <button class="action-btn danger delete-obs" data-obs-id="${observation.id}" title="Delete observation">
+          <span class="btn-icon">🗑️</span>
+          <span class="btn-text">Delete</span>
+        </button>
       </div>
     `;
 
