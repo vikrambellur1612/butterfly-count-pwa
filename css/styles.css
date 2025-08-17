@@ -2508,15 +2508,411 @@ select.form-input {
         color: var(--text-secondary);
     }
 
-    /* Observation cards dark mode */
-    .observation-card {
+    /* View toggle buttons dark mode */
+    .view-toggle-container {
+        background: rgba(30, 41, 59, 0.5);
+        border-radius: 30px;
+        padding: 4px;
+    }
+
+    .toggle-btn {
+        background: transparent;
+        color: var(--text-secondary);
+        border-color: var(--border-color);
+    }
+
+    .toggle-btn:hover {
+        background: rgba(74, 222, 128, 0.1);
+        color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+
+    .toggle-btn.active {
+        background: var(--primary-color);
+        color: #0f172a;
+        border-color: var(--primary-color);
+    }
+
+    /* Search container dark mode */
+    .search-container {
+        background: var(--surface-color);
+        border-radius: var(--border-radius);
+        padding: 1rem;
+        border: 1px solid var(--border-color);
+    }
+
+    .search-input {
+        background: var(--surface-light);
+        color: var(--text-primary);
+        border-color: var(--border-color);
+    }
+
+    .search-input::placeholder {
+        color: var(--text-muted);
+    }
+
+    .search-input:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.1);
+    }
+
+    .search-results {
+        background: var(--surface-color);
+        border-color: var(--border-color);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .search-result-item {
+        background: var(--surface-color);
+        color: var(--text-primary);
+        border-bottom-color: var(--border-color);
+    }
+
+    .search-result-item:hover {
+        background: var(--surface-light);
+    }
+
+    .suggestions {
+        background: var(--surface-color);
+        border-color: var(--border-color);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .suggestion-item {
+        background: var(--surface-color);
+        color: var(--text-primary);
+        border-bottom-color: var(--border-color);
+    }
+
+    .suggestion-item:hover {
+        background: var(--surface-light);
+    }
+
+    .suggestion-name {
+        color: var(--text-primary);
+    }
+
+    .suggestion-scientific {
+        color: var(--text-secondary);
+    }
+
+    /* Family filter dark mode */
+    .family-filter {
+        background: var(--surface-color);
+        border-radius: var(--border-radius);
+        padding: 1rem;
+        border: 1px solid var(--border-color);
+    }
+
+    .family-filter select {
+        background: var(--surface-light);
+        color: var(--text-primary);
+        border-color: var(--border-color);
+    }
+
+    /* Section headers dark mode */
+    .section-header h2 {
+        color: var(--text-primary);
+    }
+
+    .lists-container h3 {
+        color: var(--text-secondary);
+    }
+
+    .observations-list h3 {
+        color: var(--text-primary);
+    }
+
+    /* About section dark mode */
+    .about-section h2,
+    .about-section h3 {
+        color: var(--text-primary);
+    }
+
+    .about-section p,
+    .about-section li {
+        color: var(--text-secondary);
+    }
+
+    .about-content {
+        background: var(--surface-color);
+        border: 1px solid var(--border-color);
+    }
+
+    /* Empty states dark mode */
+    .empty-state {
+        color: var(--text-secondary);
+        background: var(--surface-light);
+        border: 1px solid var(--border-color);
+    }
+
+    .empty-state-enhanced {
         background: linear-gradient(135deg, var(--surface-color) 0%, var(--surface-light) 100%);
         border-color: var(--border-color);
     }
 
-    .observation-card:hover {
+    .empty-state-enhanced h4 {
+        color: var(--text-primary);
+    }
+
+    .empty-state-enhanced p {
+        color: var(--text-secondary);
+    }
+
+    /* Toast notifications dark mode */
+    .toast {
+        background: var(--surface-color);
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .toast-success {
+        background: rgba(34, 197, 94, 0.1);
+        color: var(--success-color);
+        border-color: var(--success-color);
+    }
+
+    .toast-error {
+        background: rgba(248, 113, 113, 0.1);
+        color: var(--error-color);
+        border-color: var(--error-color);
+    }
+
+    .toast-warning {
+        background: rgba(251, 191, 36, 0.1);
+        color: var(--warning-color);
+        border-color: var(--warning-color);
+    }
+
+    /* Butterfly species list dark mode */
+    .butterfly-list {
+        background: var(--surface-color);
+    }
+
+    .species-container {
+        background: var(--background-color);
+    }
+
+    .family-section h3 {
+        color: var(--text-primary);
+        background: var(--surface-color);
+        border: 1px solid var(--border-color);
+    }
+
+    /* Species items dark mode */
+    .species-item {
+        background: var(--surface-light);
+        border-color: var(--border-color);
+    }
+
+    .species-item:hover {
+        background: var(--surface-color);
         border-color: var(--primary-color);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .species-name {
+        color: var(--text-primary);
+    }
+
+    .species-scientific {
+        color: var(--text-secondary);
+    }
+
+    .species-subfamily {
+        color: var(--text-muted);
+    }
+
+    /* Loading states dark mode */
+    .loading-spinner {
+        border-color: var(--border-color);
+        border-top-color: var(--primary-color);
+    }
+
+    .photo-loading {
+        background: var(--surface-light);
+        color: var(--text-secondary);
+    }
+
+    /* Version info dark mode */
+    .version-info {
+        color: var(--text-muted);
+    }
+
+    /* Click hints dark mode */
+    .click-hint {
+        color: var(--text-muted);
+        background: rgba(74, 222, 128, 0.1);
+        border: 1px solid rgba(74, 222, 128, 0.2);
+    }
+
+    /* Additional modal dark mode fixes */
+    .modal-overlay {
+        background: rgba(0, 0, 0, 0.8);
+    }
+
+    .modal-content {
+        background: var(--surface-color);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+    }
+
+    .modal-header {
+        background: var(--surface-light);
+        border-bottom-color: var(--border-color);
+    }
+
+    .modal-header h3 {
+        color: var(--text-primary);
+    }
+
+    .modal-close {
+        color: var(--text-secondary);
+        background: var(--surface-light);
+        border: 1px solid var(--border-color);
+    }
+
+    .modal-close:hover {
+        background: var(--border-color);
+        color: var(--text-primary);
+    }
+
+    /* Form labels dark mode */
+    .form-group label {
+        color: var(--text-primary);
+    }
+
+    /* Select elements dark mode */
+    select.form-input {
+        background: var(--surface-light);
+        color: var(--text-primary);
+        border-color: var(--border-color);
+    }
+
+    select.form-input option {
+        background: var(--surface-color);
+        color: var(--text-primary);
+    }
+
+    /* Stats and charts dark mode */
+    .stats-overview,
+    .stats-overview-enhanced {
+        background: var(--surface-light);
+        border: 1px solid var(--border-color);
+    }
+
+    .chart-container {
+        background: var(--surface-color);
+        border: 1px solid var(--border-color);
+    }
+
+    .chart-container h4 {
+        color: var(--text-primary);
+    }
+
+    /* Species and family breakdown dark mode */
+    .species-breakdown,
+    .species-breakdown-enhanced,
+    .family-breakdown {
+        background: var(--surface-light);
+        border: 1px solid var(--border-color);
+    }
+
+    .species-breakdown h4,
+    .species-breakdown-enhanced h4,
+    .family-breakdown h4 {
+        color: var(--text-primary);
+    }
+
+    .species-item-enhanced,
+    .family-item {
+        background: var(--surface-color);
+        border-color: var(--border-color);
+        color: var(--text-primary);
+    }
+
+    .species-item-enhanced:hover,
+    .family-item:hover {
+        background: var(--surface-light);
+    }
+
+    .species-rank {
+        color: var(--text-muted);
+    }
+
+    .species-percentage,
+    .family-count {
+        color: var(--primary-color);
+    }
+
+    /* Download section dark mode */
+    .download-section {
+        background: var(--surface-light);
+        border: 1px solid var(--border-color);
+    }
+
+    .download-section h4 {
+        color: var(--text-primary);
+    }
+
+    .download-section p {
+        color: var(--text-secondary);
+    }
+
+    /* Contact section dark mode */
+    .contact-info {
+        background: var(--surface-light);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+    }
+
+    .contact-link {
+        color: var(--primary-color);
+    }
+
+    .contact-link:hover {
+        color: var(--primary-dark);
+        background: rgba(74, 222, 128, 0.1);
+    }
+
+    .contact-note {
+        color: var(--text-secondary);
+    }
+
+    /* Butterfly photo container dark mode */
+    .butterfly-photo-container {
+        background: var(--surface-light);
+        border: 1px solid var(--border-color);
+    }
+
+    .photo-disclaimer {
+        background: rgba(251, 191, 36, 0.1);
+        border: 1px solid rgba(251, 191, 36, 0.3);
+    }
+
+    .photo-disclaimer small {
+        color: var(--warning-color);
+    }
+
+    /* Detail sections dark mode */
+    .detail-section {
+        background: var(--surface-light);
+        border: 1px solid var(--border-color);
+    }
+
+    .detail-section h4 {
+        color: var(--text-primary);
+    }
+
+    .detail-section p,
+    .detail-section ul,
+    .detail-section li {
+        color: var(--text-secondary);
+    }
+
+    /* Activity notes and time slot info */
+    .activity-note {
+        color: var(--text-muted);
     }
 
     .obs-common-name {
