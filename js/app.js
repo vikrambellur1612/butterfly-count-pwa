@@ -2,7 +2,7 @@
 
 class ButterflyCountApp {
   constructor() {
-    this.version = '1.6.5';
+    this.version = '1.6.6';
     this.currentView = 'butterflies';
     this.currentButterflyView = 'family'; // 'family' or 'species'
     this.currentList = null;
@@ -2121,7 +2121,7 @@ class ButterflyCountApp {
       <div class="obs-content">
         <div class="obs-main-info">
           <div class="obs-names">
-            <span class="obs-common-name">${speciesName}</span>
+            <span class="obs-common-name clickable-species" data-butterfly-id="${latestObs.butterflyId}">${speciesName}</span>
             <span class="obs-scientific-name"><em>${scientificName}</em></span>
           </div>
           <div class="obs-stats-inline">
@@ -2143,6 +2143,21 @@ class ButterflyCountApp {
     const editBtn = card.querySelector('.action-btn-small.secondary');
     const addMoreBtn = card.querySelector('.action-btn-small.primary');
     const deleteBtn = card.querySelector('.action-btn-small.danger');
+    const speciesNameLink = card.querySelector('.clickable-species');
+
+    // Add click handler for species name to show detail modal
+    if (speciesNameLink) {
+      speciesNameLink.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const butterflyId = speciesNameLink.getAttribute('data-butterfly-id');
+        if (butterflyId) {
+          const butterfly = getButterflyById(butterflyId);
+          if (butterfly) {
+            this.showButterflyDetail(butterfly);
+          }
+        }
+      });
+    }
 
     if (editBtn) {
       editBtn.addEventListener('click', (e) => {

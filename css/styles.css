@@ -1209,6 +1209,21 @@ select.form-input {
   text-overflow: ellipsis;
 }
 
+/* Clickable species name styling */
+.obs-common-name.clickable-species {
+  color: var(--primary-color);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+
+.obs-common-name.clickable-species:hover {
+  color: var(--primary-dark);
+  border-bottom-color: var(--primary-color);
+  text-decoration: none;
+}
+
 .obs-scientific-name {
   display: block;
   font-size: 0.8rem;
@@ -2506,6 +2521,14 @@ select.form-input {
 
     .obs-common-name {
         color: var(--text-primary);
+    }
+
+    .obs-common-name.clickable-species {
+        color: var(--primary-color);
+    }
+
+    .obs-common-name.clickable-species:hover {
+        color: var(--primary-dark);
     }
 
     .obs-scientific-name {
