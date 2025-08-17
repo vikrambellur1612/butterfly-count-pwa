@@ -1,46 +1,46 @@
 {
   "name": "Butterfly Count",
-  "short_name": "ButterflyCount",
+  "short_name": "Butterfly Count",
   "description": "Progressive Web App for butterfly observation and counting during nature walks",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#ffffff",
   "theme_color": "#4CAF50",
+  "background_color": "#ffffff",
   "orientation": "portrait-primary",
   "scope": "./",
-  "lang": "en",
-  "dir": "ltr",
+  "lang": "en-US",
+  "categories": ["education", "utilities", "lifestyle"],
   "icons": [
     {
       "src": "./icons/icon-72x72.png",
       "sizes": "72x72",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
       "src": "./icons/icon-96x96.png",
       "sizes": "96x96",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
       "src": "./icons/icon-128x128.png",
       "sizes": "128x128",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
       "src": "./icons/icon-144x144.png",
       "sizes": "144x144",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
       "src": "./icons/icon-152x152.png",
       "sizes": "152x152",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
       "src": "./icons/icon-192x192.png",
@@ -52,27 +52,21 @@
       "src": "./icons/icon-384x384.png",
       "sizes": "384x384",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
       "src": "./icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
-    },
-    {
-      "src": "./icons/apple-touch-icon-180x180.png",
-      "sizes": "180x180",
-      "type": "image/png",
-      "purpose": "any"
     }
   ],
   "shortcuts": [
     {
-      "name": "Quick Count",
+      "name": "New Count",
       "short_name": "Count",
-      "description": "Quickly add butterfly observation",
-      "url": "./?shortcut=count",
+      "description": "Start a new butterfly count session",
+      "url": "./?action=new-count",
       "icons": [
         {
           "src": "./icons/shortcut-count.png",
@@ -82,10 +76,10 @@
       ]
     },
     {
-      "name": "New List",
-      "short_name": "New List",
-      "description": "Create new observation list",
-      "url": "./?shortcut=newlist",
+      "name": "View Lists",
+      "short_name": "Lists",
+      "description": "View saved butterfly observation lists",
+      "url": "./?action=view-lists",
       "icons": [
         {
           "src": "./icons/shortcut-list.png",
@@ -95,19 +89,19 @@
       ]
     }
   ],
-  "categories": ["education", "productivity", "utilities"],
+  "prefer_related_applications": false,
   "screenshots": [
     {
-      "src": "./screenshots/mobile-1.png",
-      "sizes": "640x1136",
-      "type": "image/png",
-      "form_factor": "narrow"
-    },
-    {
-      "src": "./screenshots/desktop-1.png",
+      "src": "./icons/screenshot-wide.png",
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide"
+    },
+    {
+      "src": "./icons/screenshot-narrow.png",
+      "sizes": "720x1280",
+      "type": "image/png",
+      "form_factor": "narrow"
     }
   ]
 }

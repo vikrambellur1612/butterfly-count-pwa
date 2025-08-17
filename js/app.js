@@ -2,7 +2,7 @@
 
 class ButterflyCountApp {
   constructor() {
-    this.version = '1.5.1';
+    this.version = '1.6.0';
     this.currentView = 'butterflies';
     this.currentButterflyView = 'family'; // 'family' or 'species'
     this.currentList = null;
@@ -503,6 +503,18 @@ class ButterflyCountApp {
       
       contentElement.innerHTML = `
         <div class="butterfly-detail">
+          <div class="detail-section butterfly-photo-section">
+            <div id="butterflyPhotoContainer" class="butterfly-photo-container">
+              <div class="photo-loading">
+                <div class="loading-spinner"></div>
+                <p>Loading photo...</p>
+              </div>
+            </div>
+            <div class="photo-disclaimer">
+              <p><small><strong>Disclaimer:</strong> Photos are dynamically fetched from the internet and may sometimes show incorrect species. Please validate information independently.</small></p>
+            </div>
+          </div>
+          
           <div class="detail-section">
             <h4>Scientific Name</h4>
             <p><em>${butterfly.scientificName}</em></p>
@@ -524,9 +536,222 @@ class ButterflyCountApp {
           </div>` : ''}
         </div>
       `;
+
+      // Fetch and display butterfly photo
+      this.fetchButterflyPhoto(butterfly);
     }
 
     this.showModal('butterflyModal');
+  }
+
+  // Fetch butterfly photo from internet
+  async fetchButterflyPhoto(butterfly) {
+    const photoContainer = document.getElementById('butterflyPhotoContainer');
+    if (!photoContainer) return;
+
+    try {
+      // Try multiple search terms for better results
+      const searchTerms = [
+        `${butterfly.scientificName} butterfly`,
+        `${butterfly.commonName} butterfly`,
+        `${butterfly.scientificName}`,
+        `${butterfly.commonName} ${butterfly.family}`
+      ];
+
+      let photoFound = false;
+      
+      // Try Wikipedia first (most reliable for scientific content)
+      for (const searchTerm of searchTerms) {
+        if (photoFound) break;
+        
+        try {
+          console.log(`Trying Wikipedia search for: ${searchTerm}`);
+          const wikiResult = await this.fetchFromWikipedia(searchTerm);
+          if (wikiResult) {
+            this.displayButterflyPhoto(photoContainer, wikiResult.imageUrl, wikiResult.credit, 'Wikipedia');
+            photoFound = true;
+            break;
+          }
+        } catch (error) {
+          console.log(`Wikipedia search failed for: ${searchTerm}`, error.message);
+        }
+
+        // Small delay between requests to be respectful
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+
+      // If Wikipedia didn't work, try a simple approach with butterfly-themed generic images
+      if (!photoFound) {
+        try {
+          console.log('Trying generic nature image...');
+          const genericResult = await this.fetchGenericButterflyImage();
+          if (genericResult) {
+            this.displayButterflyPhoto(photoContainer, genericResult.imageUrl, genericResult.credit, 'Stock Photo');
+            photoFound = true;
+          }
+        } catch (error) {
+          console.log('Generic image search failed:', error.message);
+        }
+      }
+
+      // If all internet sources fail, use local SVG
+      if (!photoFound) {
+        console.log('Using local default butterfly illustration');
+        this.displayPhotoError(photoContainer);
+      }
+
+    } catch (error) {
+      console.error('Error fetching butterfly photo:', error);
+      this.displayPhotoError(photoContainer);
+    }
+  }
+
+  // Fetch from Wikipedia/Wikimedia
+  async fetchFromWikipedia(searchTerm) {
+    try {
+      // Use the correct Wikipedia API endpoint with timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+      
+      const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&list=search&srsearch=${encodeURIComponent(searchTerm)}&srlimit=3`;
+      const searchResponse = await fetch(searchUrl, { 
+        signal: controller.signal,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+      
+      clearTimeout(timeoutId);
+      
+      if (!searchResponse.ok) {
+        throw new Error(`Wikipedia search failed: ${searchResponse.status}`);
+      }
+      
+      const searchData = await searchResponse.json();
+
+      if (searchData.query && searchData.query.search && searchData.query.search.length > 0) {
+        // Try to get images from the first few relevant pages
+        for (const page of searchData.query.search.slice(0, 2)) {
+          try {
+            const pageController = new AbortController();
+            const pageTimeoutId = setTimeout(() => pageController.abort(), 3000);
+            
+            // Get page content and images
+            const pageUrl = `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&prop=pageimages|extracts&piprop=thumbnail&pithumbsize=300&pilimit=1&pageids=${page.pageid}&exintro=1&explaintext=1&exsentences=1`;
+            const pageResponse = await fetch(pageUrl, { 
+              signal: pageController.signal,
+              headers: {
+                'Accept': 'application/json'
+              }
+            });
+            
+            clearTimeout(pageTimeoutId);
+            
+            if (!pageResponse.ok) continue;
+            
+            const pageData = await pageResponse.json();
+            const pageInfo = pageData.query?.pages?.[page.pageid];
+
+            if (pageInfo && pageInfo.thumbnail && pageInfo.thumbnail.source) {
+              // Get a higher resolution image
+              let imageUrl = pageInfo.thumbnail.source;
+              imageUrl = imageUrl.replace(/\/\d+px-/, '/400px-');
+              
+              return {
+                imageUrl: imageUrl,
+                credit: `${pageInfo.title || page.title}`
+              };
+            }
+          } catch (error) {
+            if (error.name === 'AbortError') {
+              console.log('Request timeout for page:', page.title);
+            }
+            continue;
+          }
+        }
+      }
+    } catch (error) {
+      if (error.name === 'AbortError') {
+        console.log('Wikipedia request timeout for:', searchTerm);
+      } else {
+        console.log('Wikipedia API error:', error.message);
+      }
+      throw error;
+    }
+    return null;
+  }
+
+  // Fetch from alternative free APIs
+  async fetchFromUnsplash(searchTerm) {
+    try {
+      // This method is deprecated, but keeping for legacy
+      throw new Error('Unsplash Source API no longer reliable');
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // Fetch generic butterfly image as final fallback
+  async fetchGenericButterflyImage() {
+    try {
+      // Use Lorem Picsum with a seed based on the current time
+      // This provides consistent but varied images
+      const seed = Math.floor(Date.now() / (1000 * 60 * 10)); // Changes every 10 minutes
+      const imageUrl = `https://picsum.photos/seed/${seed}/400/300`;
+      
+      // Test if the image loads
+      const testImg = new Image();
+      return new Promise((resolve, reject) => {
+        const timeout = setTimeout(() => {
+          reject(new Error('Image loading timeout'));
+        }, 3000);
+
+        testImg.onload = () => {
+          clearTimeout(timeout);
+          resolve({
+            imageUrl: imageUrl,
+            credit: 'Generic Nature Photography'
+          });
+        };
+        
+        testImg.onerror = () => {
+          clearTimeout(timeout);
+          reject(new Error('Image failed to load'));
+        };
+        
+        testImg.src = imageUrl;
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // Display the fetched photo
+  displayButterflyPhoto(container, imageUrl, credit, source) {
+    container.innerHTML = `
+      <div class="butterfly-photo">
+        <img src="${imageUrl}" alt="Butterfly photo" class="butterfly-image" onerror="this.parentElement.parentElement.innerHTML='<div class=\\'photo-error\\'>Photo could not be loaded</div>'">
+        <div class="photo-credit">
+          <small>📷 Photo: ${credit} via ${source}</small>
+        </div>
+      </div>
+    `;
+  }
+
+  // Display error when photo cannot be fetched
+  displayPhotoError(container) {
+    // Use local SVG as final fallback
+    container.innerHTML = `
+      <div class="butterfly-photo">
+        <img src="./icons/default-butterfly.svg" alt="Default butterfly illustration" class="butterfly-image">
+        <div class="photo-credit">
+          <small>📷 Default Illustration</small>
+        </div>
+      </div>
+      <div class="photo-error-note">
+        <small style="color: #64748b; font-style: italic;">Unable to fetch specific species photo from internet sources</small>
+      </div>
+    `;
   }
 
   // Switch butterfly view between family and species

@@ -94,9 +94,9 @@ function showInstallBanner() {
 
 ```javascript
 // Multi-Cache Strategy Pattern
-const CACHE_NAME = 'app-v1.5.1';
-const STATIC_CACHE = 'app-static-v1.5.1';
-const DYNAMIC_CACHE = 'app-dynamic-v1.5.1';
+const CACHE_NAME = 'app-v1.6.0';
+const STATIC_CACHE = 'app-static-v1.6.0';
+const DYNAMIC_CACHE = 'app-dynamic-v1.6.0';
 
 // Cache-First Strategy (Static Assets)
 async function cacheFirstStrategy(request) {
@@ -179,7 +179,7 @@ self.addEventListener('activate', (event) => {
   "name": "Your App Name",
   "short_name": "AppName",
   "description": "App description for store listings",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",

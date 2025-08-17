@@ -2941,3 +2941,111 @@ body {
     color: #cbd5e1;
   }
 }
+
+/* Butterfly Photo Styles */
+.butterfly-photo-section {
+  margin-bottom: 1.5rem;
+}
+
+.butterfly-photo-container {
+  margin-bottom: 0.5rem;
+}
+
+.photo-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: #f8fafc;
+  border: 2px dashed #cbd5e1;
+  border-radius: 8px;
+  color: #64748b;
+}
+
+.loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #e2e8f0;
+  border-top: 3px solid #4CAF50;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 0.5rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.butterfly-photo {
+  text-align: center;
+}
+
+.butterfly-image {
+  max-width: 100%;
+  height: auto;
+  max-height: 250px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 0.5rem;
+}
+
+.photo-credit {
+  color: #64748b;
+  font-style: italic;
+  margin-bottom: 0.5rem;
+}
+
+.photo-disclaimer {
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 6px;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.photo-disclaimer p {
+  margin: 0;
+  color: #92400e;
+}
+
+.photo-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: #fef2f2;
+  border: 2px dashed #fca5a5;
+  border-radius: 8px;
+  color: #dc2626;
+  text-align: center;
+}
+
+.error-icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.7;
+}
+
+.photo-error p {
+  margin: 0.25rem 0;
+  font-weight: 500;
+}
+
+.photo-error small {
+  color: #991b1b;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 640px) {
+  .butterfly-image {
+    max-height: 200px;
+  }
+  
+  .photo-loading,
+  .photo-error {
+    padding: 1.5rem;
+  }
+}
