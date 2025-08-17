@@ -134,7 +134,7 @@ function showCacheUpdateNotification(message) {
     if ('Notification' in window && Notification.permission === 'granted') {
       new Notification('Butterfly Count Updated', {
         body: 'Fresh icons loaded! Please reinstall the PWA for the best experience.',
-        icon: './icons/icon-192x192.png?v=1.6.8'
+        icon: './icons/icon-192x192.png?v=1.6.9'
       });
     }
   }

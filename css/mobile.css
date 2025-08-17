@@ -429,6 +429,42 @@
     color: var(--text-primary);
   }
 
+  /* Additional fixes for Lists section headers visibility in dark mode */
+  #listsView .section-header h2,
+  #activeLists h3,
+  #closedLists h3 {
+    color: #e2e8f0 !important;
+  }
+
+  /* Fix Count section observation title visibility in dark mode */
+  #observationsTitle {
+    color: #e2e8f0 !important;
+  }
+
+  /* Fix Species view toggle buttons visibility in dark mode on mobile */
+  .view-toggle-container {
+    background: rgba(30, 41, 59, 0.3);
+    border: 1px solid var(--border-color);
+  }
+
+  .toggle-btn {
+    color: var(--text-secondary);
+    border-color: var(--border-color);
+    background: transparent;
+  }
+
+  .toggle-btn:hover {
+    color: var(--primary-color);
+    background: rgba(74, 222, 128, 0.1);
+    border-color: var(--primary-color);
+  }
+
+  .toggle-btn.active {
+    background: var(--primary-color);
+    color: #0f172a;
+    border-color: var(--primary-color);
+  }
+
   /* Mobile empty states dark mode */
   .empty-state {
     background: var(--surface-light);

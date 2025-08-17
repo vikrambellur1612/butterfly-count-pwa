@@ -1,8 +1,8 @@
 // Service Worker for Butterfly Count PWA
 
-const CACHE_NAME = 'butterfly-count-v1.6.8';
-const STATIC_CACHE = 'butterfly-count-static-v1.6.8';
-const DYNAMIC_CACHE = 'butterfly-count-dynamic-v1.6.8';
+const CACHE_NAME = 'butterfly-count-v1.6.9';
+const STATIC_CACHE = 'butterfly-count-static-v1.6.9';
+const DYNAMIC_CACHE = 'butterfly-count-dynamic-v1.6.9';
 
 // Files to cache for offline functionality
 const STATIC_FILES = [
@@ -15,24 +15,24 @@ const STATIC_FILES = [
   './js/butterflies-data.js',
   './butterflies-data.json',
   './manifest.json',
-  './icons/icon-192x192.png?v=1.6.8',
-  './icons/icon-512x512.png?v=1.6.8',
-  './icons/favicon.svg?v=1.6.8',
-  './icons/favicon.png?v=1.6.8',
-  './icons/apple-touch-icon-180x180.png?v=1.6.8',
-  './icons/apple-touch-icon-152x152.png?v=1.6.8',
-  './icons/apple-touch-icon-144x144.png?v=1.6.8',
-  './icons/apple-touch-icon-120x120.png?v=1.6.8',
-  './icons/favicon-32x32.png?v=1.6.8',
-  './icons/favicon-16x16.png?v=1.6.8',
-  './icons/icon-72x72.png?v=1.6.8',
-  './icons/icon-96x96.png?v=1.6.8',
-  './icons/icon-128x128.png?v=1.6.8',
-  './icons/icon-144x144.png?v=1.6.8',
-  './icons/icon-152x152.png?v=1.6.8',
-  './icons/icon-384x384.png?v=1.6.8',
-  './icons/shortcut-count.png?v=1.6.8',
-  './icons/shortcut-list.png?v=1.6.8'
+  './icons/icon-192x192.png?v=1.6.9',
+  './icons/icon-512x512.png?v=1.6.9',
+  './icons/favicon.svg?v=1.6.9',
+  './icons/favicon.png?v=1.6.9',
+  './icons/apple-touch-icon-180x180.png?v=1.6.9',
+  './icons/apple-touch-icon-152x152.png?v=1.6.9',
+  './icons/apple-touch-icon-144x144.png?v=1.6.9',
+  './icons/apple-touch-icon-120x120.png?v=1.6.9',
+  './icons/favicon-32x32.png?v=1.6.9',
+  './icons/favicon-16x16.png?v=1.6.9',
+  './icons/icon-72x72.png?v=1.6.9',
+  './icons/icon-96x96.png?v=1.6.9',
+  './icons/icon-128x128.png?v=1.6.9',
+  './icons/icon-144x144.png?v=1.6.9',
+  './icons/icon-152x152.png?v=1.6.9',
+  './icons/icon-384x384.png?v=1.6.9',
+  './icons/shortcut-count.png?v=1.6.9',
+  './icons/shortcut-list.png?v=1.6.9'
 ];
 
 // Dynamic files that can be cached as needed
@@ -96,7 +96,7 @@ self.addEventListener('activate', (event) => {
           clients.forEach((client) => {
             client.postMessage({
               type: 'CACHE_UPDATED',
-              version: '1.6.8',
+              version: '1.6.9',
               message: 'New icons available - please refresh'
             });
           });
