@@ -2,7 +2,7 @@
 
 class ButterflyCountApp {
   constructor() {
-    this.version = '1.6.1';
+    this.version = '1.6.2';
     this.currentView = 'butterflies';
     this.currentButterflyView = 'family'; // 'family' or 'species'
     this.currentList = null;
@@ -332,9 +332,7 @@ class ButterflyCountApp {
   updateUI() {
     this.renderLists();
     this.updateCountViewListSelector();  // Update count view list selector
-    this.updateStats();
     this.renderObservations();
-    this.updateObservationsTitle();  // Update observations title
   }
 
   // View switching
@@ -366,7 +364,6 @@ class ButterflyCountApp {
     if (viewName === 'count') {
       this.currentList = null;  // Reset to show all observations by default
       this.updateCountViewListSelector();  // Update count view list selector
-      this.updateStats();  // Make sure stats are updated when switching to count view
       this.renderObservations();  // Update observations list
     }
   }
@@ -1036,7 +1033,15 @@ class ButterflyCountApp {
     // Render active lists
     activeContainer.innerHTML = '';
     if (activeLists.length === 0) {
-      activeContainer.innerHTML = '<p class="empty-state">No active lists</p>';
+      activeContainer.innerHTML = `
+        <div class="empty-state-enhanced">
+          <div class="empty-state-icon">📋</div>
+          <h4>No Active Lists</h4>
+          <p>Create your first butterfly observation list to get started!</p>
+          <button class="create-list-prompt primary-btn" onclick="document.getElementById('createListBtn').click()">
+            + Create New List
+          </button>
+        </div>`;
     } else {
       activeLists.forEach(list => {
         const listCard = this.createListCard(list);
@@ -1047,7 +1052,12 @@ class ButterflyCountApp {
     // Render closed lists
     closedContainer.innerHTML = '';
     if (closedLists.length === 0) {
-      closedContainer.innerHTML = '<p class="empty-state">No closed lists</p>';
+      closedContainer.innerHTML = `
+        <div class="empty-state-enhanced">
+          <div class="empty-state-icon">📁</div>
+          <h4>No Closed Lists</h4>
+          <p>All closed butterfly observation lists will appear here.</p>
+        </div>`;
     } else {
       closedLists.forEach(list => {
         const listCard = this.createListCard(list);
@@ -1149,7 +1159,11 @@ class ButterflyCountApp {
         </div>
         <div class="list-actions">
           ${list.status === 'active' ? 
-            `<button class="action-btn close-list prominent-btn" data-list-id="${list.id}">Close the List</button>` :
+            `${observations.length === 0 ? 
+              `<button class="action-btn add-observations primary-btn" data-list-id="${list.id}">🦋 Add Observations</button>
+               <button class="action-btn close-list secondary-btn" data-list-id="${list.id}">Close the List</button>` :
+              `<button class="action-btn close-list prominent-btn" data-list-id="${list.id}">Close the List</button>`
+            }` :
             `<div class="closed-list-actions">
               <button class="action-btn view-stats" data-list-id="${list.id}">View Stats</button>
               <button class="action-btn download-csv" data-list-id="${list.id}">📥 Download CSV</button>
@@ -1163,6 +1177,7 @@ class ButterflyCountApp {
     const closeBtn = card.querySelector('.close-list');
     const viewStatsBtn = card.querySelector('.view-stats');
     const downloadCsvBtn = card.querySelector('.download-csv');
+    const addObservationsBtn = card.querySelector('.add-observations');
     const listNameElement = card.querySelector('.list-name');
 
     // Make active list cards clickable for detailed view
@@ -1183,6 +1198,15 @@ class ButterflyCountApp {
           this.showListStats(list);
         });
       }
+    }
+
+    if (addObservationsBtn) {
+      addObservationsBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        // Set this list as selected and navigate to count view
+        this.selectedCountViewList = list.id;
+        this.showView('count');
+      });
     }
 
     if (closeBtn) {
@@ -1879,34 +1903,16 @@ class ButterflyCountApp {
       countViewListSelect.value = activeLists[0].id;
       this.selectedCountViewList = activeLists[0].id;
       // Update UI with auto-selected list
-      this.updateStats();
       this.renderObservations();
-      this.updateObservationsTitle();
     }
 
     // Add event listener for list selection changes
     countViewListSelect.removeEventListener('change', this.handleCountViewListChange);
     this.handleCountViewListChange = () => {
       this.selectedCountViewList = countViewListSelect.value ? parseInt(countViewListSelect.value) : null;
-      this.updateStats();
       this.renderObservations();
-      this.updateObservationsTitle();
     };
     countViewListSelect.addEventListener('change', this.handleCountViewListChange);
-  }
-
-  // Update the observations title based on selected list
-  updateObservationsTitle() {
-    const titleElement = document.getElementById('observationsTitle');
-    if (!titleElement) return;
-
-    if (this.selectedCountViewList) {
-      const selectedList = this.lists.find(list => list.id === this.selectedCountViewList);
-      const listName = selectedList ? selectedList.name : 'Unknown List';
-      titleElement.textContent = `All Observations in ${listName}`;
-    } else {
-      titleElement.textContent = 'All Observations';
-    }
   }
 
   // Butterfly name autocomplete
@@ -2014,7 +2020,6 @@ class ButterflyCountApp {
       
       // Reload observations data and update UI while preserving list selection
       this.observations = await this.getAllFromStore('observations');
-      this.updateStats();
       this.renderObservations();
       this.renderLists(); // Update Lists cards with new observation data
       
@@ -2039,58 +2044,31 @@ class ButterflyCountApp {
     }
   }
 
-  // Update statistics
-  updateStats() {
-    if (this.currentView !== 'count') return;
-
-    let observations;
-    
-    if (this.selectedCountViewList) {
-      // Show stats for the specific selected list
-      observations = this.observations.filter(obs => obs.listId === this.selectedCountViewList);
-    } else {
-      // No list selected - show empty stats
-      observations = [];
-    }
-
-    const speciesCount = new Map();
-    observations.forEach(obs => {
-      const name = obs.butterflyName;
-      speciesCount.set(name, (speciesCount.get(name) || 0) + obs.count);
-    });
-
-    const uniqueSpecies = speciesCount.size;
-    const totalCount = Array.from(speciesCount.values()).reduce((sum, count) => sum + count, 0);
-
-    const sortedSpecies = Array.from(speciesCount.entries())
-                               .sort((a, b) => b[1] - a[1]);
-
-    const highestCount = sortedSpecies.length > 0 ? sortedSpecies[0] : null;
-    const lowestCount = sortedSpecies.length > 0 ? sortedSpecies[sortedSpecies.length - 1] : null;
-
-    // Update UI elements
-    this.updateElement('uniqueSpeciesCount', uniqueSpecies);
-    this.updateElement('totalSpeciesCount', totalCount);
-    this.updateElement('highestCountSpecies', 
-      highestCount ? `${highestCount[0]} (${highestCount[1]})` : '-');
-    this.updateElement('lowestCountSpecies', 
-      lowestCount && lowestCount !== highestCount ? `${lowestCount[0]} (${lowestCount[1]})` : '-');
-  }
-
   // Render observations
   renderObservations() {
     const container = document.getElementById('observationsList');
+    const titleElement = document.getElementById('observationsTitle');
     if (!container) return;
 
     let observations;
+    let selectedList = null;
     
     if (this.selectedCountViewList) {
       // Show observations for the specific selected list only
       observations = this.observations.filter(obs => obs.listId === this.selectedCountViewList);
+      selectedList = this.lists.find(list => list.id === this.selectedCountViewList);
     } else {
       // No list selected, show message to select a list
       container.innerHTML = '<p class="empty-state">Please select a list to view observations</p>';
+      if (titleElement) {
+        titleElement.textContent = 'Ongoing Observations';
+      }
       return;
+    }
+
+    // Update title with list name
+    if (titleElement && selectedList) {
+      titleElement.textContent = `Ongoing Observations in ${selectedList.name}`;
     }
 
     if (observations.length === 0) {
@@ -2268,7 +2246,6 @@ class ButterflyCountApp {
       
       // Reload observations data and update UI while preserving list selection
       this.observations = await this.getAllFromStore('observations');
-      this.updateStats();
       this.renderObservations();
       this.renderLists(); // Update Lists cards after deletion
       
@@ -2460,7 +2437,6 @@ class ButterflyCountApp {
       this.showToast('Observation updated successfully!', 'success');
       
       // Refresh display
-      this.updateStats();
       this.renderObservations();
       this.renderLists(); // Update Lists cards with edited observation data
     } catch (error) {
@@ -2547,7 +2523,6 @@ class ButterflyCountApp {
       this.showToast('Additional observation added successfully!', 'success');
       
       // Refresh display
-      this.updateStats();
       this.renderObservations();
       this.renderLists(); // Update Lists cards with new observation data
     } catch (error) {
