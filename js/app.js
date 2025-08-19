@@ -2,7 +2,7 @@
 
 class ButterflyCountApp {
   constructor() {
-    this.version = '3.2.0';
+    this.version = '3.2.1';
     this.currentView = 'butterflies';
     this.currentButterflyView = 'family'; // 'family' or 'species'
     this.currentList = null;
@@ -409,6 +409,8 @@ class ButterflyCountApp {
           if (form) {
             form.reset();
           }
+          // Reset custom location fields to hidden state
+          this.hideCustomLocationFields();
         }
         this.hideModal(modalId);
       });
@@ -3243,6 +3245,9 @@ class ButterflyCountApp {
     const listDateInput = document.getElementById('listDateInput');
     const listStartTimeInput = document.getElementById('listStartTimeInput');
     
+    // Reset custom location fields to hidden state
+    this.hideCustomLocationFields();
+    
     if (listDateInput && listStartTimeInput) {
       // Get current date and time in IST
       const now = new Date();
@@ -3283,6 +3288,12 @@ class ButterflyCountApp {
       modal.classList.add('hidden');
       modal.style.display = 'none';
       document.body.style.overflow = '';
+      
+      // Reset custom location fields when closing create list modal
+      if (modalId === 'createListModal') {
+        this.hideCustomLocationFields();
+      }
+      
       console.log('Modal hidden:', modalId);
     }
   }
