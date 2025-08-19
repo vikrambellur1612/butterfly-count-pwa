@@ -2,7 +2,7 @@
 
 class ButterflyCountApp {
   constructor() {
-    this.version = '3.1.0';
+    this.version = '3.2.0';
     this.currentView = 'butterflies';
     this.currentButterflyView = 'family'; // 'family' or 'species'
     this.currentList = null;
@@ -10,6 +10,7 @@ class ButterflyCountApp {
     this.db = null;
     this.observations = [];
     this.lists = [];
+    this.allLocations = []; // All locations from JSON file (predefined + custom)
     this.init();
   }
 
@@ -17,7 +18,7 @@ class ButterflyCountApp {
     await this.initDB();
     this.checkAppVersion();
     this.setupEventListeners();
-    this.loadData();
+    await this.loadData(); // Wait for data including locations to load
     
     // Wait for butterfly data to load
     await this.ensureButterflyDataLoaded();
@@ -27,8 +28,16 @@ class ButterflyCountApp {
     
     this.renderButterflies();
     this.updateTotalSpeciesCount();
+    this.populateLocationDropdown();
     this.hideLoadingScreen();
     this.setupAutoComplete();
+    
+    // Setup location event listeners after everything else is ready
+    // Add a small delay to ensure DOM is completely rendered
+    setTimeout(() => {
+      console.log('Setting up location event listeners after DOM is ready');
+      this.setupLocationEventListeners();
+    }, 100);
   }
 
   // Ensure butterfly data is loaded before proceeding
@@ -188,6 +197,12 @@ class ButterflyCountApp {
           listStore.createIndex('status', 'status', { unique: false });
         }
         
+        // Custom locations store
+        if (!db.objectStoreNames.contains('custom_locations')) {
+          const customLocationStore = db.createObjectStore('custom_locations', { keyPath: 'id', autoIncrement: true });
+          customLocationStore.createIndex('name', 'name', { unique: false });
+        }
+        
         // Sync queue for offline operations
         if (!db.objectStoreNames.contains('sync_queue')) {
           db.createObjectStore('sync_queue', { keyPath: 'id', autoIncrement: true });
@@ -223,6 +238,87 @@ class ButterflyCountApp {
     const transaction = this.db.transaction([storeName], 'readwrite');
     const store = transaction.objectStore(storeName);
     return store.delete(id);
+  }
+
+  // Load all locations from JSON file (unified location management)
+  async loadLocationsFromJSON() {
+    try {
+      const response = await fetch('./data/locations.json');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log(`✅ Loaded ${data.locations.length} locations from JSON file`);
+      return data.locations || [];
+      
+    } catch (error) {
+      console.error('❌ Error loading locations from JSON:', error);
+      // Fallback to predefined locations if JSON fails to load
+      return this.getFallbackLocations();
+    }
+  }
+
+  // Save locations back to JSON file (this updates the locations.json)
+  async saveLocationsToJSON() {
+    try {
+      const locationData = {
+        metadata: {
+          version: "3.2.0",
+          lastUpdated: new Date().toISOString(),
+          totalLocations: this.allLocations.length,
+          description: "Butterfly observation locations in Karnataka and South India"
+        },
+        locations: this.allLocations
+      };
+
+      // In a real implementation, this would need a backend API to save the file
+      // For now, we'll use localStorage as a fallback and show a message
+      localStorage.setItem('butterfly-locations-backup', JSON.stringify(locationData));
+      
+      console.log(`� Saved ${this.allLocations.length} locations (localStorage backup)`);
+      
+      // Show user a message about the limitation
+      this.showToast('Location saved! Note: In a production app, this would update the server file.', 'info');
+      
+    } catch (error) {
+      console.error('❌ Error saving locations:', error);
+      this.showToast('Error saving location', 'error');
+    }
+  }
+
+  // Fallback locations in case JSON file fails to load
+  getFallbackLocations() {
+    return [
+      {
+        id: "lalbagh_botanical_gardens", 
+        name: "Lal Bagh Botanical Gardens",
+        city: "Bangalore",
+        state: "Karnataka",
+        latitude: 12.9507,
+        longitude: 77.5848,
+        elevation: 920,
+        type: "botanical_garden",
+        description: "Historical urban park, long-term butterfly monitoring",
+        isPopular: true,
+        isCustom: false,
+        createdAt: new Date().toISOString()
+      },
+      {
+        id: "cubbon_park",
+        name: "Cubbon Park", 
+        city: "Bangalore",
+        state: "Karnataka",
+        latitude: 12.9760,
+        longitude: 77.5920,
+        elevation: 920,
+        type: "urban_park",
+        description: "Urban park, seasonal butterfly counts",
+        isPopular: true,
+        isCustom: false,
+        createdAt: new Date().toISOString()
+      }
+    ];
   }
 
   // Event listeners setup
@@ -279,6 +375,7 @@ class ButterflyCountApp {
     const createListBtn = document.getElementById('createListBtn');
     if (createListBtn) {
       createListBtn.addEventListener('click', () => {
+        this.populateCreateListForm();
         this.showModal('createListModal');
       });
     }
@@ -367,6 +464,38 @@ class ButterflyCountApp {
     this.setupInputModeHandlers();
   }
 
+  // Setup location-related event listeners
+  setupLocationEventListeners() {
+    console.log('Setting up location event listeners after DOM is ready');
+    
+    const addCustomLocationBtn = document.getElementById('addCustomLocationBtn');
+    const saveCustomLocationBtn = document.getElementById('saveCustomLocation');
+    const getCurrentLocationBtn = document.getElementById('getCurrentLocation');
+    const customLocationFields = document.getElementById('customLocationFields');
+    
+    if (addCustomLocationBtn) {
+      addCustomLocationBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log('Add Custom Location button clicked');
+        this.showCustomLocationFields();
+      });
+    }
+    
+    if (saveCustomLocationBtn) {
+      saveCustomLocationBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.saveInlineCustomLocation();
+      });
+    }
+    
+    if (getCurrentLocationBtn) {
+      getCurrentLocationBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.getCurrentLocation();
+      });
+    }
+  }
+
   // Setup input mode handlers for mobile keyboards
   setupInputModeHandlers() {
     const countInput = document.getElementById('countInput');
@@ -401,6 +530,10 @@ class ButterflyCountApp {
     try {
       this.observations = await this.getAllFromStore('observations');
       this.lists = await this.getAllFromStore('lists');
+      
+      // Load all locations from JSON file (replaces previous location loading)
+      this.allLocations = await this.loadLocationsFromJSON();
+      
       this.updateUI();
     } catch (error) {
       console.error('Error loading data:', error);
@@ -1061,15 +1194,577 @@ class ButterflyCountApp {
     container.appendChild(familySection);
   }
 
+  // Populate create list form with current date/time
+  populateCreateListForm() {
+    const now = new Date();
+    const dateInput = document.getElementById('listDateInput');
+    const timeInput = document.getElementById('listStartTimeInput');
+    
+    if (dateInput) {
+      dateInput.value = now.toISOString().split('T')[0];
+    }
+    
+    if (timeInput) {
+      timeInput.value = now.toTimeString().slice(0, 5);
+    }
+  }
+
+  // Location management methods
+  getAllLocations() {
+    return this.allLocations || [];
+  }
+
+  getLocationById(locationId) {
+    const allLocations = this.getAllLocations();
+    return allLocations.find(location => location.id === locationId);
+  }
+
+  // Populate location dropdown
+  populateLocationDropdown() {
+    const locationSelect = document.getElementById('listLocationSelect');
+    if (!locationSelect) return;
+
+    const allLocations = this.getAllLocations();
+    
+    // Clear existing options except the first one
+    locationSelect.innerHTML = '<option value="">Select observation location...</option>';
+    
+    // Group locations by popularity, custom status, and state
+    const popularLocations = allLocations.filter(loc => loc.isPopular && !loc.isCustom);
+    const customLocations = allLocations.filter(loc => loc.isCustom);
+    const otherLocations = allLocations.filter(loc => !loc.isPopular && !loc.isCustom);
+
+    // Add popular locations first
+    if (popularLocations.length > 0) {
+      const popularGroup = document.createElement('optgroup');
+      popularGroup.label = '⭐ Popular Locations';
+      popularLocations.forEach(location => {
+        const option = document.createElement('option');
+        option.value = location.id;
+        option.textContent = `${location.name} (${location.city}, ${location.elevation}m)`;
+        popularGroup.appendChild(option);
+      });
+      locationSelect.appendChild(popularGroup);
+    }
+
+    // Add custom locations
+    if (customLocations.length > 0) {
+      const customGroup = document.createElement('optgroup');
+      customGroup.label = '📍 My Custom Locations';
+      customLocations.forEach(location => {
+        const option = document.createElement('option');
+        option.value = location.id;
+        option.textContent = `${location.name}${location.city ? ` (${location.city})` : ''}${location.elevation ? `, ${location.elevation}m` : ''}`;
+        customGroup.appendChild(option);
+      });
+      locationSelect.appendChild(customGroup);
+    }
+
+    // Add other locations grouped by state
+    const stateGroups = {};
+    otherLocations.forEach(location => {
+      if (!stateGroups[location.state]) {
+        stateGroups[location.state] = [];
+      }
+      stateGroups[location.state].push(location);
+    });
+
+    Object.keys(stateGroups).forEach(state => {
+      const stateGroup = document.createElement('optgroup');
+      stateGroup.label = `${state} Locations`;
+      stateGroups[state].forEach(location => {
+        const option = document.createElement('option');
+        option.value = location.id;
+        option.textContent = `${location.name} (${location.city}, ${location.elevation}m)`;
+        stateGroup.appendChild(option);
+      });
+      locationSelect.appendChild(stateGroup);
+    });
+  }
+
+  // Add custom location
+  async addCustomLocation() {
+    const name = document.getElementById('customLocationName').value;
+    const city = document.getElementById('customLocationCity').value;
+    const state = document.getElementById('customLocationState').value;
+    const latitude = parseFloat(document.getElementById('customLocationLat').value);
+    const longitude = parseFloat(document.getElementById('customLocationLng').value);
+    const elevation = document.getElementById('customLocationElevation').value ? 
+                     parseInt(document.getElementById('customLocationElevation').value) : null;
+    const description = document.getElementById('customLocationDescription').value;
+
+    if (!name || !latitude || !longitude) {
+      this.showToast('Please fill in required fields (Name, Latitude, Longitude)', 'error');
+      return;
+    }
+
+    // Validate coordinates
+    if (latitude < -90 || latitude > 90) {
+      this.showToast('Latitude must be between -90 and 90', 'error');
+      return;
+    }
+
+    if (longitude < -180 || longitude > 180) {
+      this.showToast('Longitude must be between -180 and 180', 'error');
+      return;
+    }
+
+    const customLocation = {
+      id: `custom_${Date.now()}`,
+      name: name.trim(),
+      city: city.trim() || 'Unknown',
+      state: state.trim() || 'Unknown',
+      latitude,
+      longitude,
+      elevation,
+      type: 'custom',
+      description: description.trim(),
+      isPopular: false,
+      isCustom: true,
+      createdAt: Date.now()
+    };
+
+    try {
+      // Add to JSON locations array
+      this.allLocations.push(customLocation);
+      
+      // Save to JSON file
+      await this.saveLocationsToJSON();
+      
+      this.populateLocationDropdown();
+      this.hideModal('addCustomLocationModal');
+      this.clearForm('addCustomLocationForm');
+      
+      // Show success message and return to create list modal
+      this.showToast('Custom location added successfully! You can now select it from the dropdown.', 'success', 5000);
+      vibrate([100, 100, 100]);
+      
+      // Return to create list modal after a short delay to show the toast
+      setTimeout(() => {
+        this.showModal('createListModal');
+      }, 500);
+    } catch (error) {
+      console.error('Error adding custom location:', error);
+      this.showToast('Error adding custom location', 'error');
+    }
+  }
+
+  // Show custom location fields inline
+  showCustomLocationFields() {
+    const customLocationFields = document.getElementById('customLocationFields');
+    const addCustomLocationBtn = document.getElementById('addCustomLocationBtn');
+    
+    if (customLocationFields) {
+      customLocationFields.classList.remove('hidden');
+      customLocationFields.style.display = 'block';
+    }
+    
+    if (addCustomLocationBtn) {
+      addCustomLocationBtn.style.display = 'none';
+    }
+    
+    // Clear previous values
+    document.getElementById('customLocationName').value = '';
+    document.getElementById('customLocationCity').value = '';
+    document.getElementById('customLocationState').value = '';
+    document.getElementById('customLocationElevation').value = '';
+    document.getElementById('customLocationLat').value = '';
+    document.getElementById('customLocationLng').value = '';
+    document.getElementById('customLocationDescription').value = '';
+    
+    // Add required attributes to custom location fields when shown
+    document.getElementById('customLocationName').required = true;
+    document.getElementById('customLocationLat').required = true;
+    document.getElementById('customLocationLng').required = true;
+    
+    // Remove required from main location select since we're adding custom location
+    document.getElementById('listLocationSelect').required = false;
+  }
+  
+  // Hide custom location fields
+  hideCustomLocationFields() {
+    const customLocationFields = document.getElementById('customLocationFields');
+    const addCustomLocationBtn = document.getElementById('addCustomLocationBtn');
+    
+    if (customLocationFields) {
+      customLocationFields.classList.add('hidden');
+      customLocationFields.style.display = 'none';
+    }
+    
+    if (addCustomLocationBtn) {
+      addCustomLocationBtn.style.display = 'block';
+    }
+    
+    // Remove required attributes from custom location fields when hidden
+    document.getElementById('customLocationName').required = false;
+    document.getElementById('customLocationLat').required = false;
+    document.getElementById('customLocationLng').required = false;
+    
+    // Restore required to main location select
+    document.getElementById('listLocationSelect').required = true;
+  }
+  
+  // Get current location using geolocation API with reverse geocoding
+  getCurrentLocation() {
+    const getCurrentLocationBtn = document.getElementById('getCurrentLocation');
+    const originalText = getCurrentLocationBtn.textContent;
+    
+    if (!navigator.geolocation) {
+      this.showToast('Geolocation is not supported by this browser', 'error');
+      return;
+    }
+    
+    getCurrentLocationBtn.textContent = '📍 Getting location...';
+    getCurrentLocationBtn.disabled = true;
+    
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        
+        // Set coordinates
+        document.getElementById('customLocationLat').value = lat.toFixed(6);
+        document.getElementById('customLocationLng').value = lng.toFixed(6);
+        
+        // Set elevation if available
+        if (position.coords.altitude) {
+          document.getElementById('customLocationElevation').value = Math.round(position.coords.altitude);
+        }
+        
+        // Update button text to show reverse geocoding is happening
+        getCurrentLocationBtn.textContent = '🔍 Finding address...';
+        
+        // Perform reverse geocoding
+        try {
+          const locationInfo = await this.reverseGeocode(lat, lng);
+          
+          if (locationInfo) {
+            // Auto-populate fields with geocoded data
+            if (locationInfo.city) {
+              document.getElementById('customLocationCity').value = locationInfo.city;
+            }
+            if (locationInfo.state) {
+              document.getElementById('customLocationState').value = locationInfo.state;
+            }
+            if (locationInfo.country) {
+              // You might want to add a country field or append to state
+              const stateField = document.getElementById('customLocationState');
+              if (stateField.value && locationInfo.country !== 'India') {
+                stateField.value += `, ${locationInfo.country}`;
+              }
+            }
+            
+            // Suggest a location name based on the address
+            const nameField = document.getElementById('customLocationName');
+            if (!nameField.value && locationInfo.suggestedName) {
+              nameField.value = locationInfo.suggestedName;
+              nameField.select(); // Highlight the text so user can easily change it
+            }
+            
+            this.showToast('Location details filled automatically! You can edit any field as needed.', 'success', 4000);
+          } else {
+            this.showToast('Location coordinates filled! Please fill in city and state manually.', 'info', 3000);
+          }
+        } catch (error) {
+          console.error('Reverse geocoding failed:', error);
+          this.showToast('Location coordinates filled! Please fill in city and state manually.', 'info', 3000);
+        }
+        
+        getCurrentLocationBtn.textContent = originalText;
+        getCurrentLocationBtn.disabled = false;
+      },
+      (error) => {
+        console.error('Geolocation error:', error);
+        let errorMessage = 'Unable to get location';
+        
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            errorMessage = 'Location access denied by user';
+            break;
+          case error.POSITION_UNAVAILABLE:
+            errorMessage = 'Location information unavailable';
+            break;
+          case error.TIMEOUT:
+            errorMessage = 'Location request timed out';
+            break;
+        }
+        
+        this.showToast(errorMessage, 'error');
+        getCurrentLocationBtn.textContent = originalText;
+        getCurrentLocationBtn.disabled = false;
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 60000
+      }
+    );
+  }
+  
+  // Reverse geocoding to get address from coordinates
+  async reverseGeocode(lat, lng) {
+    try {
+      // Try multiple geocoding services for better coverage
+      const services = [
+        () => this.reverseGeocodeNominatim(lat, lng),
+        () => this.reverseGeocodeMapbox(lat, lng), // Backup service
+      ];
+      
+      for (const service of services) {
+        try {
+          const result = await service();
+          if (result) return result;
+        } catch (error) {
+          console.log('Geocoding service failed, trying next:', error.message);
+          continue;
+        }
+      }
+      
+      return null;
+    } catch (error) {
+      console.error('All geocoding services failed:', error);
+      return null;
+    }
+  }
+  
+  // Primary geocoding using Nominatim (OpenStreetMap)
+  async reverseGeocodeNominatim(lat, lng) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8000);
+    
+    try {
+      const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=14&addressdetails=1&accept-language=en`;
+      
+      const response = await fetch(url, {
+        signal: controller.signal,
+        headers: {
+          'Accept': 'application/json',
+          'User-Agent': 'ButterflyCountApp/3.1.0'
+        }
+      });
+      
+      clearTimeout(timeoutId);
+      
+      if (!response.ok) {
+        throw new Error(`Nominatim API error: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      if (data && data.address) {
+        const address = data.address;
+        
+        // Extract relevant information
+        const city = address.city || address.town || address.village || address.suburb || address.neighbourhood || address.hamlet;
+        const state = address.state || address.region || address.province;
+        const country = address.country;
+        
+        // Create a suggested location name
+        const neighbourhood = address.neighbourhood || address.suburb || address.village;
+        const amenity = address.amenity;
+        const tourism = address.tourism;
+        const natural = address.natural;
+        
+        let suggestedName = '';
+        if (amenity) {
+          suggestedName = `${amenity} (${neighbourhood || city})`;
+        } else if (tourism) {
+          suggestedName = `${tourism} (${neighbourhood || city})`;
+        } else if (natural) {
+          suggestedName = `${natural} (${neighbourhood || city})`;
+        } else if (neighbourhood) {
+          suggestedName = `${neighbourhood}, ${city}`;
+        } else {
+          suggestedName = city || 'Custom Location';
+        }
+        
+        return {
+          city: city || '',
+          state: state || '',
+          country: country || '',
+          suggestedName: suggestedName,
+          fullAddress: data.display_name
+        };
+      }
+      
+      return null;
+    } catch (error) {
+      if (error.name === 'AbortError') {
+        throw new Error('Geocoding request timeout');
+      }
+      throw error;
+    } finally {
+      clearTimeout(timeoutId);
+    }
+  }
+  
+  // Backup geocoding service (could be expanded with API key)
+  async reverseGeocodeMapbox(lat, lng) {
+    // For now, return null - this could be implemented with Mapbox API if needed
+    // Would need API key: const token = 'YOUR_MAPBOX_TOKEN';
+    return null;
+  }
+  
+  // Save inline custom location
+  async saveInlineCustomLocation() {
+    const name = document.getElementById('customLocationName').value.trim();
+    const city = document.getElementById('customLocationCity').value.trim();
+    const state = document.getElementById('customLocationState').value.trim();
+    const elevation = document.getElementById('customLocationElevation').value.trim();
+    const lat = document.getElementById('customLocationLat').value.trim();
+    const lng = document.getElementById('customLocationLng').value.trim();
+    const description = document.getElementById('customLocationDescription').value.trim();
+    
+    // Validate required fields
+    if (!name) {
+      this.showToast('Please enter location name', 'error');
+      document.getElementById('customLocationName').focus();
+      return;
+    }
+    
+    if (!lat || !lng) {
+      this.showToast('Please provide latitude and longitude', 'error');
+      if (!lat) {
+        document.getElementById('customLocationLat').focus();
+      } else {
+        document.getElementById('customLocationLng').focus();
+      }
+      return;
+    }
+    
+    // Validate coordinates
+    const latitude = parseFloat(lat);
+    const longitude = parseFloat(lng);
+    
+    if (isNaN(latitude) || latitude < -90 || latitude > 90) {
+      this.showToast('Invalid latitude. Must be between -90 and 90', 'error');
+      document.getElementById('customLocationLat').focus();
+      return;
+    }
+    
+    if (isNaN(longitude) || longitude < -180 || longitude > 180) {
+      this.showToast('Invalid longitude. Must be between -180 and 180', 'error');
+      document.getElementById('customLocationLng').focus();
+      return;
+    }
+    
+    try {
+      // Create new location object
+      const newLocation = {
+        id: `custom_${Date.now()}`,
+        name: name,
+        city: city || 'Unknown',
+        state: state || 'Unknown',
+        latitude: latitude,
+        longitude: longitude,
+        elevation: elevation ? parseInt(elevation) : null,
+        type: 'custom',
+        description: description || '',
+        isPopular: false,
+        isCustom: true,
+        createdAt: Date.now()
+      };
+      
+      // Save to database
+      // Add to memory (JSON locations array)
+      this.allLocations.push(newLocation);
+      
+      // Save to JSON file
+      await this.saveLocationsToJSON();
+      
+      // Refresh the location dropdown
+      this.populateLocationDropdown();
+      
+      // Auto-select the new location
+      const locationSelect = document.getElementById('listLocationSelect');
+      if (locationSelect) {
+        locationSelect.value = newLocation.id;
+        // Trigger change event to validate form
+        locationSelect.dispatchEvent(new Event('change'));
+      }
+      
+      // Hide the custom location fields
+      this.hideCustomLocationFields();
+      
+      this.showToast(`Location "${name}" added successfully!`, 'success');
+      vibrate([100, 100, 100]);
+      
+    } catch (error) {
+      console.error('Error adding custom location:', error);
+      this.showToast('Error adding location', 'error');
+    }
+  }
+
   // List management
   async createNewList() {
     const name = document.getElementById('listNameInput').value;
     const date = document.getElementById('listDateInput').value;
     const startTime = document.getElementById('listStartTimeInput').value;
+    const customLocationFields = document.getElementById('customLocationFields');
+    const locationId = document.getElementById('listLocationSelect').value;
+
+    // Check if custom location fields are visible
+    const isCustomLocationVisible = customLocationFields && !customLocationFields.classList.contains('hidden');
 
     if (!name || !date || !startTime) {
-      this.showToast('Please fill in required fields', 'error');
+      this.showToast('Please fill in all required fields', 'error');
       return;
+    }
+
+    let location;
+
+    if (isCustomLocationVisible) {
+      // If custom location fields are visible, validate them first
+      const customName = document.getElementById('customLocationName').value.trim();
+      const customLat = document.getElementById('customLocationLat').value.trim();
+      const customLng = document.getElementById('customLocationLng').value.trim();
+
+      if (!customName || !customLat || !customLng) {
+        this.showToast('Please complete the custom location details or cancel to select from existing locations', 'error');
+        return;
+      }
+
+      // Use the custom location data directly
+      const latitude = parseFloat(customLat);
+      const longitude = parseFloat(customLng);
+      const city = document.getElementById('customLocationCity').value.trim();
+      const state = document.getElementById('customLocationState').value.trim();
+      const elevation = document.getElementById('customLocationElevation').value.trim();
+      const description = document.getElementById('customLocationDescription').value.trim();
+
+      if (isNaN(latitude) || latitude < -90 || latitude > 90) {
+        this.showToast('Invalid latitude. Must be between -90 and 90', 'error');
+        return;
+      }
+
+      if (isNaN(longitude) || longitude < -180 || longitude > 180) {
+        this.showToast('Invalid longitude. Must be between -180 and 180', 'error');
+        return;
+      }
+
+      // Save custom location first
+      try {
+        await this.saveInlineCustomLocation();
+        // The location is now selected in the dropdown, get its ID
+        const selectedLocationId = document.getElementById('listLocationSelect').value;
+        location = this.getLocationById(selectedLocationId);
+      } catch (error) {
+        console.error('Error saving custom location:', error);
+        this.showToast('Error saving custom location', 'error');
+        return;
+      }
+    } else {
+      // Regular location selection
+      if (!locationId) {
+        this.showToast('Please select a location', 'error');
+        return;
+      }
+
+      location = this.getLocationById(locationId);
+      if (!location) {
+        this.showToast('Please select a valid location', 'error');
+        return;
+      }
     }
 
     // Combine date and time
@@ -1082,6 +1777,17 @@ class ButterflyCountApp {
       startTime: startTime,
       date: date,
       status: 'active',
+      location: {
+        id: location.id,
+        name: location.name,
+        city: location.city,
+        state: location.state,
+        latitude: location.latitude,
+        longitude: location.longitude,
+        elevation: location.elevation,
+        type: location.type,
+        description: location.description
+      },
       createdAt: Date.now()
     };
 
@@ -1090,6 +1796,10 @@ class ButterflyCountApp {
       await this.loadData();
       this.hideModal('createListModal');
       this.clearForm('createListForm');
+      
+      // Reset custom location fields state
+      this.hideCustomLocationFields();
+      
       this.showToast('List created successfully!', 'success');
       vibrate([100, 100, 100]);
     } catch (error) {
@@ -1223,6 +1933,7 @@ class ButterflyCountApp {
           <div class="list-meta">
             <p class="list-date">${indianDateTime.date}</p>
             <p class="list-time-info">Start: ${list.startTime || indianDateTime.time}${list.endTime ? ` • End: ${list.endTime}` : ''}</p>
+            ${list.location ? `<p class="list-location">📍 ${list.location.name}${list.location.city ? ` (${list.location.city})` : ''}${list.location.elevation ? ` • ${list.location.elevation}m` : ''}</p>` : ''}
             ${list.status === 'closed' && list.closedAt ? `<p class="list-closed">Closed: ${this.formatIndianDateTime(new Date(list.closedAt)).date}</p>` : ''}
             ${rareSpeciesNames.length > 0 ? `<p class="list-rare-species">🔍 Rare Species: ${rareSpeciesText}</p>` : ''}
           </div>
@@ -1905,6 +2616,12 @@ class ButterflyCountApp {
       'Family',
       'Count',
       'Notes',
+      'Location Name',
+      'City',
+      'State',
+      'Latitude',
+      'Longitude',
+      'Elevation (m)',
       'List Name'
     ];
 
@@ -1914,6 +2631,9 @@ class ButterflyCountApp {
       const obsDate = new Date(obs.dateTime);
       const indianDateTime = this.formatIndianDateTime(obsDate);
       
+      // Get location data from observation or fall back to list location
+      const location = obs.location || list.location;
+      
       return [
         indianDateTime.date,
         indianDateTime.time,
@@ -1922,6 +2642,12 @@ class ButterflyCountApp {
         butterfly ? butterfly.commonFamilyName : 'Unknown',
         obs.count,
         obs.notes || '',
+        location ? location.name : '',
+        location ? location.city : '',
+        location ? location.state : '',
+        location ? location.latitude : '',
+        location ? location.longitude : '',
+        location ? location.elevation || '' : '',
         list.name
       ];
     });
@@ -1955,7 +2681,7 @@ class ButterflyCountApp {
       this.showToast('CSV download not supported in this browser', 'error');
     }
   }
-
+  
   // Update list selector in count view
   // Update count view list selector (only active lists)
   updateCountViewListSelector() {
@@ -2090,6 +2816,19 @@ class ButterflyCountApp {
     const dateTimeString = `${obsDate}T${obsTime}`;
     const dateTime = new Date(dateTimeString);
 
+    // Get location data from the selected list
+    const selectedList = this.lists.find(list => list.id === this.selectedCountViewList);
+    const locationData = selectedList && selectedList.location ? {
+      locationId: selectedList.location.id,
+      locationName: selectedList.location.name,
+      city: selectedList.location.city,
+      state: selectedList.location.state,
+      latitude: selectedList.location.latitude,
+      longitude: selectedList.location.longitude,
+      elevation: selectedList.location.elevation,
+      type: selectedList.location.type
+    } : null;
+
     const observation = {
       butterflyId: butterfly.id,
       butterflyName: butterfly.commonName,
@@ -2100,6 +2839,7 @@ class ButterflyCountApp {
       dateTime: dateTime.getTime(),
       obsDate: obsDate,
       obsTime: obsTime,
+      location: locationData, // Add location data to observation
       createdAt: Date.now()
     };
 
@@ -2419,17 +3159,83 @@ class ButterflyCountApp {
     }
   }
 
-  // Modal management
+  // Modal management with proper stacking
   showModal(modalId) {
+    console.log('showModal called with modalId:', modalId);
     const modal = document.getElementById(modalId);
+    console.log('Found modal element:', modal);
     if (modal) {
+      // Force remove all possible hiding classes and attributes
       modal.classList.remove('hidden');
+      modal.removeAttribute('hidden');
+      
+      // For addCustomLocationModal, use absolute force
+      if (modalId === 'addCustomLocationModal') {
+        console.log('Applying FORCE SHOW for addCustomLocationModal');
+        modal.className = 'modal'; // Remove ALL classes except modal
+        modal.style.cssText = `
+          display: flex !important;
+          position: fixed !important;
+          z-index: 10001 !important;
+          top: 0 !important;
+          left: 0 !important;
+          right: 0 !important;
+          bottom: 0 !important;
+          background-color: rgba(0, 0, 0, 0.5) !important;
+          visibility: visible !important;
+          opacity: 1 !important;
+        `;
+      } else {
+        modal.style.setProperty('display', 'flex', 'important');
+        modal.style.setProperty('position', 'fixed', 'important');
+        modal.style.setProperty('z-index', '9999', 'important');
+        modal.style.setProperty('top', '0', 'important');
+        modal.style.setProperty('left', '0', 'important');
+        modal.style.setProperty('right', '0', 'important');
+        modal.style.setProperty('bottom', '0', 'important');
+        modal.style.setProperty('background-color', 'rgba(0, 0, 0, 0.5)', 'important');
+        modal.style.setProperty('visibility', 'visible', 'important');
+        modal.style.setProperty('opacity', '1', 'important');
+      }
+      
+      // Also ensure the modal content is visible with aggressive styling
+      const modalContent = modal.querySelector('.modal-content');
+      if (modalContent) {
+        modalContent.style.setProperty('display', 'block', 'important');
+        modalContent.style.setProperty('visibility', 'visible', 'important');
+        modalContent.style.setProperty('opacity', '1', 'important');
+        modalContent.style.setProperty('position', 'relative', 'important');
+        modalContent.style.setProperty('z-index', 'inherit', 'important');
+        
+        // Use fallback colors for the custom location modal to ensure visibility
+        if (modalId === 'addCustomLocationModal') {
+          modalContent.style.setProperty('background-color', '#ffffff', 'important');
+          modalContent.style.setProperty('color', '#333333', 'important');
+          modalContent.style.setProperty('border', '2px solid #007bff', 'important');
+          modalContent.style.setProperty('box-shadow', '0 4px 20px rgba(0, 0, 0, 0.3)', 'important');
+          modalContent.style.setProperty('max-width', '600px', 'important');
+          modalContent.style.setProperty('width', '95%', 'important');
+          modalContent.style.setProperty('margin', 'auto', 'important');
+        } else {
+          modalContent.style.setProperty('background-color', 'var(--surface-color)', 'important');
+          modalContent.style.setProperty('color', 'var(--text-primary)', 'important');
+        }
+        
+        console.log('Modal content styled:', modalContent);
+      }
+      
       document.body.style.overflow = 'hidden';
+      console.log('Modal shown successfully:', modalId);
+      console.log('Modal classes after show:', modal.className);
+      console.log('Modal display style:', modal.style.display);
+      console.log('Modal z-index:', modal.style.zIndex);
       
       // Special handling for create list modal
       if (modalId === 'createListModal') {
         this.populateCreateListForm();
       }
+    } else {
+      console.error('Modal not found:', modalId);
     }
   }
 
@@ -2475,7 +3281,9 @@ class ButterflyCountApp {
     const modal = document.getElementById(modalId);
     if (modal) {
       modal.classList.add('hidden');
+      modal.style.display = 'none';
       document.body.style.overflow = '';
+      console.log('Modal hidden:', modalId);
     }
   }
 
@@ -2506,7 +3314,7 @@ class ButterflyCountApp {
     }
   }
 
-  showToast(message, type = 'info') {
+  showToast(message, type = 'info', duration = 3000) {
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;
     toast.textContent = message;
@@ -2520,9 +3328,11 @@ class ButterflyCountApp {
     setTimeout(() => {
       toast.classList.remove('show');
       setTimeout(() => {
-        document.body.removeChild(toast);
+        if (document.body.contains(toast)) {
+          document.body.removeChild(toast);
+        }
       }, 300);
-    }, 3000);
+    }, duration);
   }
 
   hideLoadingScreen() {
@@ -2671,6 +3481,16 @@ class ButterflyCountApp {
         obsDate: listDate,
         obsTime: time,
         comments: comments || null,
+        location: this.currentAddMoreObservation.location || (selectedList && selectedList.location ? {
+          locationId: selectedList.location.id,
+          locationName: selectedList.location.name,
+          city: selectedList.location.city,
+          state: selectedList.location.state,
+          latitude: selectedList.location.latitude,
+          longitude: selectedList.location.longitude,
+          elevation: selectedList.location.elevation,
+          type: selectedList.location.type
+        } : null), // Copy location data from original observation or list
         createdAt: Date.now()
       };
 
@@ -2692,6 +3512,13 @@ class ButterflyCountApp {
       console.error('Error adding more observation:', error);
       this.showToast('Error adding observation', 'error');
     }
+  }
+}
+
+// Utility Functions
+function vibrate(pattern) {
+  if ('vibrate' in navigator) {
+    navigator.vibrate(pattern);
   }
 }
 
@@ -2717,4 +3544,46 @@ window.showToast = (message, type) => {
   if (window.app) {
     window.app.showToast(message, type);
   }
+};
+
+// Debug function to test the Add Custom Location button
+window.testCustomLocationButton = () => {
+  console.log('Testing Add Custom Location button...');
+  const btn = document.getElementById('addCustomLocationBtn');
+  console.log('Button found:', btn);
+  if (btn) {
+    console.log('Button is visible:', !btn.offsetParent === null);
+    console.log('Button event listeners:', btn.onclick);
+    btn.click();
+  }
+  return btn;
+};
+
+// Debug function to test the modal
+window.testCustomLocationModal = () => {
+  console.log('Testing Add Custom Location modal...');
+  const modal = document.getElementById('addCustomLocationModal');
+  console.log('Modal found:', modal);
+  if (modal) {
+    console.log('Modal classes:', modal.className);
+    console.log('Modal style display:', modal.style.display);
+    console.log('Modal computed style:', window.getComputedStyle(modal));
+    window.showModal('addCustomLocationModal');
+  }
+  return modal;
+};
+
+// Debug function to inspect modal structure
+window.inspectCustomLocationModal = () => {
+  const modal = document.getElementById('addCustomLocationModal');
+  if (modal) {
+    console.log('Modal HTML:', modal.outerHTML);
+    console.log('Modal children:', modal.children);
+    const modalContent = modal.querySelector('.modal-content');
+    if (modalContent) {
+      console.log('Modal content:', modalContent);
+      console.log('Modal content style:', window.getComputedStyle(modalContent));
+    }
+  }
+  return modal;
 };

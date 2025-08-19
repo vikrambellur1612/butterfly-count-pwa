@@ -1,38 +1,38 @@
 // Service Worker for Butterfly Count PWA
 
-const CACHE_NAME = 'butterfly-count-v3.1.0';
-const STATIC_CACHE = 'butterfly-count-static-v3.1.0';
-const DYNAMIC_CACHE = 'butterfly-count-dynamic-v3.1.0';
+const CACHE_NAME = 'butterfly-count-v3.2.0';
+const STATIC_CACHE = 'butterfly-count-static-v3.2.0';
+const DYNAMIC_CACHE = 'butterfly-count-dynamic-v3.2.0';
 
 // Files to cache for offline functionality
 const STATIC_FILES = [
   './',
   './index.html',
-  './css/styles.css?v=3.0.0',
-  './css/mobile.css?v=3.0.0',
-  './js/app.js?v=3.0.0',
-  './js/sw-register.js?v=3.0.0',
-  './js/butterflies-data.js?v=3.0.0',
+  './css/styles.css?v=3.2.0',
+  './css/mobile.css?v=3.2.0',
+  './js/app.js?v=3.2.0',
+  './js/sw-register.js?v=3.2.0',
+  './js/butterflies-data.js?v=3.2.0',
   './butterflies-data.json',
-  './manifest.json',
-  './icons/icon-192x192.png?v=3.0.0',
-  './icons/icon-512x512.png?v=3.0.0',
-  './icons/favicon.svg?v=3.0.0',
-  './icons/favicon.png?v=3.0.0',
-  './icons/apple-touch-icon-180x180.png?v=3.0.0',
-  './icons/apple-touch-icon-152x152.png?v=3.0.0',
-  './icons/apple-touch-icon-144x144.png?v=3.0.0',
-  './icons/apple-touch-icon-120x120.png?v=3.0.0',
-  './icons/favicon-32x32.png?v=3.0.0',
-  './icons/favicon-16x16.png?v=3.0.0',
-  './icons/icon-72x72.png?v=3.0.0',
-  './icons/icon-96x96.png?v=3.0.0',
-  './icons/icon-128x128.png?v=3.0.0',
-  './icons/icon-144x144.png?v=3.0.0',
-  './icons/icon-152x152.png?v=3.0.0',
-  './icons/icon-384x384.png?v=3.0.0',
-  './icons/shortcut-count.png?v=3.0.0',
-  './icons/shortcut-list.png?v=3.0.0'
+  './data/locations.json',
+  './icons/icon-192x192.png?v=3.2.0',
+  './icons/icon-512x512.png?v=3.2.0',
+  './icons/favicon.svg?v=3.2.0',
+  './icons/favicon.png?v=3.2.0',
+  './icons/apple-touch-icon-180x180.png?v=3.2.0',
+  './icons/apple-touch-icon-152x152.png?v=3.2.0',
+  './icons/apple-touch-icon-144x144.png?v=3.2.0',
+  './icons/apple-touch-icon-120x120.png?v=3.2.0',
+  './icons/favicon-32x32.png?v=3.2.0',
+  './icons/favicon-16x16.png?v=3.2.0',
+  './icons/icon-72x72.png?v=3.2.0',
+  './icons/icon-96x96.png?v=3.2.0',
+  './icons/icon-128x128.png?v=3.2.0',
+  './icons/icon-144x144.png?v=3.2.0',
+  './icons/icon-152x152.png?v=3.2.0',
+  './icons/icon-384x384.png?v=3.2.0',
+  './icons/shortcut-count.png?v=3.2.0',
+  './icons/shortcut-list.png?v=3.2.0'
 ];
 
 // Dynamic files that can be cached as needed
@@ -95,7 +95,7 @@ self.addEventListener('activate', (event) => {
           clients.forEach((client) => {
             client.postMessage({
               type: 'CACHE_UPDATED',
-              version: '3.1.0',
+              version: '3.2.0',
               message: 'PWA updated to v3.1.0 - Enhanced design consistency with green banners - please refresh'
             });
           });

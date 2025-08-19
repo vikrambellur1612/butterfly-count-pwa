@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location System Test - Butterfly Count</title>
+</head>
+<body>
+    <h1>Location System Test</h1>
+    
+    <h2>Available Locations:</h2>
+    <div id="locationsList"></div>
+    
+    <h2>Add Test Location:</h2>
+    <form id="testForm">
+        <input type="text" id="name" placeholder="Location Name" required>
+        <input type="number" id="lat" placeholder="Latitude" step="0.000001" required>
+        <input type="number" id="lng" placeholder="Longitude" step="0.000001" required>
+        <input type="number" id="elevation" placeholder="Elevation (m)">
+        <button type="submit">Add</button>
+    </form>
+
+    <script src="./js/location-hotspots.js"></script>
+    <script>
+        // Display all locations
+        function displayLocations() {
+            const container = document.getElementById('locationsList');
+            container.innerHTML = '';
+            
+            BUTTERFLY_LOCATIONS.forEach(location => {
+                const div = document.createElement('div');
+                div.innerHTML = `
+                    <strong>${location.name}</strong> - ${location.city}, ${location.state}<br>
+                    📍 ${location.latitude}, ${location.longitude} (${location.elevation}m)<br>
+                    Type: ${location.type}, Popular: ${location.isPopular}<br>
+                    <small>${location.description}</small>
+                    <hr>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        displayLocations();
+
+        // Test form
+        document.getElementById('testForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const lat = parseFloat(document.getElementById('lat').value);
+            const lng = parseFloat(document.getElementById('lng').value);
+            const elevation = document.getElementById('elevation').value;
+            
+            console.log('Test Location:', {
+                name, latitude: lat, longitude: lng, elevation: parseInt(elevation) || null
+            });
+            
+            alert(`Test location "${name}" would be added at ${lat}, ${lng}`);
+        });
+    </script>
+</body>
+</html>

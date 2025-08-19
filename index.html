@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="version" content="3.1.0">
+    <meta name="version" content="3.2.0">
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -56,14 +56,12 @@
     <meta name="msapplication-TileColor" content="#4CAF50">
     
     <!-- Preload critical resources -->
-    <link rel="preload" href="./css/styles.css?v=1.7.4" as="style">
-    <link rel="preload" href="./js/app.js?v=1.7.4" as="script">
+    <link rel="preload" href="./css/styles.css?v=3.2.0" as="style">
+    <link rel="preload" href="./js/app.js?v=3.2.0" as="script">
     
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="./css/styles.css?v=1.7.4">
-    <link rel="stylesheet" href="./css/mobile.css?v=1.7.4">
-    
-    <!-- Critical CSS -->
+  <link rel="stylesheet" href="css/styles.css?v=3.2.0">
+  <link rel="stylesheet" href="css/mobile.css?v=3.2.0">    <!-- Critical CSS -->
     <style>
         /* Critical above-the-fold styles */
         body {
@@ -102,6 +100,145 @@
         }
         
         .hidden { display: none !important; }
+        
+        /* CRITICAL BUTTON FIXES - INLINE FOR IMMEDIATE EFFECT */
+        
+        /* Main Form Buttons - Ensure Same Size */
+        .form-actions .secondary-btn.modal-close {
+            background: #ffffff !important;
+            color: #374151 !important;
+            border: 2px solid #d1d5db !important;
+            padding: 12px 24px !important;
+            border-radius: 8px !important;
+            font-size: 1rem !important;
+            font-weight: 600 !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-decoration: none !important;
+            box-sizing: border-box !important;
+            outline: none !important;
+            -webkit-appearance: none !important;
+            appearance: none !important;
+            height: 48px !important;
+            min-width: 100px !important;
+        }
+
+        .form-actions .secondary-btn.modal-close:hover {
+            border-color: #4CAF50 !important;
+            color: #4CAF50 !important;
+            background: #f0f9ff !important;
+            transform: translateY(-1px) !important;
+        }
+
+        .form-actions .primary-btn {
+            background: #4CAF50 !important;
+            color: white !important;
+            border: none !important;
+            padding: 12px 24px !important;
+            border-radius: 8px !important;
+            font-size: 1rem !important;
+            font-weight: 600 !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 8px !important;
+            outline: none !important;
+            box-sizing: border-box !important;
+            text-decoration: none !important;
+            -webkit-appearance: none !important;
+            appearance: none !important;
+            height: 48px !important;
+            min-width: 120px !important;
+        }
+
+        .form-actions .primary-btn:hover {
+            background: #388E3C !important;
+            transform: translateY(-1px) !important;
+        }
+
+        /* Custom Location Cancel Button */
+        button#cancelCustomLocation {
+            all: unset !important;
+            background: #f3f4f6 !important;
+            color: #6b7280 !important;
+            border: 1px solid #d1d5db !important;
+            padding: 8px 12px !important;
+            border-radius: 6px !important;
+            font-size: 0.875rem !important;
+            font-weight: 500 !important;
+            cursor: pointer !important;
+            transition: all 0.2s ease !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 4px !important;
+            box-sizing: border-box !important;
+            height: 32px !important;
+            min-width: 70px !important;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+        }
+
+        button#cancelCustomLocation:hover {
+            background: #fee2e2 !important;
+            color: #dc2626 !important;
+            border-color: #dc2626 !important;
+            transform: translateY(-1px) !important;
+        }
+
+        /* Use My Location Button */
+        button#getCurrentLocation {
+            all: unset !important;
+            background: #3b82f6 !important;
+            color: white !important;
+            padding: 11px 16px !important;
+            border-radius: 8px !important;
+            font-size: 0.875rem !important;
+            font-weight: 500 !important;
+            cursor: pointer !important;
+            transition: all 0.2s ease !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 6px !important;
+            white-space: nowrap !important;
+            height: 44px !important;
+            min-width: 140px !important;
+            box-sizing: border-box !important;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+        }
+
+        button#getCurrentLocation:hover {
+            background: #2563eb !important;
+            transform: translateY(-1px) !important;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
+        }
+
+        button#getCurrentLocation:disabled {
+            background: #9ca3af !important;
+            cursor: not-allowed !important;
+            transform: none !important;
+        }
+        
+        /* Header actions layout */
+        .section-header {
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            margin-bottom: 1rem !important;
+            padding-bottom: 0.5rem !important;
+            border-bottom: 1px solid #e5e7eb !important;
+        }
+        
+        .header-actions {
+            display: flex !important;
+            gap: 0.5rem !important;
+            align-items: center !important;
+        }
     </style>
 </head>
 <body>
@@ -304,7 +441,7 @@
                     <div class="about-section">
                         <h3>Project Information</h3>
                         <p>Butterfly Count is developed by <strong>Vikram Bellur</strong> to support nature enthusiasts and citizen scientists in their butterfly observation activities.</p>
-                        <p class="version-info">Version 3.1.0 | Built with ❤️ for nature lovers</p>
+                        <p class="version-info">Version 3.2.0 | Built with ❤️ for nature lovers</p>
                     </div>
                     
                     <div class="about-section">
@@ -461,6 +598,77 @@
                         <input type="time" id="listStartTimeInput" required class="form-input">
                     </div>
                     
+                    <div class="form-group">
+                        <label for="listLocationSelect">Observation Location *</label>
+                        <select id="listLocationSelect" required class="form-input">
+                            <option value="">Select observation location...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="button" id="addCustomLocationBtn" class="secondary-btn">
+                            📍 Add Custom Location
+                        </button>
+                    </div>
+                    
+                    <!-- Custom Location Fields (Initially Hidden) -->
+                    <div id="customLocationFields" class="custom-location-section hidden">
+                        <div class="section-header">
+                            <div class="header-actions">
+                                <button type="button" id="getCurrentLocation" class="location-helper-btn">
+                                    📍 Use My Location
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group flex-1">
+                                <label for="customLocationName">Location Name *</label>
+                                <input type="text" id="customLocationName" class="form-input" placeholder="e.g., Butterfly Garden">
+                            </div>
+                            <div class="form-group flex-1">
+                                <label for="customLocationCity">City</label>
+                                <input type="text" id="customLocationCity" class="form-input" placeholder="e.g., Bangalore">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group flex-1">
+                                <label for="customLocationState">State</label>
+                                <input type="text" id="customLocationState" class="form-input" placeholder="e.g., Karnataka">
+                            </div>
+                            <div class="form-group flex-1">
+                                <label for="customLocationElevation">Elevation (m)</label>
+                                <input type="number" id="customLocationElevation" class="form-input" placeholder="920">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group flex-1">
+                                <label for="customLocationLat">Latitude *</label>
+                                <input type="number" id="customLocationLat" class="form-input coordinate-input" 
+                                       step="0.000001" placeholder="12.123456">
+                            </div>
+                            <div class="form-group flex-1">
+                                <label for="customLocationLng">Longitude *</label>
+                                <input type="number" id="customLocationLng" class="form-input coordinate-input" 
+                                       step="0.000001" placeholder="77.123456">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="customLocationDescription">Description (Optional)</label>
+                            <textarea id="customLocationDescription" class="form-input" rows="2" 
+                                      placeholder="Brief description of the location..."></textarea>
+                        </div>
+                        
+                        <div class="custom-location-actions">
+                            <button type="button" id="saveCustomLocation" class="primary-btn">
+                                ✓ Add Location
+                            </button>
+                        </div>
+                    </div>
+                    
                     <div class="form-actions">
                         <button type="button" class="secondary-btn modal-close" data-modal="createListModal">Cancel</button>
                         <button type="submit" class="primary-btn">Create List</button>
@@ -498,6 +706,68 @@
                     <input type="text" id="familySpeciesSearch" placeholder="Search species in this family..." class="search-input">
                 </div>
                 <div id="familySpeciesList" class="family-species-list">
+
+    <!-- Add Custom Location Modal -->
+    <div id="addCustomLocationModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Custom Butterfly Hotspot</h3>
+                <button class="modal-close" data-modal="addCustomLocationModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addCustomLocationForm">
+                    <div class="form-group">
+                        <label for="customLocationName">Location Name *</label>
+                        <input type="text" id="customLocationName" required class="form-input" 
+                               placeholder="e.g., My Garden, Local Park">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customLocationCity">City</label>
+                        <input type="text" id="customLocationCity" class="form-input" placeholder="Bangalore">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customLocationState">State</label>
+                        <input type="text" id="customLocationState" class="form-input" placeholder="Karnataka">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customLocationLat">Latitude *</label>
+                        <input type="number" id="customLocationLat" required class="form-input" 
+                               step="0.000001" placeholder="12.9716" min="-90" max="90">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customLocationLng">Longitude *</label>
+                        <input type="number" id="customLocationLng" required class="form-input" 
+                               step="0.000001" placeholder="77.5946" min="-180" max="180">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customLocationElevation">Elevation (meters)</label>
+                        <input type="number" id="customLocationElevation" class="form-input" 
+                               placeholder="920" min="0" max="9000">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customLocationDescription">Description (Optional)</label>
+                        <textarea id="customLocationDescription" class="form-input" rows="3" 
+                                  placeholder="Brief description of this butterfly observation location"></textarea>
+                    </div>
+                    
+                    <div class="location-help">
+                        <p><small>💡 <strong>Tip:</strong> You can get your current location coordinates from your phone's GPS or use Google Maps to find coordinates for a specific location.</small></p>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="secondary-btn modal-close" data-modal="addCustomLocationModal">Cancel</button>
+                        <button type="submit" class="primary-btn">Add Location</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
                     <!-- Species list will be populated by JavaScript -->
                 </div>
             </div>
@@ -506,8 +776,8 @@
     
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="./js/butterflies-data.js?v=1.7.4"></script>
-    <script src="./js/sw-register.js?v=1.7.4"></script>
-    <script src="./js/app.js?v=1.7.4"></script>
+    <script src="./js/butterflies-data.js?v=3.2.0"></script>
+    <script src="./js/sw-register.js?v=3.2.0"></script>
+    <script src="./js/app.js?v=3.2.0"></script>
 </body>
 </html>
