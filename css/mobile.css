@@ -952,17 +952,26 @@
     min-height: 48px;
   }
 
-  /* Ensure buttons in closed lists have proper spacing */
+  /* Ensure buttons in closed lists have proper spacing - VERTICAL LAYOUT FOR BETTER MOBILE UX */
   .closed-list-actions {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 0.5rem;
+    padding: 0.75rem;
+    touch-action: manipulation;
   }
 
   .closed-list-actions .action-btn {
-    flex: 1;
+    flex: none;
+    width: 100%;
     margin: 0;
     min-height: 48px;
+    position: relative;
+    z-index: 10;
+    border: 2px solid transparent;
+    box-sizing: border-box;
+    /* Clear boundaries to prevent overlap */
+    background-clip: padding-box;
   }
 
   /* Family card button styling */

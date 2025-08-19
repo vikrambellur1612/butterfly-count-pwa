@@ -2,7 +2,7 @@
 
 class ButterflyCountApp {
   constructor() {
-    this.version = '3.3.4';
+    this.version = '3.3.5';
     this.currentView = 'butterflies';
     this.currentButterflyView = 'family'; // 'family' or 'species'
     this.currentList = null;
