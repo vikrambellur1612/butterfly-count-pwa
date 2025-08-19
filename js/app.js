@@ -2,7 +2,7 @@
 
 class ButterflyCountApp {
   constructor() {
-    this.version = '3.2.1';
+    this.version = '3.2.2';
     this.currentView = 'butterflies';
     this.currentButterflyView = 'family'; // 'family' or 'species'
     this.currentList = null;
@@ -2269,19 +2269,32 @@ class ButterflyCountApp {
     const uniqueSpecies = speciesCount.size;
     const totalCount = Array.from(speciesCount.values()).reduce((sum, count) => sum + count, 0);
     const uniqueFamilies = familyCount.size;
-    const avgCountPerSpecies = uniqueSpecies > 0 ? (totalCount / uniqueSpecies).toFixed(1) : 0;
     const rareSpeciesCount = rareSpeciesSet.size; // Count of unique rare species
     const highestCount = sortedSpecies.length > 0 ? sortedSpecies[0] : null;
     const lowestCount = sortedSpecies.length > 0 ? sortedSpecies[sortedSpecies.length - 1] : null;
 
-    // Calculate observation time span
+    // Calculate observation time span and other time-related data for closed lists
     let timeSpan = 'N/A';
-    if (observations.length > 1) {
+    let firstObsTime = null;
+    let lastObsTime = null;
+    let intervalData = [];
+    
+    if (observations.length > 0) {
       const times = observations.map(obs => new Date(obs.dateTime)).sort((a, b) => a - b);
-      const duration = times[times.length - 1] - times[0];
-      const hours = Math.floor(duration / (1000 * 60 * 60));
-      const minutes = Math.floor((duration % (1000 * 60 * 60)) / (1000 * 60));
-      timeSpan = hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
+      firstObsTime = times[0];
+      lastObsTime = times[times.length - 1];
+      
+      if (observations.length > 1) {
+        const duration = lastObsTime - firstObsTime;
+        const hours = Math.floor(duration / (1000 * 60 * 60));
+        const minutes = Math.floor((duration % (1000 * 60 * 60)) / (1000 * 60));
+        timeSpan = hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
+      }
+      
+      // Generate 30-minute interval data for closed lists
+      if (list.status === 'closed') {
+        intervalData = this.generate30MinuteIntervalData(observations, firstObsTime, lastObsTime);
+      }
     }
 
     if (titleElement) {
@@ -2312,21 +2325,20 @@ class ButterflyCountApp {
           </div>
           <div class="stat-row">
             <div class="stat-item">
-              <span class="stat-number">${avgCountPerSpecies}</span>
-              <span class="stat-label">Avg per Species</span>
-            </div>
-            <div class="stat-item">
               <span class="stat-number">${rareSpeciesCount}</span>
               <span class="stat-label">Rare Species</span>
             </div>
+            ${list.status === 'closed' ? `
             <div class="stat-item">
               <span class="stat-number">${timeSpan}</span>
-              <span class="stat-label">Duration</span>
+              <span class="stat-label">Total Duration</span>
             </div>
+            ` : `
             <div class="stat-item">
-              <span class="stat-number">${list.status}</span>
+              <span class="stat-number">Active</span>
               <span class="stat-label">Status</span>
             </div>
+            `}
           </div>
         </div>
         
@@ -2337,10 +2349,46 @@ class ButterflyCountApp {
         
         <div class="stats-details-enhanced">
           <div class="detail-section">
-            <h4>� List Information</h4>
+            <h4>📋 List Information</h4>
             <p><strong>Created:</strong> ${this.formatIndianDateTime(new Date(list.dateTime)).fullDateTime} IST</p>
-            ${list.status === 'closed' && list.closedAt ? `<p><strong>Closed:</strong> ${this.formatIndianDateTime(new Date(list.closedAt)).fullDateTime} IST</p>` : ''}
+            ${list.status === 'closed' && list.closedAt ? `
+              <p><strong>Closed:</strong> ${this.formatIndianDateTime(new Date(list.closedAt)).fullDateTime} IST</p>
+              <p><strong>Total Duration:</strong> ${timeSpan}</p>
+              ${firstObsTime && lastObsTime ? `
+                <p><strong>First Observation:</strong> ${this.formatIndianDateTime(firstObsTime).time}</p>
+                <p><strong>Last Observation:</strong> ${this.formatIndianDateTime(lastObsTime).time}</p>
+              ` : ''}
+            ` : ''}
           </div>
+          
+          ${list.status === 'closed' && intervalData.length > 0 ? `
+            <div class="detail-section">
+              <h4>📊 30-Minute Interval Analysis</h4>
+              <div class="interval-chart-container">
+                <canvas id="intervalChart_${list.id}_${Date.now()}" width="800" height="400"></canvas>
+              </div>
+            </div>
+            
+            <div class="detail-section">
+              <h4>📋 Time Interval Breakdown</h4>
+              <div class="interval-table">
+                <div class="table-header">
+                  <div class="col-time">Time Range</div>
+                  <div class="col-unique">Unique Species</div>
+                  <div class="col-total">Total Count</div>
+                  <div class="col-common">Most Common Species</div>
+                </div>
+                ${intervalData.map(interval => `
+                  <div class="table-row">
+                    <div class="col-time">${interval.timeRange}</div>
+                    <div class="col-unique">${interval.uniqueSpecies}</div>
+                    <div class="col-total">${interval.totalCount}</div>
+                    <div class="col-common">${interval.mostCommon || 'None'}</div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          ` : ''}
           
           ${highestCount ? `
             <div class="detail-section">
@@ -2409,6 +2457,12 @@ class ButterflyCountApp {
       // Create pie chart after DOM is updated
       setTimeout(() => {
         this.createPieChart(chartId, sortedSpecies.slice(0, 10));
+        
+        // Create interval chart for closed lists
+        if (list.status === 'closed' && intervalData.length > 0) {
+          const intervalChartId = `intervalChart_${list.id}_${Date.now()}`;
+          this.createIntervalChart(intervalChartId, intervalData);
+        }
       }, 100);
     }
 
@@ -2469,6 +2523,250 @@ class ButterflyCountApp {
           }
         }
       }
+    });
+
+    // Store chart reference for cleanup
+    canvas.chartInstance = chart;
+  }
+
+  // Generate 30-minute interval data for observations
+  generate30MinuteIntervalData(observations, firstObsTime, lastObsTime) {
+    if (!observations.length || !firstObsTime || !lastObsTime) return [];
+
+    const intervalData = [];
+    const intervalMs = 30 * 60 * 1000; // 30 minutes in milliseconds
+    
+    // Round down first observation time to nearest 30-minute mark
+    const startTime = new Date(firstObsTime);
+    startTime.setMinutes(Math.floor(startTime.getMinutes() / 30) * 30, 0, 0);
+    
+    // Round up last observation time to nearest 30-minute mark
+    const endTime = new Date(lastObsTime);
+    endTime.setMinutes(Math.ceil(endTime.getMinutes() / 30) * 30, 0, 0);
+    
+    // Generate intervals
+    let currentTime = new Date(startTime);
+    while (currentTime < endTime) {
+      const intervalEnd = new Date(currentTime.getTime() + intervalMs);
+      
+      // Filter observations in this interval
+      const intervalObservations = observations.filter(obs => {
+        const obsTime = new Date(obs.dateTime);
+        return obsTime >= currentTime && obsTime < intervalEnd;
+      });
+      
+      // Calculate stats for this interval
+      const speciesInInterval = new Set();
+      let totalCountInInterval = 0;
+      const speciesCount = new Map();
+      
+      intervalObservations.forEach(obs => {
+        speciesInInterval.add(obs.butterflyName);
+        totalCountInInterval += obs.count;
+        speciesCount.set(obs.butterflyName, (speciesCount.get(obs.butterflyName) || 0) + obs.count);
+      });
+      
+      // Find most common species in this interval
+      let mostCommonSpecies = null;
+      let maxCount = 0;
+      speciesCount.forEach((count, species) => {
+        if (count > maxCount) {
+          maxCount = count;
+          mostCommonSpecies = `${species} (${count})`;
+        }
+      });
+      
+      // Format time range
+      const startStr = currentTime.toLocaleTimeString('en-IN', { 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        hour12: false,
+        timeZone: 'Asia/Kolkata'
+      });
+      const endStr = intervalEnd.toLocaleTimeString('en-IN', { 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        hour12: false,
+        timeZone: 'Asia/Kolkata'
+      });
+      
+      intervalData.push({
+        startTime: new Date(currentTime),
+        endTime: new Date(intervalEnd),
+        timeRange: `${startStr} - ${endStr}`,
+        uniqueSpecies: speciesInInterval.size,
+        totalCount: totalCountInInterval,
+        mostCommon: mostCommonSpecies,
+        observations: intervalObservations.length
+      });
+      
+      currentTime = intervalEnd;
+    }
+    
+    return intervalData;
+  }
+
+  // Create interval trend chart
+  createIntervalChart(canvasId, intervalData) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas || !window.Chart || !intervalData.length) {
+      console.error('Chart.js not loaded, canvas not found, or no interval data');
+      return;
+    }
+
+    const ctx = canvas.getContext('2d');
+    
+    // Prepare data for the chart
+    const labels = intervalData.map(interval => interval.timeRange);
+    const uniqueSpeciesData = intervalData.map(interval => interval.uniqueSpecies);
+    const totalCountData = intervalData.map(interval => interval.totalCount);
+
+    const chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Unique Species',
+            data: uniqueSpeciesData,
+            borderColor: '#4CAF50',
+            backgroundColor: 'rgba(76, 175, 80, 0.1)',
+            borderWidth: 3,
+            fill: false,
+            tension: 0.1,
+            pointRadius: 6,
+            pointHoverRadius: 8,
+            pointBackgroundColor: '#4CAF50',
+            pointBorderColor: '#ffffff',
+            pointBorderWidth: 2
+          },
+          {
+            label: 'Total Count',
+            data: totalCountData,
+            borderColor: '#FF9800',
+            backgroundColor: 'rgba(255, 152, 0, 0.1)',
+            borderWidth: 3,
+            fill: false,
+            tension: 0.1,
+            pointRadius: 6,
+            pointHoverRadius: 8,
+            pointBackgroundColor: '#FF9800',
+            pointBorderColor: '#ffffff',
+            pointBorderWidth: 2
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Time Intervals (30 minutes each)',
+              font: {
+                size: 14,
+                weight: 'bold'
+              }
+            },
+            ticks: {
+              maxRotation: 45,
+              font: {
+                size: 11
+              }
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Count',
+              font: {
+                size: 14,
+                weight: 'bold'
+              }
+            },
+            beginAtZero: true,
+            ticks: {
+              stepSize: 1,
+              font: {
+                size: 11
+              }
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top',
+            labels: {
+              font: {
+                size: 12,
+                weight: 'bold'
+              },
+              padding: 20,
+              usePointStyle: true
+            }
+          },
+          tooltip: {
+            mode: 'index',
+            intersect: false,
+            callbacks: {
+              title: function(context) {
+                return `Time: ${context[0].label}`;
+              },
+              label: function(context) {
+                const intervalIndex = context.dataIndex;
+                const interval = intervalData[intervalIndex];
+                const datasetLabel = context.dataset.label;
+                const value = context.parsed.y;
+                
+                if (datasetLabel === 'Unique Species') {
+                  return `${datasetLabel}: ${value} species`;
+                } else {
+                  return `${datasetLabel}: ${value} butterflies`;
+                }
+              },
+              afterLabel: function(context) {
+                const intervalIndex = context.dataIndex;
+                const interval = intervalData[intervalIndex];
+                
+                if (context.datasetIndex === 0) { // Show additional info only once
+                  return [
+                    `Observations: ${interval.observations}`,
+                    interval.mostCommon ? `Most Common: ${interval.mostCommon}` : 'Most Common: None'
+                  ];
+                }
+                return null;
+              }
+            }
+          }
+        },
+        animation: {
+          duration: 1500,
+          easing: 'easeOutQuart'
+        }
+      },
+      plugins: [{
+        afterDatasetsDraw: function(chart) {
+          const ctx = chart.ctx;
+          chart.data.datasets.forEach(function(dataset, i) {
+            const meta = chart.getDatasetMeta(i);
+            if (!meta.hidden) {
+              meta.data.forEach(function(element, index) {
+                // Draw value labels on points
+                const dataString = dataset.data[index].toString();
+                ctx.fillStyle = dataset.borderColor;
+                ctx.font = 'bold 10px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'bottom';
+                
+                const position = element.tooltipPosition();
+                ctx.fillText(dataString, position.x, position.y - 5);
+              });
+            }
+          });
+        }
+      }]
     });
 
     // Store chart reference for cleanup

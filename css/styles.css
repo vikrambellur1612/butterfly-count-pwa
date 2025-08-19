@@ -4726,3 +4726,109 @@ button#getCurrentLocation.location-helper-btn {
   box-sizing: border-box !important;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
 }
+
+/* 30-Minute Interval Chart and Table Styles */
+.interval-chart-container {
+  background: var(--surface-secondary);
+  border-radius: 12px;
+  padding: 1rem;
+  margin: 1rem 0;
+  border: 1px solid var(--border-color);
+}
+
+.interval-chart-container canvas {
+  max-width: 100%;
+  height: 400px !important;
+}
+
+.interval-table {
+  background: var(--surface-secondary);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  margin: 1rem 0;
+}
+
+.interval-table .table-header {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 2fr;
+  gap: 1rem;
+  background: var(--primary-color);
+  color: white;
+  padding: 1rem;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.interval-table .table-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 2fr;
+  gap: 1rem;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.2s ease;
+}
+
+.interval-table .table-row:hover {
+  background-color: var(--primary-color-light);
+}
+
+.interval-table .table-row:last-child {
+  border-bottom: none;
+}
+
+.interval-table .col-time {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.interval-table .col-unique,
+.interval-table .col-total {
+  text-align: center;
+  font-weight: bold;
+  color: var(--text-primary);
+}
+
+.interval-table .col-common {
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+/* Mobile responsiveness for interval table */
+@media (max-width: 768px) {
+  .interval-table .table-header,
+  .interval-table .table-row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  
+  .interval-table .table-header > div,
+  .interval-table .table-row > div {
+    padding: 0.3rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .interval-table .table-header > div:before,
+  .interval-table .table-row > div:before {
+    content: attr(data-label) ': ';
+    font-weight: bold;
+    margin-right: 0.5rem;
+  }
+  
+  .interval-table .col-time:before {
+    content: 'Time: ';
+  }
+  
+  .interval-table .col-unique:before {
+    content: 'Unique Species: ';
+  }
+  
+  .interval-table .col-total:before {
+    content: 'Total Count: ';
+  }
+  
+  .interval-table .col-common:before {
+    content: 'Most Common: ';
+  }
+}
