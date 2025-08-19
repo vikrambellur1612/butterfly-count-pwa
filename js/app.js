@@ -2,7 +2,7 @@
 
 class ButterflyCountApp {
   constructor() {
-    this.version = '3.2.2';
+    this.version = '3.2.3';
     this.currentView = 'butterflies';
     this.currentButterflyView = 'family'; // 'family' or 'species'
     this.currentList = null;
@@ -1972,6 +1972,16 @@ class ButterflyCountApp {
     const addObservationsBtn = card.querySelector('.add-observations');
     const listNameElement = card.querySelector('.list-name');
 
+    // Debug logging to verify correct button selection
+    console.log('Event handlers setup for list:', list.name, {
+      status: list.status,
+      hasAddObservations: !!addObservationsBtn,
+      hasViewStats: !!viewStatsBtn,
+      hasViewDetails: !!viewDetailsBtn,
+      hasDownloadCsv: !!downloadCsvBtn,
+      hasClose: !!closeBtn
+    });
+
     // Make active list cards clickable for detailed view
     if (list.status === 'active') {
       card.style.cursor = 'pointer';
@@ -2000,18 +2010,21 @@ class ButterflyCountApp {
       }
     }
 
+    // Fix for Add Observations button handler
     if (addObservationsBtn) {
-      const self = this;
-      addObservationsBtn.addEventListener('click', function(e) {
+      addObservationsBtn.addEventListener('click', (e) => {
+        e.preventDefault();
         e.stopPropagation();
         // Set this list as selected and navigate to count view
-        self.selectedCountViewList = list.id;
-        self.switchView('count');
+        this.selectedCountViewList = list.id;
+        this.switchView('count');
+        this.updateCountViewListSelector();
       });
     }
 
     if (closeBtn) {
       closeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
         e.stopPropagation();
         this.closeList(list.id);
       });
@@ -2019,6 +2032,7 @@ class ButterflyCountApp {
 
     if (viewStatsBtn) {
       viewStatsBtn.addEventListener('click', (e) => {
+        e.preventDefault();
         e.stopPropagation();
         this.showListStats(list);
       });
@@ -2026,6 +2040,7 @@ class ButterflyCountApp {
 
     if (downloadCsvBtn) {
       downloadCsvBtn.addEventListener('click', (e) => {
+        e.preventDefault();
         e.stopPropagation();
         this.downloadListCSV(list.id);
       });
