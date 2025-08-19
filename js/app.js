@@ -2,7 +2,7 @@
 
 class ButterflyCountApp {
   constructor() {
-    this.version = '3.3.6';
+    this.version = '3.3.7';
     this.currentView = 'butterflies';
     this.currentButterflyView = 'family'; // 'family' or 'species'
     this.currentList = null;
@@ -2848,19 +2848,15 @@ class ButterflyCountApp {
         }
       });
       
-      // Format time range
-      const startStr = currentTime.toLocaleTimeString('en-IN', { 
-        hour: '2-digit', 
-        minute: '2-digit', 
-        hour12: false,
-        timeZone: 'Asia/Kolkata'
-      });
-      const endStr = intervalEnd.toLocaleTimeString('en-IN', { 
-        hour: '2-digit', 
-        minute: '2-digit', 
-        hour12: false,
-        timeZone: 'Asia/Kolkata'
-      });
+      // Format time range with fixed format
+      const formatTime = (date) => {
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        return `${hours}:${minutes}`;
+      };
+      
+      const startStr = formatTime(currentTime);
+      const endStr = formatTime(intervalEnd);
       
       intervalData.push({
         startTime: new Date(currentTime),
@@ -3078,6 +3074,11 @@ class ButterflyCountApp {
     const highestCount = sortedSpecies.length > 0 ? sortedSpecies[0] : null;
     const lowestCount = sortedSpecies.length > 0 ? sortedSpecies[sortedSpecies.length - 1] : null;
 
+    // Generate 30-minute interval data
+    const startDate = new Date(list.dateTime);
+    const endDate = list.closedAt ? new Date(list.closedAt) : new Date();
+    const intervalData = this.generate30MinuteIntervalData(observations, startDate, endDate);
+
     if (titleElement) {
       titleElement.textContent = `${list.name} - Summary`;
     }
@@ -3132,6 +3133,32 @@ class ButterflyCountApp {
           ` : ''}
         </div>
         
+        ${intervalData && intervalData.length > 0 ? `
+          <div class="interval-analysis">
+            <h4>📈 30-Minute Interval Analysis</h4>
+            <div class="chart-container">
+              <canvas id="summaryIntervalChart" width="400" height="200"></canvas>
+            </div>
+            
+            <div class="interval-table" style="margin-top: 1rem; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: grid; grid-template-columns: 1fr 1fr 1fr 2fr; gap: 0;">
+              <div class="table-header" style="display: contents;">
+                <div class="col-time" style="background: var(--primary-color); color: white; padding: 0.75rem; font-weight: 600; text-align: center; border-radius: 4px 0 0 0;">Time Range</div>
+                <div class="col-unique" style="background: var(--primary-color); color: white; padding: 0.75rem; font-weight: 600; text-align: center;">Unique Species</div>
+                <div class="col-total" style="background: var(--primary-color); color: white; padding: 0.75rem; font-weight: 600; text-align: center;">Total Count</div>
+                <div class="col-common" style="background: var(--primary-color); color: white; padding: 0.75rem; font-weight: 600; text-align: center; border-radius: 0 4px 0 0;">Most Common Species</div>
+              </div>
+              ${intervalData.map((interval, index) => `
+                <div class="table-row" style="display: contents;">
+                  <div class="col-time" style="background: ${index % 2 === 0 ? 'rgba(0,0,0,0.05)' : 'transparent'}; padding: 0.5rem; text-align: center; border-bottom: 1px solid var(--border-color);">${interval.timeRange}</div>
+                  <div class="col-unique" style="background: ${index % 2 === 0 ? 'rgba(0,0,0,0.05)' : 'transparent'}; padding: 0.5rem; text-align: center; border-bottom: 1px solid var(--border-color); font-weight: 600; color: ${interval.uniqueSpecies > 0 ? 'var(--success-color)' : 'var(--text-secondary)'};">${interval.uniqueSpecies}</div>
+                  <div class="col-total" style="background: ${index % 2 === 0 ? 'rgba(0,0,0,0.05)' : 'transparent'}; padding: 0.5rem; text-align: center; border-bottom: 1px solid var(--border-color); font-weight: 600; color: ${interval.totalCount > 0 ? 'var(--primary-color)' : 'var(--text-secondary)'};">${interval.totalCount}</div>
+                  <div class="col-common" style="background: ${index % 2 === 0 ? 'rgba(0,0,0,0.05)' : 'transparent'}; padding: 0.5rem; text-align: left; border-bottom: 1px solid var(--border-color); font-size: 0.9rem;">${interval.mostCommon || 'None'}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+        
         <div class="download-section">
           <h4>📊 Export Data</h4>
           <p>Download your complete observation data as a CSV file for further analysis</p>
@@ -3176,6 +3203,13 @@ class ButterflyCountApp {
     }
 
     this.showModal('listStatsModal');
+    
+    // Create interval chart after modal is displayed
+    if (intervalData && intervalData.length > 0) {
+      setTimeout(() => {
+        this.createIntervalChart('summaryIntervalChart', intervalData);
+      }, 100);
+    }
   }
 
   // Download list data as CSV

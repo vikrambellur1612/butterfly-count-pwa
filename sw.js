@@ -1,38 +1,38 @@
 // Service Worker for Butterfly Count PWA
 
-const CACHE_NAME = 'butterfly-count-v3.3.6';
-const STATIC_CACHE = 'butterfly-count-static-v3.3.6';
-const DYNAMIC_CACHE = 'butterfly-count-dynamic-v3.3.6';
+const CACHE_NAME = 'butterfly-count-v3.3.7';
+const STATIC_CACHE = 'butterfly-count-static-v3.3.7';
+const DYNAMIC_CACHE = 'butterfly-count-dynamic-v3.3.7';
 
 // Files to cache for offline functionality
 const STATIC_FILES = [
   './',
   './index.html',
-  './css/styles.css?v=3.3.6',
-  './css/mobile.css?v=3.3.6',
-  './js/app.js?v=3.3.6',
-  './js/sw-register.js?v=3.3.6',
-  './js/butterflies-data.js?v=3.3.6',
+  './css/styles.css?v=3.3.7',
+  './css/mobile.css?v=3.3.7',
+  './js/app.js?v=3.3.7',
+  './js/sw-register.js?v=3.3.7',
+  './js/butterflies-data.js?v=3.3.7',
   './butterflies-data.json',
   './data/locations.json',
-  './icons/icon-192x192.png?v=3.3.6',
-  './icons/icon-512x512.png?v=3.3.6',
-  './icons/favicon.svg?v=3.3.6',
-  './icons/favicon.png?v=3.3.6',
-  './icons/apple-touch-icon-180x180.png?v=3.3.6',
-  './icons/apple-touch-icon-152x152.png?v=3.3.6',
-  './icons/apple-touch-icon-144x144.png?v=3.3.6',
-  './icons/apple-touch-icon-120x120.png?v=3.3.6',
-  './icons/favicon-32x32.png?v=3.3.6',
-  './icons/favicon-16x16.png?v=3.3.6',
-  './icons/icon-72x72.png?v=3.3.6',
-  './icons/icon-96x96.png?v=3.3.6',
-  './icons/icon-128x128.png?v=3.3.6',
-  './icons/icon-144x144.png?v=3.3.6',
-  './icons/icon-152x152.png?v=3.3.6',
-  './icons/icon-384x384.png?v=3.3.6',
-  './icons/shortcut-count.png?v=3.3.6',
-  './icons/shortcut-list.png?v=3.3.6'
+  './icons/icon-192x192.png?v=3.3.7',
+  './icons/icon-512x512.png?v=3.3.7',
+  './icons/favicon.svg?v=3.3.7',
+  './icons/favicon.png?v=3.3.7',
+  './icons/apple-touch-icon-180x180.png?v=3.3.7',
+  './icons/apple-touch-icon-152x152.png?v=3.3.7',
+  './icons/apple-touch-icon-144x144.png?v=3.3.7',
+  './icons/apple-touch-icon-120x120.png?v=3.3.7',
+  './icons/favicon-32x32.png?v=3.3.7',
+  './icons/favicon-16x16.png?v=3.3.7',
+  './icons/icon-72x72.png?v=3.3.7',
+  './icons/icon-96x96.png?v=3.3.7',
+  './icons/icon-128x128.png?v=3.3.7',
+  './icons/icon-144x144.png?v=3.3.7',
+  './icons/icon-152x152.png?v=3.3.7',
+  './icons/icon-384x384.png?v=3.3.7',
+  './icons/shortcut-count.png?v=3.3.7',
+  './icons/shortcut-list.png?v=3.3.7'
 ];
 
 // Dynamic files that can be cached as needed
