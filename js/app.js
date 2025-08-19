@@ -2,7 +2,7 @@
 
 class ButterflyCountApp {
   constructor() {
-    this.version = '3.2.3';
+    this.version = '3.3.0';
     this.currentView = 'butterflies';
     this.currentButterflyView = 'family'; // 'family' or 'species'
     this.currentList = null;
@@ -1821,7 +1821,9 @@ class ButterflyCountApp {
     const closedLists = this.lists.filter(list => list.status === 'closed')
                                  .sort((a, b) => b.createdAt - a.createdAt);
 
-    // Render active lists
+    console.log(`Rendering lists: ${activeLists.length} active, ${closedLists.length} closed`);
+
+    // Clear and render active lists
     activeContainer.innerHTML = '';
     if (activeLists.length === 0) {
       activeContainer.innerHTML = `
@@ -1834,13 +1836,15 @@ class ButterflyCountApp {
           </button>
         </div>`;
     } else {
+      const fragment = document.createDocumentFragment();
       activeLists.forEach(list => {
         const listCard = this.createListCard(list);
-        activeContainer.appendChild(listCard);
+        fragment.appendChild(listCard);
       });
+      activeContainer.appendChild(fragment);
     }
 
-    // Render closed lists
+    // Clear and render closed lists
     closedContainer.innerHTML = '';
     if (closedLists.length === 0) {
       closedContainer.innerHTML = `
@@ -1850,11 +1854,18 @@ class ButterflyCountApp {
           <p>All closed butterfly observation lists will appear here.</p>
         </div>`;
     } else {
+      const fragment = document.createDocumentFragment();
       closedLists.forEach(list => {
         const listCard = this.createListCard(list);
-        closedContainer.appendChild(listCard);
+        fragment.appendChild(listCard);
       });
+      closedContainer.appendChild(fragment);
     }
+
+    // Add a small delay to ensure all DOM operations are complete
+    setTimeout(() => {
+      console.log('Lists rendering complete. DOM ready for interactions.');
+    }, 10);
   }
 
   // Helper function to format date/time in Indian format (dd-Mon-yyyy) with IST timezone
@@ -1890,8 +1901,9 @@ class ButterflyCountApp {
   createListCard(list) {
     const card = document.createElement('div');
     card.className = 'list-card';
-    // Add data attribute for styling differentiation
+    // Add data attribute for styling differentiation and unique identifier
     card.setAttribute('data-list-status', list.status);
+    card.setAttribute('data-list-id', list.id);
     
     const date = new Date(list.dateTime);
     const indianDateTime = this.formatIndianDateTime(date);
@@ -1952,106 +1964,189 @@ class ButterflyCountApp {
         </div>
         <div class="list-actions">
           ${list.status === 'active' ? 
-            `<button class="action-btn add-observations primary-btn" data-list-id="${list.id}">🦋 Add Observations</button>
-             <button class="action-btn view-details secondary-btn" data-list-id="${list.id}">📊 View Details</button>
-             <button class="action-btn close-list tertiary-btn" data-list-id="${list.id}">✅ Close List</button>` :
+            `<button class="action-btn add-observations primary-btn" data-list-id="${list.id}" data-action="add-observations">🦋 Add Observations</button>
+             <button class="action-btn view-details secondary-btn" data-list-id="${list.id}" data-action="view-details">📊 View Details</button>
+             <button class="action-btn close-list tertiary-btn" data-list-id="${list.id}" data-action="close-list">✅ Close List</button>` :
             `<div class="closed-list-actions">
-              <button class="action-btn view-stats primary-btn" data-list-id="${list.id}">📊 View Stats</button>
-              <button class="action-btn download-csv secondary-btn" data-list-id="${list.id}">📥 Download CSV</button>
+              <button class="action-btn view-stats primary-btn" data-list-id="${list.id}" data-action="view-stats">📊 View Stats</button>
+              <button class="action-btn download-csv secondary-btn" data-list-id="${list.id}" data-action="download-csv">📥 Download CSV</button>
             </div>`
           }
         </div>
       </div>
     `;
 
-    // Event listeners for list actions
+    // Debug: Log the generated HTML to understand button structure
+    console.log('Generated HTML for list card:', list.name);
+    console.log('Card innerHTML preview:', card.innerHTML.substring(0, 500) + '...');
+
+    // Wait for next tick to ensure DOM is fully updated
+    setTimeout(() => {
+      this.attachListCardEventHandlers(card, list);
+    }, 0);
+
+    return card;
+  }
+
+  // Separate method for attaching event handlers to avoid timing issues
+  attachListCardEventHandlers(card, list) {
+    // Query for buttons with additional safety checks
     const closeBtn = card.querySelector('.close-list');
     const viewStatsBtn = card.querySelector('.view-stats');
     const viewDetailsBtn = card.querySelector('.view-details');
     const downloadCsvBtn = card.querySelector('.download-csv');
     const addObservationsBtn = card.querySelector('.add-observations');
     const listNameElement = card.querySelector('.list-name');
+    
+    // Get all action buttons for debugging
+    const allActionBtns = card.querySelectorAll('.action-btn');
 
-    // Debug logging to verify correct button selection
-    console.log('Event handlers setup for list:', list.name, {
-      status: list.status,
+    console.log(`Attaching event handlers for ${list.status} list: ${list.name}`, {
       hasAddObservations: !!addObservationsBtn,
       hasViewStats: !!viewStatsBtn,
       hasViewDetails: !!viewDetailsBtn,
       hasDownloadCsv: !!downloadCsvBtn,
-      hasClose: !!closeBtn
+      hasClose: !!closeBtn,
+      cardId: card.getAttribute('data-list-id'),
+      totalActionButtons: allActionBtns.length,
+      buttonDetails: Array.from(allActionBtns).map(btn => ({
+        class: btn.className,
+        action: btn.getAttribute('data-action'),
+        text: btn.textContent?.trim()
+      }))
     });
 
-    // Make active list cards clickable for detailed view
-    if (list.status === 'active') {
-      card.style.cursor = 'pointer';
-      card.addEventListener('click', (e) => {
-        // Don't trigger if clicking on buttons
-        console.log('Card clicked, target:', e.target.className, 'closest button:', e.target.closest('button'), 'closest action-btn:', e.target.closest('.action-btn'));
-        if (e.target.closest('button') || e.target.closest('.action-btn')) {
-          console.log('Ignoring card click because clicked on button');
-          return;
-        }
-        console.log('Showing list stats for:', list.name);
-        this.showListStats(list);
-      });
+    // Use event delegation approach for more reliable event handling
+    card.addEventListener('click', (e) => {
+      const target = e.target;
+      const closestButton = target.closest('button.action-btn');
+      const closestActionBtn = target.closest('.action-btn');
       
-      // Add specific click handler for the list name
-      if (listNameElement) {
-        listNameElement.addEventListener('click', (e) => {
-          e.stopPropagation();
+      // Enhanced debugging to understand what's being clicked
+      console.log('Click event details:', {
+        targetTag: target.tagName,
+        targetClass: target.className,
+        targetText: target.textContent?.trim().substring(0, 20),
+        targetDataAction: target.getAttribute('data-action'),
+        targetDataListId: target.getAttribute('data-list-id'),
+        closestButton: !!closestButton,
+        closestActionBtn: !!closestActionBtn,
+        closestActionBtnAction: closestActionBtn?.getAttribute('data-action'),
+        clickX: e.clientX,
+        clickY: e.clientY,
+        targetBounds: target.getBoundingClientRect()
+      });
+
+      // Also log all buttons in this card for debugging
+      const allButtons = card.querySelectorAll('.action-btn');
+      console.log('All buttons in this card:', Array.from(allButtons).map(btn => ({
+        class: btn.className,
+        action: btn.getAttribute('data-action'),
+        text: btn.textContent?.trim(),
+        bounds: btn.getBoundingClientRect()
+      })));
+      
+      // Special handling for clicks on button container or button text
+      let buttonToHandle = closestActionBtn;
+      
+      // If clicking on list-actions div or closed-list-actions div, try to determine which button based on click position
+      if (!buttonToHandle && (target.classList.contains('list-actions') || target.classList.contains('closed-list-actions'))) {
+        console.log('Click detected on button container, determining intended button...');
+        const buttons = card.querySelectorAll('.action-btn');
+        const clickX = e.clientX;
+        const clickY = e.clientY;
+        
+        // Find the button that contains the click coordinates
+        for (const btn of buttons) {
+          const rect = btn.getBoundingClientRect();
+          if (clickX >= rect.left && clickX <= rect.right && 
+              clickY >= rect.top && clickY <= rect.bottom) {
+            buttonToHandle = btn;
+            console.log('Found button based on coordinates:', btn.getAttribute('data-action'));
+            break;
+          }
+        }
+        
+        // If we still haven't found a button, check for text content match
+        if (!buttonToHandle) {
+          const targetText = target.textContent.trim();
+          for (const btn of buttons) {
+            if (targetText.includes(btn.textContent.trim())) {
+              buttonToHandle = btn;
+              console.log('Found button based on text content:', btn.getAttribute('data-action'));
+              break;
+            }
+          }
+        }
+      }
+      
+      // Additional fallback: if still no button found but we have button-like text content
+      if (!buttonToHandle && target.textContent) {
+        const targetText = target.textContent.trim();
+        const buttons = card.querySelectorAll('.action-btn');
+        
+        // Check if target text matches any button text (for nested elements)
+        for (const btn of buttons) {
+          const btnText = btn.textContent.trim();
+          if (btnText && targetText.includes(btnText)) {
+            buttonToHandle = btn;
+            console.log('Found button based on nested text content:', btn.getAttribute('data-action'));
+            break;
+          }
+        }
+      }
+      
+      if (!buttonToHandle) {
+        // Clicked on card but not on any button - only for active lists
+        if (list.status === 'active') {
+          console.log('Card clicked (not on button) for active list:', list.name);
           this.showListStats(list);
-        });
+        }
+        return;
       }
 
-      // Add specific click handler for the view details button
-      if (viewDetailsBtn) {
-        viewDetailsBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
+      // Prevent event propagation for all button clicks
+      e.preventDefault();
+      e.stopPropagation();
+
+      // Handle button clicks based on data-action attribute
+      const action = buttonToHandle.getAttribute('data-action');
+      const listId = buttonToHandle.getAttribute('data-list-id');
+
+      console.log(`Button clicked: action=${action}, listId=${listId}, listName=${list.name}`);
+
+      switch (action) {
+        case 'add-observations':
+          console.log('Processing Add Observations click for list:', list.name);
+          this.selectedCountViewList = list.id;
+          this.switchView('count');
+          this.updateCountViewListSelector();
+          break;
+          
+        case 'view-details':
+          console.log('Processing View Details click for list:', list.name);
           this.showListStats(list);
-        });
+          break;
+          
+        case 'close-list':
+          console.log('Processing Close List click for list:', list.name);
+          this.closeList(list.id);
+          break;
+          
+        case 'view-stats':
+          console.log('Processing View Stats click for closed list:', list.name);
+          this.showListStats(list);
+          break;
+          
+        case 'download-csv':
+          console.log('Processing Download CSV click for closed list:', list.name);
+          this.downloadListCSV(list.id);
+          break;
+          
+        default:
+          console.warn('Unknown action:', action, 'for button:', buttonToHandle.className);
       }
-    }
-
-    // Fix for Add Observations button handler
-    if (addObservationsBtn) {
-      addObservationsBtn.addEventListener('click', (e) => {
-        console.log('Add Observations button clicked for list:', list.name);
-        e.preventDefault();
-        e.stopPropagation();
-        // Set this list as selected and navigate to count view
-        this.selectedCountViewList = list.id;
-        console.log('Switching to count view with selected list:', list.id);
-        this.switchView('count');
-        this.updateCountViewListSelector();
-      });
-    }
-
-    if (closeBtn) {
-      closeBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        this.closeList(list.id);
-      });
-    }
-
-    if (viewStatsBtn) {
-      viewStatsBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        this.showListStats(list);
-      });
-    }
-
-    if (downloadCsvBtn) {
-      downloadCsvBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        this.downloadListCSV(list.id);
-      });
-    }
-
-    return card;
+    });
   }
 
   // Close list
@@ -2232,11 +2327,21 @@ class ButterflyCountApp {
 
   // Show list statistics with enhanced metrics and pie chart
   showListStats(list) {
+    console.log('showListStats called for list:', list.name, 'with ID:', list.id);
+    
     const modal = document.getElementById('listStatsModal');
     const titleElement = document.getElementById('statsModalTitle');
     const contentElement = document.getElementById('statsModalContent');
 
+    console.log('Modal elements found:', {
+      modal: !!modal,
+      titleElement: !!titleElement,
+      contentElement: !!contentElement
+    });
+
     const observations = this.observations.filter(obs => obs.listId === list.id);
+    console.log('Filtered observations for list:', observations.length, 'observations');
+    
     const speciesCount = new Map();
     const familyCount = new Map();
     const timeOfDayCount = new Map();
@@ -2319,9 +2424,11 @@ class ButterflyCountApp {
 
     if (titleElement) {
       titleElement.textContent = `${list.name} - Detailed Statistics`;
+      console.log('Title element updated with:', titleElement.textContent);
     }
 
     if (contentElement) {
+      console.log('Populating content element with stats...');
       const chartId = `pieChart_${list.id}_${Date.now()}`;
       contentElement.innerHTML = `
         <div class="stats-overview-enhanced">
@@ -2384,28 +2491,30 @@ class ButterflyCountApp {
           ${list.status === 'closed' && intervalData.length > 0 ? `
             <div class="detail-section">
               <h4>📊 30-Minute Interval Analysis</h4>
-              <div class="interval-chart-container">
-                <canvas id="intervalChart_${list.id}_${Date.now()}" width="800" height="400"></canvas>
+              <div class="interval-chart-container" style="margin: 1rem 0; padding: 1rem; background: var(--surface-color); border-radius: 8px; border: 1px solid var(--border-color);">
+                <canvas id="intervalChart_${list.id}_${chartId.split('_')[2]}" width="800" height="400" style="max-width: 100%; height: 400px;"></canvas>
               </div>
             </div>
             
             <div class="detail-section">
               <h4>📋 Time Interval Breakdown</h4>
-              <div class="interval-table">
-                <div class="table-header">
-                  <div class="col-time">Time Range</div>
-                  <div class="col-unique">Unique Species</div>
-                  <div class="col-total">Total Count</div>
-                  <div class="col-common">Most Common Species</div>
-                </div>
-                ${intervalData.map(interval => `
-                  <div class="table-row">
-                    <div class="col-time">${interval.timeRange}</div>
-                    <div class="col-unique">${interval.uniqueSpecies}</div>
-                    <div class="col-total">${interval.totalCount}</div>
-                    <div class="col-common">${interval.mostCommon || 'None'}</div>
+              <div class="interval-table" style="display: block; overflow-x: auto; margin: 1rem 0;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 2fr; gap: 0.5rem; min-width: 600px;">
+                  <div class="table-header" style="display: contents;">
+                    <div class="col-time" style="background: var(--primary-color); color: white; padding: 0.75rem; font-weight: 600; text-align: center; border-radius: 4px 0 0 0;">Time Range</div>
+                    <div class="col-unique" style="background: var(--primary-color); color: white; padding: 0.75rem; font-weight: 600; text-align: center;">Unique Species</div>
+                    <div class="col-total" style="background: var(--primary-color); color: white; padding: 0.75rem; font-weight: 600; text-align: center;">Total Count</div>
+                    <div class="col-common" style="background: var(--primary-color); color: white; padding: 0.75rem; font-weight: 600; text-align: center; border-radius: 0 4px 0 0;">Most Common Species</div>
                   </div>
-                `).join('')}
+                  ${intervalData.map((interval, index) => `
+                    <div class="table-row" style="display: contents;">
+                      <div class="col-time" style="background: ${index % 2 === 0 ? 'rgba(0,0,0,0.05)' : 'transparent'}; padding: 0.5rem; text-align: center; border-bottom: 1px solid var(--border-color);">${interval.timeRange}</div>
+                      <div class="col-unique" style="background: ${index % 2 === 0 ? 'rgba(0,0,0,0.05)' : 'transparent'}; padding: 0.5rem; text-align: center; border-bottom: 1px solid var(--border-color); font-weight: 600; color: ${interval.uniqueSpecies > 0 ? 'var(--success-color)' : 'var(--text-secondary)'};">${interval.uniqueSpecies}</div>
+                      <div class="col-total" style="background: ${index % 2 === 0 ? 'rgba(0,0,0,0.05)' : 'transparent'}; padding: 0.5rem; text-align: center; border-bottom: 1px solid var(--border-color); font-weight: 600; color: ${interval.totalCount > 0 ? 'var(--primary-color)' : 'var(--text-secondary)'};">${interval.totalCount}</div>
+                      <div class="col-common" style="background: ${index % 2 === 0 ? 'rgba(0,0,0,0.05)' : 'transparent'}; padding: 0.5rem; text-align: left; border-bottom: 1px solid var(--border-color); font-size: 0.9rem;">${interval.mostCommon || 'None'}</div>
+                    </div>
+                  `).join('')}
+                </div>
               </div>
             </div>
           ` : ''}
@@ -2473,19 +2582,31 @@ class ButterflyCountApp {
           </div>
         ` : ''}
       `;
+      
+      console.log('Content element innerHTML set. Length:', contentElement.innerHTML.length);
 
       // Create pie chart after DOM is updated
       setTimeout(() => {
+        console.log('Creating charts...');
         this.createPieChart(chartId, sortedSpecies.slice(0, 10));
         
         // Create interval chart for closed lists
         if (list.status === 'closed' && intervalData.length > 0) {
-          const intervalChartId = `intervalChart_${list.id}_${Date.now()}`;
+          const intervalChartId = `intervalChart_${list.id}_${chartId.split('_')[2]}`;
+          console.log('Creating interval chart with ID:', intervalChartId);
+          console.log('Interval data:', intervalData);
           this.createIntervalChart(intervalChartId, intervalData);
+        } else {
+          console.log('No interval chart needed:', { 
+            isClosed: list.status === 'closed', 
+            hasIntervalData: intervalData.length > 0,
+            intervalDataLength: intervalData.length 
+          });
         }
       }, 100);
     }
 
+    console.log('About to show modal: listStatsModal');
     this.showModal('listStatsModal');
   }
 
@@ -2628,9 +2749,17 @@ class ButterflyCountApp {
 
   // Create interval trend chart
   createIntervalChart(canvasId, intervalData) {
+    console.log('createIntervalChart called with:', { canvasId, intervalData });
     const canvas = document.getElementById(canvasId);
+    console.log('Canvas found:', !!canvas);
+    console.log('Chart.js loaded:', !!window.Chart);
+    
     if (!canvas || !window.Chart || !intervalData.length) {
-      console.error('Chart.js not loaded, canvas not found, or no interval data');
+      console.error('Chart.js not loaded, canvas not found, or no interval data', {
+        canvasFound: !!canvas,
+        chartJsLoaded: !!window.Chart,
+        intervalDataLength: intervalData.length
+      });
       return;
     }
 
@@ -2640,6 +2769,8 @@ class ButterflyCountApp {
     const labels = intervalData.map(interval => interval.timeRange);
     const uniqueSpeciesData = intervalData.map(interval => interval.uniqueSpecies);
     const totalCountData = intervalData.map(interval => interval.totalCount);
+
+    console.log('Chart data prepared:', { labels, uniqueSpeciesData, totalCountData });
 
     const chart = new Chart(ctx, {
       type: 'line',
