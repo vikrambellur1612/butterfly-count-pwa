@@ -859,6 +859,9 @@
     user-select: none;
     /* Ensure buttons are easily clickable */
     cursor: pointer;
+    /* Proper z-index for mobile interaction */
+    position: relative;
+    z-index: 10;
   }
 
   /* Enhanced active states for mobile */
@@ -868,8 +871,10 @@
     border-color: var(--primary-color);
   }
 
-  /* Specific mobile improvements for list cards */
-  .list-card {
+  /* Specific mobile improvements for all card types */
+  .list-card,
+  .butterfly-card,
+  .family-card {
     /* Prevent accidental text selection */
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -877,21 +882,30 @@
     user-select: none;
     /* Better touch response */
     touch-action: manipulation;
-    /* Make it clear the card itself is not clickable */
-    cursor: default;
+    /* Make it clear the card itself is clickable but secondary to buttons */
+    cursor: pointer;
+  }
+
+  /* Make list cards non-clickable when they have buttons */
+  .list-card {
+    cursor: default; /* List cards shouldn't be clickable, only buttons */
   }
 
   /* Allow text selection only in specific areas */
   .list-card .list-name,
-  .list-card .list-info {
+  .list-card .list-info,
+  .butterfly-card .butterfly-info,
+  .family-card .family-description {
     -webkit-user-select: text;
     -moz-user-select: text;
     -ms-user-select: text;
     user-select: text;
   }
 
-  /* Make buttons clearly clickable */
-  .list-card .action-btn {
+  /* Make all buttons clearly clickable with proper hierarchy */
+  .list-card .action-btn,
+  .family-card .view-family-btn,
+  .butterfly-card button {
     cursor: pointer;
     position: relative;
     z-index: 10; /* Ensure buttons are above card content */
@@ -909,6 +923,51 @@
     margin-left: 0.5rem;
   }
 
+  /* Family card button styling */
+  .view-family-btn {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(74, 222, 128, 0.2);
+    cursor: pointer;
+    position: relative;
+    z-index: 10;
+    border: 1px solid var(--primary-color);
+    background: var(--primary-color);
+    color: white;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+  }
+
+  .view-family-btn:active {
+    transform: scale(0.96);
+    background-color: var(--primary-hover);
+  }
+
+  /* Species items and search results mobile improvements */
+  .species-item,
+  .search-result-item {
+    min-height: 44px;
+    padding: 12px 16px;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(74, 222, 128, 0.1);
+    /* Prevent text selection */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  .species-item:active,
+  .search-result-item:active {
+    background-color: rgba(74, 222, 128, 0.1);
+    transform: scale(0.98);
+  }
+
   /* Enhanced accessibility for mobile screen readers */
   .action-btn[data-action="add-observations"]::after {
     content: " (Add Observations)";
@@ -922,6 +981,16 @@
 
   .action-btn[data-action="view-stats"]::after {
     content: " (View Statistics)";
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .view-family-btn::after {
+    content: " (View Species in Family)";
     position: absolute;
     left: -10000px;
     top: auto;

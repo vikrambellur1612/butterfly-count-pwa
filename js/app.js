@@ -2,7 +2,7 @@
 
 class ButterflyCountApp {
   constructor() {
-    this.version = '3.3.2';
+    this.version = '3.3.3';
     this.currentView = 'butterflies';
     this.currentButterflyView = 'family'; // 'family' or 'species'
     this.currentList = null;
@@ -669,12 +669,27 @@ class ButterflyCountApp {
       </div>
       <div class="family-stats">
         <span class="species-count">${family.actualCount} species</span>
-        <button class="view-family-btn">View Species</button>
+        <button class="view-family-btn" data-action="view-species">View Species</button>
       </div>
     `;
 
-    card.addEventListener('click', () => {
-      this.showFamilyModal(familyKey, family);
+    // Use event delegation with proper button detection
+    card.addEventListener('click', (e) => {
+      // Check if click is on the button or button area
+      const button = e.target.closest('.view-family-btn');
+      if (button) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('Family View Species button clicked');
+        this.showFamilyModal(familyKey, family);
+        return;
+      }
+      
+      // Only allow clicks on non-button areas to show modal
+      if (!e.target.closest('button')) {
+        console.log('Family card clicked (non-button area)');
+        this.showFamilyModal(familyKey, family);
+      }
     });
 
     return card;
@@ -704,8 +719,13 @@ class ButterflyCountApp {
       </div>
     `;
 
-    card.addEventListener('click', () => {
-      this.showButterflyDetail(butterfly);
+    // Safe click handler - only for card areas, no button conflicts
+    card.addEventListener('click', (e) => {
+      // Prevent interference if any buttons are added in future
+      if (!e.target.closest('button, .action-btn')) {
+        console.log('Butterfly card clicked:', butterfly.commonName);
+        this.showButterflyDetail(butterfly);
+      }
     });
 
     return card;
@@ -1062,14 +1082,21 @@ class ButterflyCountApp {
       </div>
     `).join('');
 
-    // Add click handlers to species items
+    // Add click handlers to species items with proper event handling
     container.querySelectorAll('.species-item').forEach(item => {
-      item.addEventListener('click', () => {
-        const butterflyId = parseInt(item.dataset.butterflyId);
-        const butterfly = BUTTERFLY_DATA.find(b => b.id === butterflyId);
-        if (butterfly) {
-          this.hideModal('familyModal');
-          this.showButterflyDetail(butterfly);
+      item.addEventListener('click', (e) => {
+        // Prevent conflicts with any future buttons in species items
+        if (!e.target.closest('button, .action-btn')) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          const butterflyId = parseInt(item.dataset.butterflyId);
+          const butterfly = BUTTERFLY_DATA.find(b => b.id === butterflyId);
+          if (butterfly) {
+            console.log('Species item clicked (family modal):', butterfly.commonName);
+            this.hideModal('familyModal');
+            this.showButterflyDetail(butterfly);
+          }
         }
       });
     });
@@ -1111,14 +1138,21 @@ class ButterflyCountApp {
     
     container.innerHTML = html;
 
-    // Add click handlers to species items
+    // Add click handlers to species items with proper event handling
     container.querySelectorAll('.species-item').forEach(item => {
-      item.addEventListener('click', () => {
-        const butterflyId = parseInt(item.dataset.butterflyId);
-        const butterfly = BUTTERFLY_DATA.find(b => b.id === butterflyId);
-        if (butterfly) {
-          this.hideModal('familyModal');
-          this.showButterflyDetail(butterfly);
+      item.addEventListener('click', (e) => {
+        // Prevent conflicts with any future buttons in species items
+        if (!e.target.closest('button, .action-btn')) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          const butterflyId = parseInt(item.dataset.butterflyId);
+          const butterfly = BUTTERFLY_DATA.find(b => b.id === butterflyId);
+          if (butterfly) {
+            console.log('Species item clicked (subfamily modal):', butterfly.commonName);
+            this.hideModal('familyModal');
+            this.showButterflyDetail(butterfly);
+          }
         }
       });
     });
@@ -1150,10 +1184,17 @@ class ButterflyCountApp {
         </div>
       `;
 
-      resultItem.addEventListener('click', () => {
-        this.showButterflyDetail(butterfly);
-        resultsContainer.classList.add('hidden');
-        document.getElementById('butterflySearch').value = '';
+      resultItem.addEventListener('click', (e) => {
+        // Safe click handling for search results
+        if (!e.target.closest('button, .action-btn')) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          console.log('Search result clicked:', butterfly.commonName);
+          this.showButterflyDetail(butterfly);
+          resultsContainer.classList.add('hidden');
+          document.getElementById('butterflySearch').value = '';
+        }
       });
 
       resultsContainer.appendChild(resultItem);
