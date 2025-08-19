@@ -1987,9 +1987,12 @@ class ButterflyCountApp {
       card.style.cursor = 'pointer';
       card.addEventListener('click', (e) => {
         // Don't trigger if clicking on buttons
+        console.log('Card clicked, target:', e.target.className, 'closest button:', e.target.closest('button'), 'closest action-btn:', e.target.closest('.action-btn'));
         if (e.target.closest('button') || e.target.closest('.action-btn')) {
+          console.log('Ignoring card click because clicked on button');
           return;
         }
+        console.log('Showing list stats for:', list.name);
         this.showListStats(list);
       });
       
@@ -2013,10 +2016,12 @@ class ButterflyCountApp {
     // Fix for Add Observations button handler
     if (addObservationsBtn) {
       addObservationsBtn.addEventListener('click', (e) => {
+        console.log('Add Observations button clicked for list:', list.name);
         e.preventDefault();
         e.stopPropagation();
         // Set this list as selected and navigate to count view
         this.selectedCountViewList = list.id;
+        console.log('Switching to count view with selected list:', list.id);
         this.switchView('count');
         this.updateCountViewListSelector();
       });
