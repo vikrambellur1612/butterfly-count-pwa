@@ -831,6 +831,113 @@
   }
 }
 
+/* Mobile-specific button interaction improvements */
+@media (max-width: 768px) {
+  /* Enhanced touch targets for list action buttons */
+  .list-actions,
+  .closed-list-actions {
+    padding: 0.75rem;
+    gap: 0.75rem;
+    min-height: 60px;
+    /* Ensure buttons are easily touchable */
+    touch-action: manipulation;
+  }
+
+  .action-btn {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    /* Better touch response */
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(74, 222, 128, 0.2);
+    /* Prevent text selection on buttons */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    /* Ensure buttons are easily clickable */
+    cursor: pointer;
+  }
+
+  /* Enhanced active states for mobile */
+  .action-btn:active {
+    transform: scale(0.96);
+    background-color: rgba(74, 222, 128, 0.15);
+    border-color: var(--primary-color);
+  }
+
+  /* Specific mobile improvements for list cards */
+  .list-card {
+    /* Prevent accidental text selection */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    /* Better touch response */
+    touch-action: manipulation;
+  }
+
+  /* Allow text selection only in specific areas */
+  .list-card .list-name,
+  .list-card .list-info {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+  }
+
+  /* Enhanced visual feedback for button containers */
+  .list-actions:active,
+  .closed-list-actions:active {
+    background-color: rgba(74, 222, 128, 0.05);
+  }
+
+  /* Mobile-specific button spacing improvements */
+  .list-actions .action-btn + .action-btn,
+  .closed-list-actions .action-btn + .action-btn {
+    margin-left: 0.5rem;
+  }
+
+  /* Enhanced accessibility for mobile screen readers */
+  .action-btn[data-action="add-observations"]::after {
+    content: " (Add Observations)";
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .action-btn[data-action="view-stats"]::after {
+    content: " (View Statistics)";
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+}
+
+/* iOS Safari specific button improvements */
+@supports (-webkit-touch-callout: none) {
+  .action-btn {
+    /* Prevent callout on long press */
+    -webkit-touch-callout: none;
+    /* Prevent zoom on double tap */
+    touch-action: manipulation;
+  }
+
+  .list-actions,
+  .closed-list-actions {
+    /* Prevent zoom on double tap for button containers */
+    touch-action: manipulation;
+  }
+}
+
 /* Enhanced Light Mode for Mobile - Force proper contrast and visibility */
 @media (max-width: 768px) {
   /* Ensure all headers are visible on mobile */

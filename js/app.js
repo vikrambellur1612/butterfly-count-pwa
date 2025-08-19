@@ -2,7 +2,7 @@
 
 class ButterflyCountApp {
   constructor() {
-    this.version = '3.3.0';
+    this.version = '3.3.1';
     this.currentView = 'butterflies';
     this.currentButterflyView = 'family'; // 'family' or 'species'
     this.currentList = null;
@@ -498,7 +498,7 @@ class ButterflyCountApp {
     }
   }
 
-  // Setup input mode handlers for mobile keyboards
+  // Setup input mode handlers for mobile keyboards and touch optimization
   setupInputModeHandlers() {
     const countInput = document.getElementById('countInput');
     const butterflyNameInput = document.getElementById('butterflyNameInput');
@@ -525,6 +525,18 @@ class ButterflyCountApp {
         });
       }
     });
+
+    // Mobile touch optimization - disable 300ms delay
+    if (this.isMobileDevice()) {
+      // Add touch-action CSS property via JavaScript for older browsers
+      document.body.style.touchAction = 'manipulation';
+      
+      // Enable fast clicks for all interactive elements
+      const interactiveElements = document.querySelectorAll('button, .action-btn, .nav-item, .butterfly-card, .list-card');
+      interactiveElements.forEach(element => {
+        element.style.touchAction = 'manipulation';
+      });
+    }
   }
 
   // Load data from IndexedDB
@@ -2016,14 +2028,15 @@ class ButterflyCountApp {
       }))
     });
 
-    // Use event delegation approach for more reliable event handling
-    card.addEventListener('click', (e) => {
+    // Use event delegation with both click and touchend for mobile reliability
+    const handleInteraction = (e) => {
       const target = e.target;
       const closestButton = target.closest('button.action-btn');
       const closestActionBtn = target.closest('.action-btn');
       
       // Enhanced debugging to understand what's being clicked
-      console.log('Click event details:', {
+      console.log('Interaction event details:', {
+        eventType: e.type,
         targetTag: target.tagName,
         targetClass: target.className,
         targetText: target.textContent?.trim().substring(0, 20),
@@ -2032,9 +2045,10 @@ class ButterflyCountApp {
         closestButton: !!closestButton,
         closestActionBtn: !!closestActionBtn,
         closestActionBtnAction: closestActionBtn?.getAttribute('data-action'),
-        clickX: e.clientX,
-        clickY: e.clientY,
-        targetBounds: target.getBoundingClientRect()
+        clickX: e.clientX || (e.touches && e.touches[0]?.clientX),
+        clickY: e.clientY || (e.touches && e.touches[0]?.clientY),
+        targetBounds: target.getBoundingClientRect(),
+        isMobile: this.isMobileDevice()
       });
 
       // Also log all buttons in this card for debugging
@@ -2049,32 +2063,66 @@ class ButterflyCountApp {
       // Special handling for clicks on button container or button text
       let buttonToHandle = closestActionBtn;
       
-      // If clicking on list-actions div or closed-list-actions div, try to determine which button based on click position
-      if (!buttonToHandle && (target.classList.contains('list-actions') || target.classList.contains('closed-list-actions'))) {
-        console.log('Click detected on button container, determining intended button...');
+      // Enhanced mobile detection for button containers
+      const isClickOnContainer = target.classList.contains('list-actions') || 
+                                target.classList.contains('closed-list-actions') ||
+                                target.closest('.list-actions') ||
+                                target.closest('.closed-list-actions');
+      
+      // If clicking on button container area, try to determine which button based on position and content
+      if (!buttonToHandle && isClickOnContainer) {
+        console.log('Click detected on button container area, determining intended button...');
         const buttons = card.querySelectorAll('.action-btn');
-        const clickX = e.clientX;
-        const clickY = e.clientY;
+        const clickX = e.clientX || (e.touches && e.touches[0]?.clientX) || 0;
+        const clickY = e.clientY || (e.touches && e.touches[0]?.clientY) || 0;
         
-        // Find the button that contains the click coordinates
+        // Method 1: Find button by coordinates with mobile-friendly tolerance
+        const tolerance = this.isMobileDevice() ? 15 : 5; // Larger tolerance for mobile
         for (const btn of buttons) {
           const rect = btn.getBoundingClientRect();
-          if (clickX >= rect.left && clickX <= rect.right && 
-              clickY >= rect.top && clickY <= rect.bottom) {
+          if (clickX >= (rect.left - tolerance) && clickX <= (rect.right + tolerance) && 
+              clickY >= (rect.top - tolerance) && clickY <= (rect.bottom + tolerance)) {
             buttonToHandle = btn;
-            console.log('Found button based on coordinates:', btn.getAttribute('data-action'));
+            console.log('Found button based on coordinates (with tolerance):', btn.getAttribute('data-action'));
             break;
           }
         }
         
-        // If we still haven't found a button, check for text content match
+        // Method 2: If coordinates don't work, try text content matching
         if (!buttonToHandle) {
-          const targetText = target.textContent.trim();
+          const targetText = target.textContent.trim().toLowerCase();
+          const parentText = target.closest('.list-actions, .closed-list-actions')?.textContent.trim().toLowerCase() || '';
+          
           for (const btn of buttons) {
-            if (targetText.includes(btn.textContent.trim())) {
+            const btnText = btn.textContent.trim().toLowerCase();
+            if (btnText && (targetText.includes(btnText) || parentText.includes(btnText))) {
               buttonToHandle = btn;
               console.log('Found button based on text content:', btn.getAttribute('data-action'));
               break;
+            }
+          }
+        }
+        
+        // Method 3: For mobile, try to match common button text patterns
+        if (!buttonToHandle && this.isMobileDevice()) {
+          const textPatterns = {
+            'add-observations': ['add', 'observation', '+', 'new'],
+            'view-stats': ['view', 'stats', 'statistics', '📊'],
+            'view-details': ['view', 'details', 'info'],
+            'close-list': ['close', 'finish', '✓'],
+            'download-csv': ['download', 'csv', 'export', '📄']
+          };
+          
+          const fullText = (target.textContent || target.closest('.list-actions, .closed-list-actions')?.textContent || '').toLowerCase();
+          
+          for (const [action, patterns] of Object.entries(textPatterns)) {
+            if (patterns.some(pattern => fullText.includes(pattern))) {
+              const matchingBtn = buttons.find(btn => btn.getAttribute('data-action') === action);
+              if (matchingBtn) {
+                buttonToHandle = matchingBtn;
+                console.log('Found button based on mobile text pattern:', action);
+                break;
+              }
             }
           }
         }
@@ -2082,13 +2130,13 @@ class ButterflyCountApp {
       
       // Additional fallback: if still no button found but we have button-like text content
       if (!buttonToHandle && target.textContent) {
-        const targetText = target.textContent.trim();
+        const targetText = target.textContent.trim().toLowerCase();
         const buttons = card.querySelectorAll('.action-btn');
         
         // Check if target text matches any button text (for nested elements)
         for (const btn of buttons) {
-          const btnText = btn.textContent.trim();
-          if (btnText && targetText.includes(btnText)) {
+          const btnText = btn.textContent.trim().toLowerCase();
+          if (btnText && (targetText.includes(btnText) || btnText.includes(targetText))) {
             buttonToHandle = btn;
             console.log('Found button based on nested text content:', btn.getAttribute('data-action'));
             break;
@@ -2146,7 +2194,79 @@ class ButterflyCountApp {
         default:
           console.warn('Unknown action:', action, 'for button:', buttonToHandle.className);
       }
-    });
+    };
+
+    // Add both click and touchend event listeners for better mobile support
+    card.addEventListener('click', handleInteraction);
+    
+    // Add touchend for mobile devices with touch delay prevention
+    if (this.isMobileDevice()) {
+      let touchStartTime = 0;
+      let touchStartTarget = null;
+      
+      card.addEventListener('touchstart', (e) => {
+        touchStartTime = Date.now();
+        touchStartTarget = e.target;
+        
+        // Add visual feedback for button press
+        const actionBtn = e.target.closest('.action-btn');
+        if (actionBtn) {
+          actionBtn.style.transform = 'scale(0.96)';
+          actionBtn.style.backgroundColor = 'rgba(74, 222, 128, 0.15)';
+        }
+      }, { passive: true });
+      
+      card.addEventListener('touchend', (e) => {
+        const touchDuration = Date.now() - touchStartTime;
+        const endTarget = e.target;
+        
+        // Remove visual feedback
+        const actionBtn = e.target.closest('.action-btn');
+        if (actionBtn) {
+          setTimeout(() => {
+            actionBtn.style.transform = '';
+            actionBtn.style.backgroundColor = '';
+          }, 100);
+        }
+        
+        // Only handle touchend if it was a quick tap on the same element (not a scroll/swipe)
+        if (touchDuration < 500 && touchStartTarget === endTarget) {
+          console.log('Mobile touch interaction - processing as click');
+          e.preventDefault();
+          handleInteraction(e);
+        }
+      }, { passive: false });
+      
+      // Handle touch cancel (when user drags away)
+      card.addEventListener('touchcancel', (e) => {
+        const actionBtn = e.target.closest('.action-btn');
+        if (actionBtn) {
+          actionBtn.style.transform = '';
+          actionBtn.style.backgroundColor = '';
+        }
+      }, { passive: true });
+    }
+  }
+
+  // Helper method to detect mobile devices
+  isMobileDevice() {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                     ('ontouchstart' in window) ||
+                     (navigator.maxTouchPoints && navigator.maxTouchPoints > 2);
+    
+    // Log mobile detection for debugging
+    if (isMobile) {
+      console.log('Mobile device detected:', {
+        userAgent: navigator.userAgent,
+        hasTouch: 'ontouchstart' in window,
+        maxTouchPoints: navigator.maxTouchPoints,
+        viewportWidth: window.innerWidth,
+        viewportHeight: window.innerHeight,
+        pixelRatio: window.devicePixelRatio
+      });
+    }
+    
+    return isMobile;
   }
 
   // Close list
