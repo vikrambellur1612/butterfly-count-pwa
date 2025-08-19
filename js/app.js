@@ -2,7 +2,7 @@
 
 class ButterflyCountApp {
   constructor() {
-    this.version = '3.3.5';
+    this.version = '3.3.6';
     this.currentView = 'butterflies';
     this.currentButterflyView = 'family'; // 'family' or 'species'
     this.currentList = null;
@@ -149,7 +149,8 @@ class ButterflyCountApp {
           const iconKeys = keys.filter(request => 
             request.url.includes('/icons/') || 
             request.url.includes('apple-touch-icon') ||
-            request.url.includes('favicon')
+            request.url.includes('favicon') ||
+            request.url.includes('manifest.json')
           );
           
           const deletePromises = iconKeys.map(key => cache.delete(key));
@@ -161,6 +162,25 @@ class ButterflyCountApp {
         });
         
         await Promise.all(iconCachePromises);
+        
+        // For iPhone specifically - try to force cache-busting for PWA manifest
+        if (navigator.userAgent.includes('iPhone') || navigator.userAgent.includes('iPad')) {
+          console.log('iPhone/iPad detected - clearing PWA icon caches');
+          
+          // Clear manifest cache specifically
+          if ('registration' in navigator.serviceWorker && navigator.serviceWorker.registration) {
+            try {
+              await navigator.serviceWorker.registration.update();
+              console.log('Service worker updated - manifest should refresh');
+            } catch (error) {
+              console.error('Failed to update service worker:', error);
+            }
+          }
+          
+          // Show specific iPhone instructions
+          this.showToast('📱 iPhone detected: For icon update, please delete and reinstall the PWA app. This is required due to iOS icon caching.', 'info', 15000);
+        }
+        
         console.log('Icon caches cleared successfully');
       }
     } catch (error) {
@@ -2226,11 +2246,34 @@ class ButterflyCountApp {
     const highestCount = sortedSpecies.length > 0 ? sortedSpecies[0] : null;
     const lowestCount = sortedSpecies.length > 0 ? sortedSpecies[sortedSpecies.length - 1] : null;
 
+    // Calculate time span and interval data
+    let timeSpan = 'N/A';
+    let firstObsTime = null;
+    let lastObsTime = null;
+    let intervalData = [];
+    
+    if (observations.length > 0) {
+      const times = observations.map(obs => new Date(obs.dateTime)).sort((a, b) => a - b);
+      firstObsTime = times[0];
+      lastObsTime = times[times.length - 1];
+      
+      if (observations.length > 1) {
+        const duration = lastObsTime - firstObsTime;
+        const hours = Math.floor(duration / (1000 * 60 * 60));
+        const minutes = Math.floor((duration % (1000 * 60 * 60)) / (1000 * 60));
+        timeSpan = hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
+      }
+      
+      // Generate 30-minute interval data
+      intervalData = this.generate30MinuteIntervalData(observations, firstObsTime, lastObsTime);
+    }
+
     if (titleElement) {
       titleElement.textContent = `Close "${list.name}"?`;
     }
 
     if (contentElement) {
+      const chartId = `closeChart_${list.id}_${Date.now()}`;
       contentElement.innerHTML = `
         <div class="summary-header">
           <h4>📊 List Summary</h4>
@@ -2250,12 +2293,22 @@ class ButterflyCountApp {
             <span class="stat-number">${observations.length}</span>
             <span class="stat-label">Observations</span>
           </div>
+          ${intervalData.length > 0 ? `
+          <div class="stat-item">
+            <span class="stat-number">${timeSpan}</span>
+            <span class="stat-label">Duration</span>
+          </div>
+          ` : ''}
         </div>
         
         <div class="stats-details">
           <div class="detail-section">
             <h4>📅 Date & Time</h4>
             <p>${this.formatIndianDateTime(new Date(list.dateTime)).fullDateTime} IST</p>
+            ${firstObsTime && lastObsTime && observations.length > 1 ? `
+              <p><strong>First Observation:</strong> ${this.formatIndianDateTime(firstObsTime).time}</p>
+              <p><strong>Last Observation:</strong> ${this.formatIndianDateTime(lastObsTime).time}</p>
+            ` : ''}
           </div>
           
           ${highestCount ? `
@@ -2272,6 +2325,37 @@ class ButterflyCountApp {
             </div>
           ` : ''}
         </div>
+        
+        ${intervalData.length > 0 ? `
+          <div class="detail-section">
+            <h4>📊 30-Minute Activity Analysis</h4>
+            <div class="interval-chart-container" style="margin: 1rem 0; padding: 1rem; background: var(--surface-color); border-radius: 8px; border: 1px solid var(--border-color);">
+              <canvas id="intervalChart_${chartId}" width="800" height="300" style="max-width: 100%; height: 300px;"></canvas>
+            </div>
+          </div>
+          
+          <div class="detail-section">
+            <h4>📋 Time Interval Breakdown</h4>
+            <div class="interval-table" style="display: block; overflow-x: auto; margin: 1rem 0;">
+              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 2fr; gap: 0.5rem; min-width: 600px;">
+                <div class="table-header" style="display: contents;">
+                  <div class="col-time" style="background: var(--primary-color); color: white; padding: 0.75rem; font-weight: 600; text-align: center; border-radius: 4px 0 0 0;">Time Range</div>
+                  <div class="col-unique" style="background: var(--primary-color); color: white; padding: 0.75rem; font-weight: 600; text-align: center;">Unique Species</div>
+                  <div class="col-total" style="background: var(--primary-color); color: white; padding: 0.75rem; font-weight: 600; text-align: center;">Total Count</div>
+                  <div class="col-common" style="background: var(--primary-color); color: white; padding: 0.75rem; font-weight: 600; text-align: center; border-radius: 0 4px 0 0;">Most Common Species</div>
+                </div>
+                ${intervalData.map((interval, index) => `
+                  <div class="table-row" style="display: contents;">
+                    <div class="col-time" style="background: ${index % 2 === 0 ? 'rgba(0,0,0,0.05)' : 'transparent'}; padding: 0.5rem; text-align: center; border-bottom: 1px solid var(--border-color);">${interval.timeRange}</div>
+                    <div class="col-unique" style="background: ${index % 2 === 0 ? 'rgba(0,0,0,0.05)' : 'transparent'}; padding: 0.5rem; text-align: center; border-bottom: 1px solid var(--border-color); font-weight: 600; color: ${interval.uniqueSpecies > 0 ? 'var(--success-color)' : 'var(--text-secondary)'};">${interval.uniqueSpecies}</div>
+                    <div class="col-total" style="background: ${index % 2 === 0 ? 'rgba(0,0,0,0.05)' : 'transparent'}; padding: 0.5rem; text-align: center; border-bottom: 1px solid var(--border-color); font-weight: 600; color: ${interval.totalCount > 0 ? 'var(--primary-color)' : 'var(--text-secondary)'};">${interval.totalCount}</div>
+                    <div class="col-common" style="background: ${index % 2 === 0 ? 'rgba(0,0,0,0.05)' : 'transparent'}; padding: 0.5rem; text-align: left; border-bottom: 1px solid var(--border-color); font-size: 0.9rem;">${interval.mostCommon || 'None'}</div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        ` : ''}
         
         <div class="species-breakdown">
           <h4>Species Breakdown</h4>
@@ -2330,6 +2414,13 @@ class ButterflyCountApp {
     }
 
     this.showModal('listStatsModal');
+
+    // Create interval chart after modal is shown
+    if (intervalData.length > 0) {
+      setTimeout(() => {
+        this.createIntervalChart(`intervalChart_${chartId}`, intervalData);
+      }, 100);
+    }
   }
 
   // Actually close the list after confirmation
