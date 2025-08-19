@@ -2,7 +2,7 @@
 
 class ButterflyCountApp {
   constructor() {
-    this.version = '3.3.3';
+    this.version = '3.3.4';
     this.currentView = 'butterflies';
     this.currentButterflyView = 'family'; // 'family' or 'species'
     this.currentList = null;
@@ -2043,254 +2043,129 @@ class ButterflyCountApp {
 
   // Separate method for attaching event handlers to avoid timing issues
   attachListCardEventHandlers(card, list) {
-    // Query for buttons with additional safety checks
-    const closeBtn = card.querySelector('.close-list');
-    const viewStatsBtn = card.querySelector('.view-stats');
-    const viewDetailsBtn = card.querySelector('.view-details');
-    const downloadCsvBtn = card.querySelector('.download-csv');
-    const addObservationsBtn = card.querySelector('.add-observations');
-    const listNameElement = card.querySelector('.list-name');
+    console.log(`=== Setting up event handlers for ${list.status} list: ${list.name} ===`);
     
-    // Get all action buttons for debugging
+    // Get all action buttons for comprehensive debugging
     const allActionBtns = card.querySelectorAll('.action-btn');
-
-    console.log(`Attaching event handlers for ${list.status} list: ${list.name}`, {
-      hasAddObservations: !!addObservationsBtn,
-      hasViewStats: !!viewStatsBtn,
-      hasViewDetails: !!viewDetailsBtn,
-      hasDownloadCsv: !!downloadCsvBtn,
-      hasClose: !!closeBtn,
-      cardId: card.getAttribute('data-list-id'),
-      totalActionButtons: allActionBtns.length,
-      buttonDetails: Array.from(allActionBtns).map(btn => ({
+    const listActions = card.querySelector('.list-actions, .closed-list-actions');
+    
+    console.log('Button analysis:', {
+      listId: list.id,
+      listStatus: list.status,
+      totalButtons: allActionBtns.length,
+      buttonContainer: listActions ? listActions.className : 'not found',
+      buttonDetails: Array.from(allActionBtns).map((btn, index) => ({
+        index,
         class: btn.className,
         action: btn.getAttribute('data-action'),
-        text: btn.textContent?.trim()
+        text: btn.textContent?.trim(),
+        bounds: btn.getBoundingClientRect(),
+        listId: btn.getAttribute('data-list-id')
       }))
     });
 
-    // Use event delegation with both click and touchend for mobile reliability
-    const handleInteraction = (e) => {
-      const target = e.target;
-      const closestButton = target.closest('button.action-btn');
-      const closestActionBtn = target.closest('.action-btn');
+    // Add direct event listeners to each button individually
+    allActionBtns.forEach((button, index) => {
+      const action = button.getAttribute('data-action');
+      const buttonListId = button.getAttribute('data-list-id');
       
-      // IMMEDIATE CHECK: If we found a direct button, use it and stop processing
-      if (closestActionBtn) {
-        console.log('Direct button found:', closestActionBtn.getAttribute('data-action'));
-        
-        // Prevent event propagation for button clicks
+      console.log(`Adding direct listener to button ${index}:`, {
+        action,
+        buttonListId,
+        text: button.textContent?.trim()
+      });
+      
+      // Remove any existing listeners by cloning the button
+      const newButton = button.cloneNode(true);
+      button.parentNode.replaceChild(newButton, button);
+      
+      // Add fresh event listener
+      newButton.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
-
-        const action = closestActionBtn.getAttribute('data-action');
-        const listId = closestActionBtn.getAttribute('data-list-id');
-
-        console.log(`Button clicked directly: action=${action}, listId=${listId}, listName=${list.name}`);
-
+        e.stopImmediatePropagation();
+        
+        console.log(`🎯 DIRECT BUTTON CLICK: ${action} for list ${list.name}`);
+        
         switch (action) {
           case 'add-observations':
-            console.log('Processing Add Observations click for list:', list.name);
+            console.log('✅ Executing Add Observations');
             this.selectedCountViewList = list.id;
             this.switchView('count');
             this.updateCountViewListSelector();
             break;
             
           case 'view-details':
-            console.log('Processing View Details click for list:', list.name);
+            console.log('✅ Executing View Details');
             this.showListStats(list);
             break;
             
           case 'close-list':
-            console.log('Processing Close List click for list:', list.name);
+            console.log('✅ Executing Close List');
             this.closeList(list.id);
             break;
             
           case 'view-stats':
-            console.log('Processing View Stats click for closed list:', list.name);
+            console.log('✅ Executing View Stats');
             this.showListStats(list);
             break;
             
           case 'download-csv':
-            console.log('Processing Download CSV click for closed list:', list.name);
+            console.log('✅ Executing Download CSV');
             this.downloadListCSV(list.id);
             break;
             
           default:
-            console.warn('Unknown action:', action, 'for button:', closestActionBtn.className);
-        }
-        return;
-      }
-      
-      // Enhanced debugging to understand what's being clicked
-      console.log('Interaction event details:', {
-        eventType: e.type,
-        targetTag: target.tagName,
-        targetClass: target.className,
-        targetText: target.textContent?.trim().substring(0, 20),
-        targetDataAction: target.getAttribute('data-action'),
-        targetDataListId: target.getAttribute('data-list-id'),
-        closestButton: !!closestButton,
-        closestActionBtn: !!closestActionBtn,
-        closestActionBtnAction: closestActionBtn?.getAttribute('data-action'),
-        clickX: e.clientX || (e.touches && e.touches[0]?.clientX),
-        clickY: e.clientY || (e.touches && e.touches[0]?.clientY),
-        targetBounds: target.getBoundingClientRect(),
-        isMobile: this.isMobileDevice()
-      });
-
-      // Also log all buttons in this card for debugging
-      const allButtons = card.querySelectorAll('.action-btn');
-      console.log('All buttons in this card:', Array.from(allButtons).map(btn => ({
-        class: btn.className,
-        action: btn.getAttribute('data-action'),
-        text: btn.textContent?.trim(),
-        bounds: btn.getBoundingClientRect()
-      })));
-      
-      // Only proceed with fallback detection if we're clearly in a button area
-      let buttonToHandle = null;
-      
-      // Enhanced mobile detection for button containers ONLY
-      const isClickOnButtonContainer = target.classList.contains('list-actions') || 
-                                      target.classList.contains('closed-list-actions');
-      
-      const isClickOnButtonElement = target.tagName === 'BUTTON' || 
-                                    target.closest('button') ||
-                                    target.classList.contains('action-btn');
-      
-      // Only try fallback detection if we're actually clicking on button-related elements
-      if (isClickOnButtonContainer || isClickOnButtonElement) {
-        console.log('Click detected on button area, attempting fallback detection...');
-        const buttons = card.querySelectorAll('.action-btn');
-        const clickX = e.clientX || (e.touches && e.touches[0]?.clientX) || 0;
-        const clickY = e.clientY || (e.touches && e.touches[0]?.clientY) || 0;
-        
-        // Method 1: Find button by coordinates with mobile-friendly tolerance
-        const tolerance = this.isMobileDevice() ? 20 : 10; // Even larger tolerance for better detection
-        for (const btn of buttons) {
-          const rect = btn.getBoundingClientRect();
-          if (clickX >= (rect.left - tolerance) && clickX <= (rect.right + tolerance) && 
-              clickY >= (rect.top - tolerance) && clickY <= (rect.bottom + tolerance)) {
-            buttonToHandle = btn;
-            console.log('Found button based on coordinates (with tolerance):', btn.getAttribute('data-action'));
-            break;
-          }
-        }
-        
-        // Method 2: If coordinates don't work, try text content matching for button areas only
-        if (!buttonToHandle && (isClickOnButtonContainer || isClickOnButtonElement)) {
-          const targetText = target.textContent.trim().toLowerCase();
-          
-          for (const btn of buttons) {
-            const btnText = btn.textContent.trim().toLowerCase();
-            if (btnText && targetText.includes(btnText)) {
-              buttonToHandle = btn;
-              console.log('Found button based on text content:', btn.getAttribute('data-action'));
-              break;
-            }
-          }
-        }
-      }
-      
-      if (!buttonToHandle) {
-        // No button detected - do nothing instead of showing stats
-        console.log('Click detected on card but no button found - ignoring click');
-        return;
-      }
-      // Prevent event propagation for all button clicks
-      e.preventDefault();
-      e.stopPropagation();
-
-      // Handle button clicks based on data-action attribute
-      const action = buttonToHandle.getAttribute('data-action');
-      const listId = buttonToHandle.getAttribute('data-list-id');
-
-      console.log(`Button clicked via fallback: action=${action}, listId=${listId}, listName=${list.name}`);
-
-      switch (action) {
-        case 'add-observations':
-          console.log('Processing Add Observations click for list:', list.name);
-          this.selectedCountViewList = list.id;
-          this.switchView('count');
-          this.updateCountViewListSelector();
-          break;
-          
-        case 'view-details':
-          console.log('Processing View Details click for list:', list.name);
-          this.showListStats(list);
-          break;
-          
-        case 'close-list':
-          console.log('Processing Close List click for list:', list.name);
-          this.closeList(list.id);
-          break;
-          
-        case 'view-stats':
-          console.log('Processing View Stats click for closed list:', list.name);
-          this.showListStats(list);
-          break;
-          
-        case 'download-csv':
-          console.log('Processing Download CSV click for closed list:', list.name);
-          this.downloadListCSV(list.id);
-          break;
-          
-        default:
-          console.warn('Unknown action:', action, 'for button:', buttonToHandle.className);
-      }
-    };
-
-    // Add both click and touchend event listeners for better mobile support
-    card.addEventListener('click', handleInteraction);
-    
-    // Add touchend for mobile devices with touch delay prevention
-    if (this.isMobileDevice()) {
-      let touchStartTime = 0;
-      let touchStartTarget = null;
-      
-      card.addEventListener('touchstart', (e) => {
-        touchStartTime = Date.now();
-        touchStartTarget = e.target;
-        
-        // Add visual feedback for button press
-        const actionBtn = e.target.closest('.action-btn');
-        if (actionBtn) {
-          actionBtn.style.transform = 'scale(0.96)';
-          actionBtn.style.backgroundColor = 'rgba(74, 222, 128, 0.15)';
-        }
-      }, { passive: true });
-      
-      card.addEventListener('touchend', (e) => {
-        const touchDuration = Date.now() - touchStartTime;
-        const endTarget = e.target;
-        
-        // Remove visual feedback
-        const actionBtn = e.target.closest('.action-btn');
-        if (actionBtn) {
-          setTimeout(() => {
-            actionBtn.style.transform = '';
-            actionBtn.style.backgroundColor = '';
-          }, 100);
-        }
-        
-        // Only handle touchend if it was a quick tap on the same element (not a scroll/swipe)
-        if (touchDuration < 500 && touchStartTarget === endTarget) {
-          console.log('Mobile touch interaction - processing as click');
-          e.preventDefault();
-          handleInteraction(e);
+            console.warn('❌ Unknown action:', action);
         }
       }, { passive: false });
       
-      // Handle touch cancel (when user drags away)
-      card.addEventListener('touchcancel', (e) => {
-        const actionBtn = e.target.closest('.action-btn');
-        if (actionBtn) {
-          actionBtn.style.transform = '';
-          actionBtn.style.backgroundColor = '';
-        }
-      }, { passive: true });
-    }
+      // Add touch event for mobile
+      if (this.isMobileDevice()) {
+        newButton.addEventListener('touchstart', (e) => {
+          console.log(`📱 Touch start on button: ${action}`);
+          newButton.style.transform = 'scale(0.95)';
+          newButton.style.backgroundColor = 'rgba(74, 222, 128, 0.2)';
+        }, { passive: true });
+        
+        newButton.addEventListener('touchend', (e) => {
+          console.log(`📱 Touch end on button: ${action}`);
+          setTimeout(() => {
+            newButton.style.transform = '';
+            newButton.style.backgroundColor = '';
+          }, 100);
+        }, { passive: true });
+      }
+    });
+
+    // Add card-level debugging (but no functionality)
+    card.addEventListener('click', (e) => {
+      const target = e.target;
+      const isButton = target.closest('.action-btn');
+      
+      console.log('🔍 Card click debug:', {
+        isButton: !!isButton,
+        targetTag: target.tagName,
+        targetClass: target.className,
+        targetText: target.textContent?.trim().substring(0, 30),
+        clickPosition: {
+          x: e.clientX,
+          y: e.clientY
+        },
+        buttonBounds: Array.from(allActionBtns).map(btn => ({
+          action: btn.getAttribute('data-action'),
+          bounds: btn.getBoundingClientRect()
+        }))
+      });
+      
+      // Only allow card functionality if NOT clicking on buttons
+      if (!isButton) {
+        console.log('Card area clicked (non-button)');
+        // Card-level functionality can go here if needed
+      } else {
+        console.log('Button area clicked - should be handled by button listener');
+      }
+    }, { passive: false });
   }
 
   // Helper method to detect mobile devices

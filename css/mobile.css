@@ -841,6 +841,11 @@
     min-height: 60px;
     /* Ensure buttons are easily touchable */
     touch-action: manipulation;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: space-between;
   }
 
   .action-btn {
@@ -862,6 +867,14 @@
     /* Proper z-index for mobile interaction */
     position: relative;
     z-index: 10;
+    /* Ensure no overlap */
+    flex: 1;
+    margin: 2px;
+    /* Prevent overflow */
+    box-sizing: border-box;
+    /* Clear boundaries */
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
   }
 
   /* Enhanced active states for mobile */
@@ -917,10 +930,39 @@
     background-color: rgba(74, 222, 128, 0.05);
   }
 
-  /* Mobile-specific button spacing improvements */
-  .list-actions .action-btn + .action-btn,
-  .closed-list-actions .action-btn + .action-btn {
-    margin-left: 0.5rem;
+  /* Mobile-specific button spacing improvements - Remove conflicting margins */
+  .list-actions .action-btn,
+  .closed-list-actions .action-btn {
+    /* Remove any additional margins that might cause overlap */
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  /* Ensure buttons in active lists have proper spacing */
+  .list-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .list-actions .action-btn {
+    flex: none;
+    width: 100%;
+    margin: 0;
+    min-height: 48px;
+  }
+
+  /* Ensure buttons in closed lists have proper spacing */
+  .closed-list-actions {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+  }
+
+  .closed-list-actions .action-btn {
+    flex: 1;
+    margin: 0;
+    min-height: 48px;
   }
 
   /* Family card button styling */
