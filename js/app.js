@@ -2,7 +2,7 @@
 
 class ButterflyCountApp {
   constructor() {
-    this.version = '3.3.1';
+    this.version = '3.3.2';
     this.currentView = 'butterflies';
     this.currentButterflyView = 'family'; // 'family' or 'species'
     this.currentList = null;
@@ -2034,6 +2034,53 @@ class ButterflyCountApp {
       const closestButton = target.closest('button.action-btn');
       const closestActionBtn = target.closest('.action-btn');
       
+      // IMMEDIATE CHECK: If we found a direct button, use it and stop processing
+      if (closestActionBtn) {
+        console.log('Direct button found:', closestActionBtn.getAttribute('data-action'));
+        
+        // Prevent event propagation for button clicks
+        e.preventDefault();
+        e.stopPropagation();
+
+        const action = closestActionBtn.getAttribute('data-action');
+        const listId = closestActionBtn.getAttribute('data-list-id');
+
+        console.log(`Button clicked directly: action=${action}, listId=${listId}, listName=${list.name}`);
+
+        switch (action) {
+          case 'add-observations':
+            console.log('Processing Add Observations click for list:', list.name);
+            this.selectedCountViewList = list.id;
+            this.switchView('count');
+            this.updateCountViewListSelector();
+            break;
+            
+          case 'view-details':
+            console.log('Processing View Details click for list:', list.name);
+            this.showListStats(list);
+            break;
+            
+          case 'close-list':
+            console.log('Processing Close List click for list:', list.name);
+            this.closeList(list.id);
+            break;
+            
+          case 'view-stats':
+            console.log('Processing View Stats click for closed list:', list.name);
+            this.showListStats(list);
+            break;
+            
+          case 'download-csv':
+            console.log('Processing Download CSV click for closed list:', list.name);
+            this.downloadListCSV(list.id);
+            break;
+            
+          default:
+            console.warn('Unknown action:', action, 'for button:', closestActionBtn.className);
+        }
+        return;
+      }
+      
       // Enhanced debugging to understand what's being clicked
       console.log('Interaction event details:', {
         eventType: e.type,
@@ -2060,24 +2107,26 @@ class ButterflyCountApp {
         bounds: btn.getBoundingClientRect()
       })));
       
-      // Special handling for clicks on button container or button text
-      let buttonToHandle = closestActionBtn;
+      // Only proceed with fallback detection if we're clearly in a button area
+      let buttonToHandle = null;
       
-      // Enhanced mobile detection for button containers
-      const isClickOnContainer = target.classList.contains('list-actions') || 
-                                target.classList.contains('closed-list-actions') ||
-                                target.closest('.list-actions') ||
-                                target.closest('.closed-list-actions');
+      // Enhanced mobile detection for button containers ONLY
+      const isClickOnButtonContainer = target.classList.contains('list-actions') || 
+                                      target.classList.contains('closed-list-actions');
       
-      // If clicking on button container area, try to determine which button based on position and content
-      if (!buttonToHandle && isClickOnContainer) {
-        console.log('Click detected on button container area, determining intended button...');
+      const isClickOnButtonElement = target.tagName === 'BUTTON' || 
+                                    target.closest('button') ||
+                                    target.classList.contains('action-btn');
+      
+      // Only try fallback detection if we're actually clicking on button-related elements
+      if (isClickOnButtonContainer || isClickOnButtonElement) {
+        console.log('Click detected on button area, attempting fallback detection...');
         const buttons = card.querySelectorAll('.action-btn');
         const clickX = e.clientX || (e.touches && e.touches[0]?.clientX) || 0;
         const clickY = e.clientY || (e.touches && e.touches[0]?.clientY) || 0;
         
         // Method 1: Find button by coordinates with mobile-friendly tolerance
-        const tolerance = this.isMobileDevice() ? 15 : 5; // Larger tolerance for mobile
+        const tolerance = this.isMobileDevice() ? 20 : 10; // Even larger tolerance for better detection
         for (const btn of buttons) {
           const rect = btn.getBoundingClientRect();
           if (clickX >= (rect.left - tolerance) && clickX <= (rect.right + tolerance) && 
@@ -2088,71 +2137,26 @@ class ButterflyCountApp {
           }
         }
         
-        // Method 2: If coordinates don't work, try text content matching
-        if (!buttonToHandle) {
+        // Method 2: If coordinates don't work, try text content matching for button areas only
+        if (!buttonToHandle && (isClickOnButtonContainer || isClickOnButtonElement)) {
           const targetText = target.textContent.trim().toLowerCase();
-          const parentText = target.closest('.list-actions, .closed-list-actions')?.textContent.trim().toLowerCase() || '';
           
           for (const btn of buttons) {
             const btnText = btn.textContent.trim().toLowerCase();
-            if (btnText && (targetText.includes(btnText) || parentText.includes(btnText))) {
+            if (btnText && targetText.includes(btnText)) {
               buttonToHandle = btn;
               console.log('Found button based on text content:', btn.getAttribute('data-action'));
               break;
             }
           }
         }
-        
-        // Method 3: For mobile, try to match common button text patterns
-        if (!buttonToHandle && this.isMobileDevice()) {
-          const textPatterns = {
-            'add-observations': ['add', 'observation', '+', 'new'],
-            'view-stats': ['view', 'stats', 'statistics', '📊'],
-            'view-details': ['view', 'details', 'info'],
-            'close-list': ['close', 'finish', '✓'],
-            'download-csv': ['download', 'csv', 'export', '📄']
-          };
-          
-          const fullText = (target.textContent || target.closest('.list-actions, .closed-list-actions')?.textContent || '').toLowerCase();
-          
-          for (const [action, patterns] of Object.entries(textPatterns)) {
-            if (patterns.some(pattern => fullText.includes(pattern))) {
-              const matchingBtn = buttons.find(btn => btn.getAttribute('data-action') === action);
-              if (matchingBtn) {
-                buttonToHandle = matchingBtn;
-                console.log('Found button based on mobile text pattern:', action);
-                break;
-              }
-            }
-          }
-        }
-      }
-      
-      // Additional fallback: if still no button found but we have button-like text content
-      if (!buttonToHandle && target.textContent) {
-        const targetText = target.textContent.trim().toLowerCase();
-        const buttons = card.querySelectorAll('.action-btn');
-        
-        // Check if target text matches any button text (for nested elements)
-        for (const btn of buttons) {
-          const btnText = btn.textContent.trim().toLowerCase();
-          if (btnText && (targetText.includes(btnText) || btnText.includes(targetText))) {
-            buttonToHandle = btn;
-            console.log('Found button based on nested text content:', btn.getAttribute('data-action'));
-            break;
-          }
-        }
       }
       
       if (!buttonToHandle) {
-        // Clicked on card but not on any button - only for active lists
-        if (list.status === 'active') {
-          console.log('Card clicked (not on button) for active list:', list.name);
-          this.showListStats(list);
-        }
+        // No button detected - do nothing instead of showing stats
+        console.log('Click detected on card but no button found - ignoring click');
         return;
       }
-
       // Prevent event propagation for all button clicks
       e.preventDefault();
       e.stopPropagation();
@@ -2161,7 +2165,7 @@ class ButterflyCountApp {
       const action = buttonToHandle.getAttribute('data-action');
       const listId = buttonToHandle.getAttribute('data-list-id');
 
-      console.log(`Button clicked: action=${action}, listId=${listId}, listName=${list.name}`);
+      console.log(`Button clicked via fallback: action=${action}, listId=${listId}, listName=${list.name}`);
 
       switch (action) {
         case 'add-observations':

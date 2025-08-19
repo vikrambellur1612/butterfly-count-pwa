@@ -877,6 +877,8 @@
     user-select: none;
     /* Better touch response */
     touch-action: manipulation;
+    /* Make it clear the card itself is not clickable */
+    cursor: default;
   }
 
   /* Allow text selection only in specific areas */
@@ -886,6 +888,13 @@
     -moz-user-select: text;
     -ms-user-select: text;
     user-select: text;
+  }
+
+  /* Make buttons clearly clickable */
+  .list-card .action-btn {
+    cursor: pointer;
+    position: relative;
+    z-index: 10; /* Ensure buttons are above card content */
   }
 
   /* Enhanced visual feedback for button containers */
