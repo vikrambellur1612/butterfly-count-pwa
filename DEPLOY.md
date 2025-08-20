@@ -1,8 +1,4 @@
-# Ne## Core Files
-- [x] `index.html` - Main application page
-- [x] `manifest.json` - PWA manifest (v1.6.5)
-- [x] `sw.js` - Service worker (v1.6.5)
-- [x] `netlify.toml` - Netlify configuration Deployment Checklist ✅
+# Butterfly India Count - Deployment Checklist ✅
 
 ## Pre-Deployment Verification
 
@@ -11,7 +7,7 @@
 - [x] `manifest.json` - PWA manifest (v1.6.5)
 - [x] `sw.js` - Service worker (v1.6.5)
 - [x] `netlify.toml` - Deployment configuration
-- [x] `butterflies-data.json` - Butterfly dataset (253 species)
+- [x] `butterflies-data.json` - Butterfly dataset (1446 species)
 
 ### ✅ Application Assets
 - [x] `css/styles.css` - Main stylesheet with subfamily styling
@@ -38,23 +34,24 @@
 ## Deployment Instructions
 
 ### Method 1: Drag & Drop
-1. Zip the `netlify-deployment` folder
+1. Zip the `IBC` folder
 2. Log into Netlify dashboard
 3. Drag and drop the zip file to deploy
 
 ### Method 2: Git Integration
-1. Push the `netlify-deployment` folder to a Git repository
+1. Push the `IBC` folder to the Git repository: https://github.com/vikrambellur1612/Butterfly-India-Count
 2. Connect the repository to Netlify
 3. Set build settings:
    - **Build command**: `echo 'No build process required'`
-   - **Publish directory**: `.` (root)
+   - **Publish directory**: `IBC` (project folder)
 
 ### Method 3: Netlify CLI
 ```bash
 # Install Netlify CLI
 npm install -g netlify-cli
 
-# Deploy from this directory
+# Deploy from the IBC directory
+cd IBC
 netlify deploy --prod --dir .
 ```
 
@@ -79,7 +76,7 @@ netlify deploy --prod --dir .
 - [ ] Cached resources load properly
 
 ### ✅ Data Tests
-- [ ] 253 butterfly species loaded
+- [ ] 1446 butterfly species loaded
 - [ ] Family cards show correct counts
 - [ ] Subfamily information displays
 - [ ] Search finds butterflies by common name
@@ -103,6 +100,14 @@ netlify deploy --prod --dir .
 
 ---
 
+## Project Information 📋
+
+- **Project Name**: Butterfly India Count
+- **Git Repository**: https://github.com/vikrambellur1612/Butterfly-India-Count
+- **Deployment Folder**: IBC
+- **Hosting Platform**: Netlify
+- **Project Type**: Progressive Web Application (PWA)
+
 ## Ready for Production! 🚀
 
-This deployment package contains everything needed for a fully functional PWA with the enhanced butterfly database and improved user experience.
+This deployment package contains everything needed for a fully functional PWA with the enhanced butterfly database and improved user experience specifically for the Butterfly India Count project.

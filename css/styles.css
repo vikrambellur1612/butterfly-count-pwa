@@ -1,11 +1,11 @@
 /* Main styles for Butterfly Count PWA */
 
 :root {
-  --primary-color: #4CAF50;
-  --primary-dark: #388E3C;
-  --primary-light: #C8E6C9;
-  --primary-hover: #45A049;
-  --secondary-color: #FF9800;
+  --primary-color: #E67E22;
+  --primary-dark: #D35400;
+  --primary-light: #F8E5D3;
+  --primary-hover: #DC7633;
+  --secondary-color: #4CAF50;
   --background-color: #f8f9fa;
   --surface-color: #ffffff;
   --surface-light: #f8fafc;
