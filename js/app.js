@@ -357,7 +357,18 @@ class ButterflyCountApp {
     
     if (searchBtn) {
       searchBtn.addEventListener('click', () => {
-        butterflySearch.focus();
+        // Switch to butterflies view if not already there
+        if (this.currentView !== 'butterflies') {
+          this.switchView('butterflies');
+        }
+        
+        // Focus the search input after a small delay to ensure view has switched
+        setTimeout(() => {
+          const butterflySearchInput = document.getElementById('butterflySearch');
+          if (butterflySearchInput) {
+            butterflySearchInput.focus();
+          }
+        }, 100);
       });
     }
 
