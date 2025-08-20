@@ -3355,7 +3355,7 @@ class ButterflyCountApp {
       return;
     }
 
-    const results = searchButterflies(query).slice(0, 5);
+    const results = searchButterflies(query).slice(0, 20);
     suggestionsContainer.classList.remove('hidden');
     
     suggestionsContainer.innerHTML = '';
