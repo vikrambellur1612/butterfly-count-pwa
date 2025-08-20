@@ -39,7 +39,7 @@
 3. Drag and drop the zip file to deploy
 
 ### Method 2: Git Integration
-1. Push the `IBC` folder to the Git repository: https://github.com/vikrambellur1612/Butterfly-India-Count
+1. Push the `IBC` folder to the Git repository: https://github.com/vikrambellur1612/butterfly-count-pwa
 2. Connect the repository to Netlify
 3. Set build settings:
    - **Build command**: `echo 'No build process required'`
@@ -103,7 +103,7 @@ netlify deploy --prod --dir .
 ## Project Information 📋
 
 - **Project Name**: Butterfly India Count
-- **Git Repository**: https://github.com/vikrambellur1612/Butterfly-India-Count
+- **Git Repository**: https://github.com/vikrambellur1612/butterfly-count-pwa
 - **Deployment Folder**: IBC
 - **Hosting Platform**: Netlify
 - **Project Type**: Progressive Web Application (PWA)
