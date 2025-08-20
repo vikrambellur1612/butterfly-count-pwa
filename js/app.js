@@ -2,7 +2,7 @@
 
 class ButterflyCountApp {
   constructor() {
-    this.version = '3.3.7';
+    this.version = '4.0.0';
     this.currentView = 'butterflies';
     this.currentButterflyView = 'family'; // 'family' or 'species'
     this.currentList = null;
@@ -284,7 +284,7 @@ class ButterflyCountApp {
     try {
       const locationData = {
         metadata: {
-          version: "3.2.0",
+          version: "4.0.0",
           lastUpdated: new Date().toISOString(),
           totalLocations: this.allLocations.length,
           description: "Butterfly observation locations in Karnataka and South India"

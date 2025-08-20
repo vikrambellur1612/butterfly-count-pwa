@@ -1,38 +1,47 @@
-// Service Worker for Butterfly Count PWA
-
-const CACHE_NAME = 'butterfly-count-v3.3.7';
-const STATIC_CACHE = 'butterfly-count-static-v3.3.7';
-const DYNAMIC_CACHE = 'butterfly-count-dynamic-v3.3.7';
+// Service Worker for Butterfly Count PWA - Version 4.0.0
+// Enhanced caching strategy and i        // Force reload message for v4.0.0 with India dataset and improvements
+        clients.matchAll().then(clients => {
+          clients.forEach(client => {
+            client.postMessage({
+              type: 'CACHE_UPDATED',
+              version: '4.0.0',
+              message: 'PWA updated to v4.0.0 - India Butterfly Dataset (1446 species), Enhanced search suggestions, Fixed search button functionality - please refresh'
+            });
+          });
+        });rformance
+const CACHE_NAME = 'butterfly-count-v4.0.0';
+const STATIC_CACHE = 'butterfly-count-static-v4.0.0';
+const DYNAMIC_CACHE = 'butterfly-count-dynamic-v4.0.0';
 
 // Files to cache for offline functionality
 const STATIC_FILES = [
   './',
   './index.html',
-  './css/styles.css?v=3.3.7',
-  './css/mobile.css?v=3.3.7',
-  './js/app.js?v=3.3.7',
-  './js/sw-register.js?v=3.3.7',
-  './js/butterflies-data.js?v=3.3.7',
+  './css/styles.css?v=4.0.0',
+  './css/mobile.css?v=4.0.0',
+  './js/app.js?v=4.0.0',
+  './js/sw-register.js?v=4.0.0',
+  './js/butterflies-data.js?v=4.0.0',
   './butterflies-data.json',
   './data/locations.json',
-  './icons/icon-192x192.png?v=3.3.7',
-  './icons/icon-512x512.png?v=3.3.7',
-  './icons/favicon.svg?v=3.3.7',
-  './icons/favicon.png?v=3.3.7',
-  './icons/apple-touch-icon-180x180.png?v=3.3.7',
-  './icons/apple-touch-icon-152x152.png?v=3.3.7',
-  './icons/apple-touch-icon-144x144.png?v=3.3.7',
-  './icons/apple-touch-icon-120x120.png?v=3.3.7',
-  './icons/favicon-32x32.png?v=3.3.7',
-  './icons/favicon-16x16.png?v=3.3.7',
-  './icons/icon-72x72.png?v=3.3.7',
-  './icons/icon-96x96.png?v=3.3.7',
-  './icons/icon-128x128.png?v=3.3.7',
-  './icons/icon-144x144.png?v=3.3.7',
-  './icons/icon-152x152.png?v=3.3.7',
-  './icons/icon-384x384.png?v=3.3.7',
-  './icons/shortcut-count.png?v=3.3.7',
-  './icons/shortcut-list.png?v=3.3.7'
+  './icons/icon-192x192.png?v=4.0.0',
+  './icons/icon-512x512.png?v=4.0.0',
+  './icons/favicon.svg?v=4.0.0',
+  './icons/favicon.png?v=4.0.0',
+  './icons/apple-touch-icon-180x180.png?v=4.0.0',
+  './icons/apple-touch-icon-152x152.png?v=4.0.0',
+  './icons/apple-touch-icon-144x144.png?v=4.0.0',
+  './icons/apple-touch-icon-120x120.png?v=4.0.0',
+  './icons/favicon-32x32.png?v=4.0.0',
+  './icons/favicon-16x16.png?v=4.0.0',
+  './icons/icon-72x72.png?v=4.0.0',
+  './icons/icon-96x96.png?v=4.0.0',
+  './icons/icon-128x128.png?v=4.0.0',
+  './icons/icon-144x144.png?v=4.0.0',
+  './icons/icon-152x152.png?v=4.0.0',
+  './icons/icon-384x384.png?v=4.0.0',
+  './icons/shortcut-count.png?v=4.0.0',
+  './icons/shortcut-list.png?v=4.0.0'
 ];
 
 // Dynamic files that can be cached as needed
@@ -70,14 +79,14 @@ self.addEventListener('install', (event) => {
 
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
-  console.log('Service Worker activating - v3.3.6');
+  console.log('Service Worker activating - v4.0.0');
   
   event.waitUntil(
     caches.keys()
       .then((cacheNames) => {
         return Promise.all(
           cacheNames.map((cacheName) => {
-            // Delete ALL old caches - force complete refresh for v3.3.6
+            // Delete ALL old caches - force complete refresh for v4.0.0
             if (cacheName !== CACHE_NAME && cacheName !== STATIC_CACHE && cacheName !== DYNAMIC_CACHE) {
               console.log('Deleting old cache:', cacheName);
               return caches.delete(cacheName);
@@ -86,7 +95,7 @@ self.addEventListener('activate', (event) => {
         );
       })
       .then(() => {
-        console.log('All old caches cleaned up for v3.3.6');
+        console.log('All old caches cleaned up for v4.0.0');
         return self.clients.claim();
       })
       .then(() => {

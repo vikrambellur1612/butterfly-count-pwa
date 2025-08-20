@@ -1,15 +1,22 @@
-# Butterfly Count PWA - v3.1.0
+# Butterfly Count (India) PWA - v4.0.0
 
-This folder contains all the files for the Butterfly Count Progressive Web App v3.1.0 with enhanced design consistency and user experience improvements.
+This folder contains all the files for the Butterfly Count (India) Progressive Web App v4.0.0 with enhanced dataset (1446 Indian butterfly species), improved search functionality, and refined orange theme.
 
-## Version 3.1.0 Features
+## Version 4.0.0 Features
 
-### � Enhanced Design & UX (v3.1.0)
-- **Green Banner Design System**: Beautiful consistent green banners throughout the app
-- **Lists Section Redesign**: Removed cluttered "My Butterfly Lists" header, added attractive green banners for Active and Closed Lists
-- **Clean Toggle Buttons**: Removed grey banner background from Family/Species view toggle for cleaner appearance
-- **Professional Visual Hierarchy**: Consistent design language with gradient backgrounds and modern styling
-- **Mobile Optimized**: Fully responsive banner design that works perfectly on all device sizes
+### 🦋 Enhanced Dataset & Branding (v4.0.0)
+- **Expanded Dataset**: Updated from 253 to 1,446 Indian butterfly species
+- **Complete IFB Database**: Based on India for Butterflies (IFB) Complete Database
+- **Rebranded**: "Butterfly Count (India)" with warm orange theme (#E67E22)
+- **Improved Search**: Up to 20 suggestions instead of 5 in autocomplete
+- **Fixed Search Button**: Works from all pages, automatically switches to Butterflies view
+- **Enhanced Family Distribution**: 
+  - Pieridae (Whites, Yellows): 548 species
+  - Lycaenidae (Blues, Coppers): 398 species  
+  - Hesperiidae (Skippers): 309 species
+  - Papilionidae (Swallowtails): 103 species
+  - Nymphalidae (Brush-foots): 68 species
+  - Riodinidae (Metalmarks): 20 species
 
 ### ⭐ Core Features (v3.0.0+)
 - **Clickable Butterfly Names**: Tap species names in observation cards to view detailed information

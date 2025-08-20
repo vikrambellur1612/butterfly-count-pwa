@@ -4012,7 +4012,7 @@ select.form-input {
   border-left: 3px solid #4ade80;
 }
 
-/* Dark mode CSS completely removed to force light mode always - v1.7.2+ */
+/* Dark mode CSS completely removed to force light mode always - v4.0.0+ */
 
 /* Enhanced Light Mode Text Visibility - Ensure all headers and text are properly visible */
 #activeLists h3,
