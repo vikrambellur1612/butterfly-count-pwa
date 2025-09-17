@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="version" content="4.0.0">
+    <meta name="version" content="5.0.0">
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -56,12 +56,12 @@
     <meta name="msapplication-TileColor" content="#E67E22">
     
     <!-- Preload critical resources -->
-    <link rel="preload" href="./css/styles.css?v=4.0.0" as="style">
-    <link rel="preload" href="./js/app.js?v=4.0.0" as="script">
+    <link rel="preload" href="./css/styles.css?v=5.0.0" as="style">
+    <link rel="preload" href="./js/app.js?v=5.0.0" as="script">
     
     <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/styles.css?v=4.0.0">
-  <link rel="stylesheet" href="css/mobile.css?v=4.0.0">    <!-- Critical CSS -->
+  <link rel="stylesheet" href="css/styles.css?v=5.0.0">
+  <link rel="stylesheet" href="css/mobile.css?v=5.0.0">    <!-- Critical CSS -->
     <style>
         /* Critical above-the-fold styles */
         body {
@@ -386,6 +386,12 @@
                         <input type="time" id="obsTimeInput" class="form-input" required placeholder="Select time">
                     </div>
 
+                    <div class="form-group">
+                        <label for="commentsInput">Comments (Optional)</label>
+                        <textarea id="commentsInput" class="form-input" placeholder="Add any additional notes or observations..." rows="3" maxlength="500"></textarea>
+                        <small class="form-hint">Optional: Notes about behavior, habitat, weather conditions, etc.</small>
+                    </div>
+
                     <button id="addButterflyBtn" class="primary-btn full-width">Add Butterfly</button>
                 </div>
                 
@@ -410,16 +416,45 @@
                         <h3>Features</h3>
                         <ul>
                             <li>📱 Mobile-first design optimized for field use</li>
-                            <li>🦋 Comprehensive butterfly database (253 species) with taxonomic hierarchy</li>
+                            <li>🦋 Comprehensive butterfly database (1,446 species) with taxonomic hierarchy</li>
                             <li>🔍 Advanced search functionality across families, subfamilies, and species</li>
                             <li>📝 Create and manage multiple observation lists with date/time tracking</li>
-                            <li>📊 Detailed statistics and insights with visual charts</li>
-                            <li>� Family-based organization with subfamily groupings</li>
+                            <li>📊 Detailed statistics and insights with interactive charts</li>
+                            <li>🏠 Family-based organization with subfamily groupings</li>
                             <li>🌐 Full offline functionality with Progressive Web App technology</li>
                             <li>📥 CSV export for data analysis and sharing</li>
                             <li>⏰ Time-based activity tracking and analysis</li>
-                            <li>� Enhanced family modals with species breakdowns</li>
+                            <li>🎯 Enhanced family modals with species breakdowns</li>
+                            <li>📄 <strong>NEW:</strong> Comprehensive HTML report generation with embedded charts</li>
+                            <li>🔒 <strong>NEW:</strong> List closure system with unique species summary</li>
+                            <li>📈 <strong>NEW:</strong> 30-minute interval analysis for closed lists</li>
+                            <li>🌟 <strong>NEW:</strong> Rare species tracking and identification</li>
+                            <li>💬 <strong>NEW:</strong> Comments and notes for each observation</li>
+                            <li>🎨 <strong>NEW:</strong> Interactive pie charts and trend analysis</li>
+                            <li>📋 <strong>NEW:</strong> Streamlined export workflow for closed lists only</li>
                         </ul>
+                    </div>
+                    
+                    <div class="about-section">
+                        <h3>What's New in Version 5.0.0</h3>
+                        <div class="new-features">
+                            <h4>🎉 Major Enhancements:</h4>
+                            <ul>
+                                <li><strong>Expanded Database:</strong> Updated to include 1,446 butterfly species across India</li>
+                                <li><strong>Smart List Management:</strong> Lists can now be closed to preserve data integrity</li>
+                                <li><strong>Rich HTML Reports:</strong> Download comprehensive reports with charts, statistics, and complete observations</li>
+                                <li><strong>Advanced Analytics:</strong> 30-minute interval analysis shows peak activity periods</li>
+                                <li><strong>Enhanced Tracking:</strong> Rare species identification and detailed commenting system</li>
+                            </ul>
+                            
+                            <h4>🔧 Workflow Improvements:</h4>
+                            <ul>
+                                <li><strong>Streamlined Exports:</strong> CSV and HTML downloads available only for closed lists</li>
+                                <li><strong>Interactive Charts:</strong> Pie charts for species distribution and line charts for time analysis</li>
+                                <li><strong>Species Summary:</strong> Closed lists show unique species count with detailed breakdowns</li>
+                                <li><strong>Better Data Consistency:</strong> Export reports match exactly what you see in statistics</li>
+                            </ul>
+                        </div>
                     </div>
                     
                     <div class="about-section">
@@ -441,7 +476,7 @@
                     <div class="about-section">
                         <h3>Project Information</h3>
                         <p>Butterfly Count (India) is developed by <strong>Vikram Bellur</strong> to support nature enthusiasts and citizen scientists in their butterfly observation activities.</p>
-                        <p class="version-info">Version 4.0.0 | Built with ❤️ for nature lovers</p>
+                        <p class="version-info">Version 5.0.0 | Built with ❤️ for nature lovers</p>
                     </div>
                     
                     <div class="about-section">
@@ -526,6 +561,24 @@
                             <button type="submit" class="primary-btn">Add Observation</button>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Species Comments Modal -->
+        <div id="speciesCommentsModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="commentsModalTitle">Comments for Species</h3>
+                    <button class="modal-close" data-modal="speciesCommentsModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="commentsModalContent" class="comments-list">
+                        <!-- Comments will be populated by JavaScript -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="secondary-btn modal-close" data-modal="speciesCommentsModal">Close</button>
                 </div>
             </div>
         </div>
@@ -688,6 +741,10 @@
             <div class="modal-body" id="statsModalContent">
                 <!-- List statistics will be populated by JavaScript -->
             </div>
+            <div class="modal-footer">
+                <button id="downloadHtmlBtn" class="secondary-btn">💾 Save HTML Report</button>
+                <button class="tertiary-btn modal-close" data-modal="listStatsModal">Close</button>
+            </div>
         </div>
     </div>
     
@@ -776,8 +833,8 @@
     
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="./js/butterflies-data.js?v=4.0.0"></script>
-    <script src="./js/sw-register.js?v=4.0.0"></script>
-    <script src="./js/app.js?v=4.0.0"></script>
+    <script src="./js/butterflies-data.js?v=5.0.0"></script>
+    <script src="./js/sw-register.js?v=5.0.0"></script>
+    <script src="./js/app.js?v=5.0.0"></script>
 </body>
 </html>

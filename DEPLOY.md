@@ -4,15 +4,15 @@
 
 ### ✅ Required Files Present
 - [x] `index.html` - Main application
-- [x] `manifest.json` - PWA manifest (v4.0.0)
-- [x] `sw.js` - Service worker (v4.0.0)
+- [x] `manifest.json` - PWA manifest (v5.0.0)
+- [x] `sw.js` - Service worker (v5.0.0)
 - [x] `netlify.toml` - Deployment configuration
 - [x] `butterflies-data.json` - Butterfly dataset (1446 species)
 
 ### ✅ Application Assets
 - [x] `css/styles.css` - Main stylesheet with subfamily styling
 - [x] `css/mobile.css` - Mobile responsive styles
-- [x] `js/app.js` - Application logic (v4.0.0)
+- [x] `js/app.js` - Application logic (v5.0.0)
 - [x] `js/butterflies-data.js` - Enhanced data handling
 - [x] `js/sw-register.js` - Service worker registration
 - [x] `icons/` - Complete PWA icon set
@@ -24,7 +24,7 @@
 - [x] Icons for all device sizes
 - [x] Caching strategy implemented
 
-### ✅ Version Updates (4.0.0)
+### ✅ Version Updates (5.0.0)
 - [x] Cache name updated in `sw.js`
 - [x] Manifest version updated
 - [x] App version updated in `js/app.js`

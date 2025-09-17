@@ -1,10 +1,17 @@
-# Butterfly Count (India) PWA - v4.0.0
+# Butterfly Count (India) PWA - v5.0.0
 
-This folder contains all the files for the Butterfly Count (India) Progressive Web App v4.0.0 with enhanced dataset (1446 Indian butterfly species), improved search functionality, and refined orange theme.
+This folder contains all the files for the Butterfly Count (India) Progressive Web App v5.0.0 with comprehensive data export capabilities, advanced analytics, and enhanced list management for butterfly observation activities.
 
-## Version 4.0.0 Features
+## Version 5.0.0 Features
 
-### 🦋 Enhanced Dataset & Branding (v4.0.0)
+### 🎉 Major Enhancements (v5.0.0)
+- **Smart List Management**: Lists can now be closed to preserve data integrity with unique species summaries
+- **Rich HTML Reports**: Download comprehensive reports with embedded charts, statistics, and complete observations
+- **Advanced Analytics**: 30-minute interval analysis shows peak activity periods with interactive visualizations
+- **Enhanced Tracking**: Rare species identification and detailed commenting system for each observation
+- **Streamlined Exports**: CSV and HTML downloads available only for closed lists, ensuring data consistency
+
+### 🦋 Enhanced Dataset & Core Features
 - **Expanded Dataset**: Updated from 253 to 1,446 Indian butterfly species
 - **Complete IFB Database**: Based on India for Butterflies (IFB) Complete Database
 - **Rebranded**: "Butterfly Count (India)" with warm orange theme (#E67E22)
