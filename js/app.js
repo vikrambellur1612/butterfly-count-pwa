@@ -4225,7 +4225,7 @@ class ButterflyCountApp {
 
 
   // Generate HTML report for download
-  generateHTMLReport(providedList = null) {
+  async generateHTMLReport(providedList = null) {
     try {
       let list, observations, listName;
       
