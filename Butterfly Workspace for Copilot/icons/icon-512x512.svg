@@ -1,0 +1,71 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="512" height="512" rx="80" fill="#4CAF50"/>
+  
+  <!-- Butterfly wings with enhanced detail -->
+  <g transform="translate(256, 256)">
+    <!-- Upper left wing -->
+    <ellipse cx="-85" cy="-65" rx="65" ry="85" fill="#FFB74D" transform="rotate(-25)"/>
+    <ellipse cx="-75" cy="-58" rx="52" ry="70" fill="#FFE082" transform="rotate(-25)"/>
+    <ellipse cx="-65" cy="-48" rx="40" ry="55" fill="#FFF3E0" transform="rotate(-25)"/>
+    <!-- Wing spots -->
+    <circle cx="-75" cy="-42" r="11" fill="#FF5722"/>
+    <circle cx="-65" cy="-52" r="5" fill="#D84315"/>
+    <circle cx="-82" cy="-35" r="7" fill="#BF360C"/>
+    <circle cx="-58" cy="-28" r="4" fill="#FF3D00"/>
+    
+    <!-- Upper right wing -->
+    <ellipse cx="85" cy="-65" rx="65" ry="85" fill="#FFB74D" transform="rotate(25)"/>
+    <ellipse cx="75" cy="-58" rx="52" ry="70" fill="#FFE082" transform="rotate(25)"/>
+    <ellipse cx="65" cy="-48" rx="40" ry="55" fill="#FFF3E0" transform="rotate(25)"/>
+    <!-- Wing spots -->
+    <circle cx="75" cy="-42" r="11" fill="#FF5722"/>
+    <circle cx="65" cy="-52" r="5" fill="#D84315"/>
+    <circle cx="82" cy="-35" r="7" fill="#BF360C"/>
+    <circle cx="58" cy="-28" r="4" fill="#FF3D00"/>
+    
+    <!-- Lower left wing -->
+    <ellipse cx="-65" cy="48" rx="52" ry="65" fill="#FF9800" transform="rotate(-35)"/>
+    <ellipse cx="-56" cy="42" rx="40" ry="52" fill="#FFCC02" transform="rotate(-35)"/>
+    <ellipse cx="-48" cy="38" rx="28" ry="40" fill="#FFF8E1" transform="rotate(-35)"/>
+    <!-- Wing spots -->
+    <circle cx="-52" cy="35" r="8" fill="#E65100"/>
+    <circle cx="-45" cy="42" r="4" fill="#BF360C"/>
+    <circle cx="-62" cy="28" r="5" fill="#FF3D00"/>
+    
+    <!-- Lower right wing -->
+    <ellipse cx="65" cy="48" rx="52" ry="65" fill="#FF9800" transform="rotate(35)"/>
+    <ellipse cx="56" cy="42" rx="40" ry="52" fill="#FFCC02" transform="rotate(35)"/>
+    <ellipse cx="48" cy="38" rx="28" ry="40" fill="#FFF8E1" transform="rotate(35)"/>
+    <!-- Wing spots -->
+    <circle cx="52" cy="35" r="8" fill="#E65100"/>
+    <circle cx="45" cy="42" r="4" fill="#BF360C"/>
+    <circle cx="62" cy="28" r="5" fill="#FF3D00"/>
+    
+    <!-- Wing patterns -->
+    <path d="M -55 -40 Q -40 -32 -48 -20" stroke="#D84315" stroke-width="3" fill="none"/>
+    <path d="M 55 -40 Q 40 -32 48 -20" stroke="#D84315" stroke-width="3" fill="none"/>
+    <path d="M -40 20 Q -32 32 -20 25" stroke="#E65100" stroke-width="3" fill="none"/>
+    <path d="M 40 20 Q 32 32 20 25" stroke="#E65100" stroke-width="3" fill="none"/>
+    
+    <!-- Body with segments -->
+    <ellipse cx="0" cy="0" rx="10" ry="92" fill="#5D4037"/>
+    <ellipse cx="0" cy="-15" rx="9" ry="20" fill="#6D4C41"/>
+    <ellipse cx="0" cy="15" rx="9" ry="20" fill="#6D4C41"/>
+    <ellipse cx="0" cy="40" rx="9" ry="20" fill="#6D4C41"/>
+    
+    <!-- Head -->
+    <circle cx="0" cy="-80" r="15" fill="#3E2723"/>
+    <circle cx="-4" cy="-80" r="4" fill="#1A1A1A"/>
+    <circle cx="4" cy="-80" r="4" fill="#1A1A1A"/>
+    
+    <!-- Antennae with clubs -->
+    <path d="M -6 -88 Q -20 -105 -15 -110" stroke="#3E2723" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M 6 -88 Q 20 -105 15 -110" stroke="#3E2723" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <ellipse cx="-15" cy="-110" rx="5" ry="8" fill="#3E2723"/>
+    <ellipse cx="15" cy="-110" rx="5" ry="8" fill="#3E2723"/>
+  </g>
+  
+  <!-- App name at bottom -->
+  <text x="256" y="450" text-anchor="middle" fill="white" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="600">🦋 Butterfly Count</text>
+</svg>

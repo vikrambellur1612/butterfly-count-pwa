@@ -1,0 +1,107 @@
+{
+  "name": "Butterfly Count (India)",
+  "short_name": "Butterfly Count (India)",
+  "description": "Progressive Web App for butterfly observation and counting during nature walks - v5.0.0 with enhanced India butterfly dataset (1446 species), comprehensive HTML reports, and advanced analytics",
+  "version": "5.0.0",
+  "start_url": "./",
+  "display": "standalone",
+  "theme_color": "#E67E22",
+  "background_color": "#ffffff",
+  "orientation": "portrait-primary",
+  "scope": "./",
+  "lang": "en-US",
+  "categories": ["education", "utilities", "lifestyle"],
+  "icons": [
+    {
+      "src": "./icons/icon-72x72.png?v=5.0.0",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icon-96x96.png?v=5.0.0",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icon-128x128.png?v=5.0.0",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icon-144x144.png?v=5.0.0",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icon-152x152.png?v=5.0.0",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icon-192x192.png?v=5.0.0",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icon-384x384.png?v=5.0.0",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icon-512x512.png?v=5.0.0",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "New Count",
+      "short_name": "Count",
+      "description": "Start a new butterfly count session",
+      "url": "./?action=new-count",
+      "icons": [
+        {
+          "src": "./icons/shortcut-count.png?v=5.0.0",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "View Lists",
+      "short_name": "Lists",
+      "description": "View saved butterfly observation lists",
+      "url": "./?action=view-lists",
+      "icons": [
+        {
+          "src": "./icons/shortcut-list.png?v=5.0.0",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "prefer_related_applications": false,
+  "screenshots": [
+    {
+      "src": "./icons/screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "./icons/screenshot-narrow.png",
+      "sizes": "720x1280",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ]
+}
