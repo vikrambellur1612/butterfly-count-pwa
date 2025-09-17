@@ -226,6 +226,9 @@ body {
   /* Improve scroll performance */
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
+  /* Prevent transform from affecting fixed bottom nav */
+  transform: none;
+  contain: layout style;
 }
 
 /* Views */
@@ -1679,22 +1682,26 @@ textarea.form-input {
 
 /* Bottom Navigation */
 .bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
   background: var(--surface-color);
   border-top: 1px solid var(--border-color);
   display: flex;
   justify-content: space-around;
   padding: 8px 0;
   padding-bottom: calc(8px + env(safe-area-inset-bottom));
-  z-index: 100;
+  z-index: 9999 !important; /* Increased z-index to ensure it stays on top */
   box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
   min-height: 64px; /* Ensure consistent height */
   /* Improve performance and prevent scrolling issues */
-  will-change: transform;
+  will-change: auto; /* Remove transform optimization that might interfere */
   backface-visibility: hidden;
+  /* Additional fixes for positioning issues */
+  transform: none !important; /* Prevent any transforms from affecting positioning */
+  contain: layout style paint; /* Improve performance and prevent paint issues */
+  isolation: isolate; /* Create new stacking context */
 }
 
 .nav-item {
@@ -1756,6 +1763,10 @@ textarea.form-input {
   box-shadow: var(--shadow-lg);
   animation: modalSlideIn 0.3s ease;
   margin: 2rem 0; /* Add vertical margin for better positioning */
+  /* Prevent modal content from interfering with fixed bottom nav */
+  transform: none;
+  position: relative;
+  z-index: 1001; /* Below bottom nav but above other content */
 }
 
 .modal-header {
@@ -2627,19 +2638,22 @@ textarea.form-input {
 .family-species-list .species-item:hover {
     border-color: #4ade80;
     box-shadow: 0 4px 15px rgba(74, 222, 128, 0.1);
-    transform: translateY(-2px);
+    transform: translateY(-1px);
+    background: white;
 }
 
 .family-species-list .species-name {
     font-weight: 600;
     color: #1e293b;
     margin-bottom: 4px;
+    font-size: 14px;
 }
 
 .family-species-list .species-scientific {
     font-style: italic;
     color: #64748b;
-    font-size: 14px;
+    font-size: 13px;
+    margin-bottom: 4px;
 }
 
 .family-species-list .species-authority {
@@ -3298,6 +3312,7 @@ textarea.form-input {
     .modal-content {
         background: var(--surface-color);
         border: 1px solid var(--border-color);
+        color: var(--text-primary);
     }
 
     .modal-header {
@@ -3378,7 +3393,7 @@ textarea.form-input {
         background: var(--surface-light);
         color: var(--primary-color);
     }
-*/
+}
 
 /* Mobile responsive adjustments */
 @media (max-width: 768px) {
@@ -3736,7 +3751,7 @@ textarea.form-input {
   margin-bottom: 15px;
   color: var(--text-primary);
   font-size: 1.1rem;
-  border-bottom: 2px solid var(--primary-light);
+  border-bottom: 2px solid var(--primary-color);
   padding-bottom: 8px;
 }
 
@@ -3803,7 +3818,7 @@ textarea.form-input {
   margin-bottom: 15px;
   color: var(--text-primary);
   font-size: 1.1rem;
-  border-bottom: 2px solid var(--primary-light);
+  border-bottom: 2px solid var(--primary-color);
   padding-bottom: 8px;
 }
 
@@ -3817,7 +3832,7 @@ textarea.form-input {
   justify-content: space-between;
   align-items: center;
   padding: 10px 15px;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   border-radius: var(--border-radius);
   border: 1px solid var(--border-color);
   transition: var(--transition);
@@ -3832,12 +3847,6 @@ textarea.form-input {
   font-weight: 500;
   color: var(--text-primary);
   font-size: 0.95rem;
-}
-
-.family-count {
-  font-weight: 600;
-  color: var(--secondary-color);
-  font-size: 0.9rem;
 }
 
 /* Click hint for active list cards */
@@ -4108,823 +4117,64 @@ textarea.form-input {
   border-left: 3px solid #4ade80;
 }
 
-/* Dark mode CSS completely removed to force light mode always - v5.0.0+ */
-
-/* Enhanced Light Mode Text Visibility - Ensure all headers and text are properly visible */
-#activeLists h3,
-#closedLists h3,
-.lists-container h3,
-#observationsTitle,
-.observations-list h3 {
-  color: #212529 !important; /* Ensure dark text on light background */
-  font-weight: 600;
-}
-
-/* List Section Banner Text - Override for white text on green background */
-.list-section-banner h3 {
-  color: white !important;
-  font-weight: 600;
-}
-
-/* Ensure family card text has good contrast */
-.family-name {
-  color: #1f2937 !important;
-  font-weight: 700;
-}
-
-.family-latin {
-  color: #4b5563 !important;
-}
-
-.family-description {
-  color: #374151 !important;
-}
-
-/* Ensure all card backgrounds are light */
-.family-card,
-.list-card,
-.observation-card {
-  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
-  color: #212529 !important;
-}
-
-/* Browser Compatibility Fixes for Chrome/Safari Consistency */
-* {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Force consistent box model across browsers */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-/* Chrome/Safari specific backdrop-filter fallback */
-.modal-overlay {
-  background: rgba(0, 0, 0, 0.8) !important;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-/* Consistent gradient rendering across browsers */
-.family-card {
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important;
-  background: -webkit-linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important;
-  background: -moz-linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important;
-}
-
-/* Force consistent text rendering */
-body,
-input,
-button,
-textarea,
-select {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
-  -webkit-font-smoothing: antialiased !important;
-  -moz-osx-font-smoothing: grayscale !important;
-  text-rendering: optimizeLegibility !important;
-}
-
-/* Butterfly Photo Styles */
-.butterfly-photo-section {
-  margin-bottom: 1.5rem;
-}
-
-.butterfly-photo-container {
-  margin-bottom: 0.5rem;
-}
-
-.photo-loading {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  background: #f8fafc;
-  border: 2px dashed #cbd5e1;
-  border-radius: 8px;
-  color: #64748b;
-}
-
-.loading-spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid #e2e8f0;
-  border-top: 3px solid #4CAF50;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 0.5rem;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.butterfly-photo {
-  text-align: center;
-}
-
-.butterfly-image {
-  max-width: 100%;
-  height: auto;
-  max-height: 250px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  margin-bottom: 0.5rem;
-}
-
-.photo-credit {
-  color: #64748b;
-  font-style: italic;
-  margin-bottom: 0.5rem;
-}
-
-.photo-disclaimer {
-  background: #fef3c7;
-  border: 1px solid #f59e0b;
-  border-radius: 6px;
-  padding: 0.75rem;
-  margin-top: 0.5rem;
-}
-
-.photo-disclaimer p {
-  margin: 0;
-  color: #92400e;
-}
-
-.photo-error {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  background: #fef2f2;
-  border: 2px dashed #fca5a5;
-  border-radius: 8px;
-  color: #dc2626;
-  text-align: center;
-}
-
-.error-icon {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
-  opacity: 0.7;
-}
-
-.photo-error p {
-  margin: 0.25rem 0;
-  font-weight: 500;
-}
-
-.photo-error small {
-  color: #991b1b;
-}
-
-/* Mobile responsive adjustments */
-@media (max-width: 640px) {
-  .butterfly-image {
-    max-height: 200px;
-  }
-  
-  .photo-loading,
-
-/* Location-related styling */
-.list-location {
-  color: var(--text-secondary);
-  font-size: 14px;
-  margin: 4px 0;
-  display: flex;
-  align-items: center;
-}
-
-.location-help {
-  background: var(--surface-light);
-  border-left: 4px solid var(--info-color);
-  padding: 12px;
-  margin: 16px 0;
-  border-radius: var(--border-radius);
-}
-
-.location-help p {
-  margin: 0;
-  color: var(--text-secondary);
-}
-
-.custom-location-section {
-  border-top: 1px solid var(--border-color);
-  padding-top: 16px;
-  margin-top: 16px;
-}
-
-#addCustomLocationBtn {
-  width: 100%;
-  margin-bottom: 8px;
-  background: var(--info-color);
-  border-color: var(--info-color);
-}
-
-#addCustomLocationBtn:hover {
-  background: #2563eb;
-  border-color: #2563eb;
-}
-
-/* Location details in observations */
-.observation-location {
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-top: 4px;
-}
-
-/* Custom location modal styling - MAXIMUM PRIORITY */
-#addCustomLocationModal {
-  z-index: 10001 !important; /* Higher than other modals */
-  display: flex !important;
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-
-/* Force visibility regardless of other classes */
-#addCustomLocationModal.hidden {
-  display: flex !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-
-#addCustomLocationModal .modal-content {
-  background: #ffffff !important;
-  color: #333333 !important;
-  border: 3px solid #007bff !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
-  position: relative !important;
-  z-index: 10002 !important;
-  max-width: 600px !important;
-  width: 95% !important;
-  margin: auto !important;
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-
-/* Custom Location Fields within Create List Modal */
-.custom-location-section {
-  background: var(--surface-secondary);
-  border: 2px solid var(--primary-color);
-  border-radius: 12px;
-  padding: 1rem;
-  margin-top: 1rem;
-  transition: all 0.3s ease;
-}
-
-.custom-location-section.hidden {
-  display: none;
-}
-
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.section-header h4 {
-  margin: 0;
-  color: var(--primary-color);
-  font-weight: 600;
-}
-
-/* Cancel button for custom location header */
-.cancel-custom-btn {
-  background: var(--surface-color) !important;
-  color: var(--text-secondary) !important;
-  border: 1px solid var(--border-color) !important;
-  padding: 0.5rem 0.75rem !important;
-  border-radius: 6px !important;
-  font-size: 0.875rem !important;
-  font-weight: 500 !important;
-  cursor: pointer !important;
-  transition: all 0.2s ease !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 0.25rem !important;
-  outline: none !important;
-  box-sizing: border-box !important;
-}
-
-.cancel-custom-btn:hover {
-  background: var(--error-light) !important;
-  color: var(--error-color) !important;
-  border-color: var(--error-color) !important;
-  transform: translateY(-1px) !important;
-}
-
-.text-btn {
-  background: none;
-  border: none;
-  color: var(--text-secondary);
-  cursor: pointer;
-  font-size: 0.9rem;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  transition: color 0.2s;
-}
-
-.text-btn:hover {
-  color: var(--text-primary);
-  background: var(--surface-hover);
-}
-
-.form-row {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-/* Special styling for coordinates row with location button */
-.coordinates-row {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  align-items: flex-end;
-}
-
-.coordinates-row .coordinates-helper {
-  flex: none;
-  margin-bottom: 0;
-  display: flex;
-  align-items: flex-end;
-  padding-bottom: 2px;
-}
-
-.location-helper-btn {
-  background: var(--info-color) !important;
-  color: white !important;
-  border: none !important;
-  padding: 0.6875rem 1rem !important;
-  border-radius: 8px !important;
-  font-size: 0.875rem !important;
-  font-weight: 500 !important;
-  cursor: pointer !important;
-  transition: all 0.2s ease !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 0.375rem !important;
-  white-space: nowrap !important;
-  height: 44px !important;
-  min-width: 140px !important;
-  outline: none !important;
-  box-sizing: border-box !important;
-}
-
-.location-helper-btn:hover {
-  background: #2563eb !important;
-  transform: translateY(-1px) !important;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
-}
-
-.location-helper-btn:active {
-  transform: translateY(0) !important;
-}
-
-.form-group.flex-1 {
-  flex: 1;
-}
-
-.coordinate-input {
-  font-family: 'Monaco', 'Consolas', monospace;
-  letter-spacing: 0.5px;
-}
-
-.custom-location-actions {
-  display: flex;
-  gap: 1rem;
-  justify-content: flex-end;
-  margin-top: 1.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--border-color);
-}
-
-.custom-location-actions .primary-btn {
-  min-width: 140px;
-  font-weight: 600;
-}
-
-.tertiary-btn {
-  background: var(--surface-secondary);
-  color: var(--text-secondary);
-  border: 1px solid var(--border-color);
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.9rem;
-}
-
-.tertiary-btn:hover {
-  background: var(--surface-hover);
-  color: var(--text-primary);
-  border-color: var(--primary-color);
-}
-
-/* Responsive adjustments for smaller screens */
-@media (max-width: 768px) {
-  .form-row {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  /* Special responsive handling for coordinates row */
-  .coordinates-row {
-    flex-direction: column;
-    gap: 0.75rem;
-    align-items: stretch;
-  }
-  
-  .coordinates-row .coordinates-helper {
-    align-items: stretch;
-    padding-bottom: 0;
-  }
-  
-  .location-helper-btn {
-    width: 100%;
-    min-width: auto;
-  }
-  
-  .custom-location-actions {
-    flex-direction: column;
-  }
-  
-  .custom-location-actions .tertiary-btn,
-  .custom-location-actions .primary-btn {
-    width: 100%;
-  }
-  
-  .cancel-custom-btn {
-    padding: 0.375rem 0.5rem;
-    font-size: 0.8rem;
-  }
-}
-
-#addCustomLocationModal .modal-header {
-  background: #007bff !important;
-  color: #ffffff !important;
-  padding: 1rem !important;
-  margin: -1rem -1rem 1rem -1rem !important;
-}
-
-#addCustomLocationModal .modal-header h3 {
-  color: #ffffff !important;
-  margin: 0 !important;
-}
-
-#addCustomLocationModal .modal-close {
-  color: #ffffff !important;
-  background: transparent !important;
-  border: none !important;
-  font-size: 1.5rem !important;
-}
-
-#addCustomLocationModal .modal-body {
-  max-height: 70vh;
-  overflow-y: auto;
-  background: #ffffff !important;
-  padding: 1rem !important;
-}
-
-#addCustomLocationModal .form-group {
-  margin-bottom: 16px;
-}
-
-#addCustomLocationModal .form-group:last-of-type {
-  margin-bottom: 0;
-}
-
-/* Location coordinate inputs */
-#customLocationLat,
-#customLocationLng {
-  font-family: 'Monaco', 'Consolas', monospace;
-  letter-spacing: 0.5px;
-}
-
-/* Mobile responsive adjustments */
-@media (max-width: 640px) {
-  .butterfly-image {
-    max-height: 200px;
-  }
-  
-  .photo-loading,
-  .photo-error {
-    padding: 1.5rem;
-  }
-}
-
-/* CRITICAL BUTTON STYLE OVERRIDES - MUST BE AT END */
-/* Force all buttons to have proper styling */
-
-/* Main Cancel Button in Create List Form */
-.form-actions .secondary-btn.modal-close {
-  background: #ffffff !important;
-  color: #374151 !important;
-  border: 2px solid #d1d5db !important;
-  padding: 12px 24px !important;
-  border-radius: 8px !important;
-  font-size: 1rem !important;
-  font-weight: 600 !important;
-  cursor: pointer !important;
-  transition: all 0.3s ease !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  text-decoration: none !important;
-  box-sizing: border-box !important;
-  outline: none !important;
-  -webkit-appearance: none !important;
-  appearance: none !important;
-  height: 48px !important;
-  min-width: 100px !important;
-}
-
-.form-actions .secondary-btn.modal-close:hover {
-  border-color: #4CAF50 !important;
-  color: #4CAF50 !important;
-  background: #f0f9ff !important;
-  transform: translateY(-1px) !important;
-}
-
-/* Custom Location Cancel Button */
-#cancelCustomLocation.cancel-custom-btn {
-  background: #f3f4f6 !important;
-  color: #6b7280 !important;
-  border: 1px solid #d1d5db !important;
-  padding: 8px 12px !important;
-  border-radius: 6px !important;
-  font-size: 0.875rem !important;
-  font-weight: 500 !important;
-  cursor: pointer !important;
-  transition: all 0.2s ease !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 4px !important;
-  outline: none !important;
-  box-sizing: border-box !important;
-  -webkit-appearance: none !important;
-  appearance: none !important;
-  height: 32px !important;
-  min-width: 70px !important;
-  text-transform: none !important;
-  letter-spacing: normal !important;
-  word-spacing: normal !important;
-  line-height: normal !important;
-  text-align: center !important;
-  text-indent: 0px !important;
-  text-shadow: none !important;
-  text-decoration: none !important;
-}
-
-#cancelCustomLocation.cancel-custom-btn:hover {
-  background: #fee2e2 !important;
-  color: #dc2626 !important;
-  border-color: #dc2626 !important;
-  transform: translateY(-1px) !important;
-}
-
-#cancelCustomLocation.cancel-custom-btn:focus {
-  outline: 2px solid #dc2626 !important;
-  outline-offset: 2px !important;
-}
-
-#cancelCustomLocation.cancel-custom-btn:active {
-  transform: translateY(0) !important;
-}
-
-/* Use My Location Button */
-#getCurrentLocation.location-helper-btn {
-  background: #3b82f6 !important;
-  color: white !important;
-  border: none !important;
-  padding: 11px 16px !important;
-  border-radius: 8px !important;
-  font-size: 0.875rem !important;
-  font-weight: 500 !important;
-  cursor: pointer !important;
-  transition: all 0.2s ease !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 6px !important;
-  white-space: nowrap !important;
-  height: 44px !important;
-  min-width: 140px !important;
-  outline: none !important;
-  box-sizing: border-box !important;
-  -webkit-appearance: none !important;
-  appearance: none !important;
-  text-transform: none !important;
-  letter-spacing: normal !important;
-  word-spacing: normal !important;
-  line-height: normal !important;
-  text-align: center !important;
-  text-indent: 0px !important;
-  text-shadow: none !important;
-  text-decoration: none !important;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
-}
-
-#getCurrentLocation.location-helper-btn:hover {
-  background: #2563eb !important;
-  transform: translateY(-1px) !important;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
-}
-
-#getCurrentLocation.location-helper-btn:focus {
-  outline: 2px solid #2563eb !important;
-  outline-offset: 2px !important;
-}
-
-#getCurrentLocation.location-helper-btn:active {
-  transform: translateY(0) !important;
-}
-
-#getCurrentLocation.location-helper-btn:disabled {
-  background: #9ca3af !important;
-  cursor: not-allowed !important;
+/* Additional fixes for bottom navigation positioning issues */
+/* Force bottom nav to stay fixed regardless of parent transforms */
+body:has(.bottom-nav) {
+  position: relative;
+}
+
+/* Ensure no content interferes with fixed bottom nav */
+.app-container,
+.main-content,
+.view,
+.modal,
+.modal-content {
+  /* Prevent any transforms from creating new stacking contexts that could affect fixed positioning */
+  -webkit-transform: none !important;
   transform: none !important;
 }
 
-/* Additional Browser Default Override */
-button#cancelCustomLocation,
-button#getCurrentLocation {
-  font-family: inherit !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: 0 !important;
-  background: transparent !important;
-  font-size: 100% !important;
-  vertical-align: baseline !important;
+/* Specific fix for scrollable content areas */
+.list-container,
+.butterfly-grid,
+.family-grid,
+.observations-list,
+#butterflyList,
+#familiesGrid,
+.modal-body {
+  /* Ensure proper containment without affecting fixed elements */
+  contain: layout style;
 }
 
-/* Force Custom Styles After Reset */
-button#cancelCustomLocation.cancel-custom-btn {
-  all: unset !important;
-  background: #f3f4f6 !important;
-  color: #6b7280 !important;
-  border: 1px solid #d1d5db !important;
-  padding: 8px 12px !important;
-  border-radius: 6px !important;
-  font-size: 0.875rem !important;
-  font-weight: 500 !important;
-  cursor: pointer !important;
-  transition: all 0.2s ease !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 4px !important;
-  box-sizing: border-box !important;
-  height: 32px !important;
-  min-width: 70px !important;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+/* Bottom navigation override - force fixed positioning */
+.bottom-nav {
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 999999 !important;
+  /* Force create new stacking context */
+  isolation: isolate;
+  /* Prevent any parent transforms from affecting this element */
+  transform: translateZ(0) !important;
+  will-change: auto;
 }
 
-button#getCurrentLocation.location-helper-btn {
-  all: unset !important;
-  background: #3b82f6 !important;
-  color: white !important;
-  padding: 11px 16px !important;
-  border-radius: 8px !important;
-  font-size: 0.875rem !important;
-  font-weight: 500 !important;
-  cursor: pointer !important;
-  transition: all 0.2s ease !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 6px !important;
-  white-space: nowrap !important;
-  height: 44px !important;
-  min-width: 140px !important;
-  box-sizing: border-box !important;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
-}
-
-/* 30-Minute Interval Chart and Table Styles */
-.interval-chart-container {
-  background: var(--surface-secondary);
-  border-radius: 12px;
-  padding: 1rem;
-  margin: 1rem 0;
-  border: 1px solid var(--border-color);
-}
-
-.interval-chart-container canvas {
-  max-width: 100%;
-  height: 400px !important;
-}
-
-.interval-table {
-  background: var(--surface-secondary);
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid var(--border-color);
-  margin: 1rem 0;
-}
-
-.interval-table .table-header {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 2fr;
-  gap: 1rem;
-  background: var(--primary-color);
-  color: white;
-  padding: 1rem;
-  font-weight: bold;
-  font-size: 0.9rem;
-}
-
-.interval-table .table-row {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 2fr;
-  gap: 1rem;
-  padding: 0.8rem 1rem;
-  border-bottom: 1px solid var(--border-color);
-  transition: background-color 0.2s ease;
-}
-
-.interval-table .table-row:hover {
-  background-color: var(--primary-color-light);
-}
-
-.interval-table .table-row:last-child {
-  border-bottom: none;
-}
-
-.interval-table .col-time {
-  font-family: 'Courier New', monospace;
-  font-weight: bold;
-  color: var(--primary-color);
-}
-
-.interval-table .col-unique,
-.interval-table .col-total {
-  text-align: center;
-  font-weight: bold;
-  color: var(--text-primary);
-}
-
-.interval-table .col-common {
-  font-style: italic;
-  color: var(--text-secondary);
-}
-
-/* Mobile responsiveness for interval table */
+/* Mobile specific fixes */
 @media (max-width: 768px) {
-  .interval-table .table-header,
-  .interval-table .table-row {
-    grid-template-columns: 1fr;
-    gap: 0.5rem;
+  .bottom-nav {
+    position: fixed !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    left: 0 !important;
+    right: auto !important;
   }
   
-  .interval-table .table-header > div,
-  .interval-table .table-row > div {
-    padding: 0.3rem 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  }
-  
-  .interval-table .table-header > div:before,
-  .interval-table .table-row > div:before {
-    content: attr(data-label) ': ';
-    font-weight: bold;
-    margin-right: 0.5rem;
-  }
-  
-  .interval-table .col-time:before {
-    content: 'Time: ';
-  }
-  
-  .interval-table .col-unique:before {
-    content: 'Unique Species: ';
-  }
-  
-  .interval-table .col-total:before {
-    content: 'Total Count: ';
-  }
-  
-  .interval-table .col-common:before {
-    content: 'Most Common: ';
+  /* Ensure content doesn't overlap bottom nav on mobile */
+  .main-content,
+  .view,
+  .modal-content {
+    padding-bottom: calc(80px + env(safe-area-inset-bottom)) !important;
+    margin-bottom: 0 !important;
   }
 }

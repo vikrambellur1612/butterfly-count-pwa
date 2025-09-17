@@ -1,9 +1,9 @@
-// Service Worker for Butterfly Count PWA - Version 5.0.0
+// Service Worker for Butterfly Count PWA - Version 5.1.0
 // Enhanced caching strategy and improved performance
 
-const CACHE_NAME = 'butterfly-count-v5.0.0';
-const STATIC_CACHE = 'butterfly-count-static-v5.0.0';
-const DYNAMIC_CACHE = 'butterfly-count-dynamic-v5.0.0';
+const CACHE_NAME = 'butterfly-count-v5.1.0';
+const STATIC_CACHE = 'butterfly-count-static-v5.1.0';
+const DYNAMIC_CACHE = 'butterfly-count-dynamic-v5.1.0';
 
 // Files to cache for offline functionality
 const STATIC_FILES = [
@@ -71,14 +71,14 @@ self.addEventListener('install', (event) => {
 
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
-  console.log('Service Worker activating - v5.0.0');
+  console.log('Service Worker activating - v5.1.0');
   
   event.waitUntil(
     caches.keys()
       .then((cacheNames) => {
         return Promise.all(
           cacheNames.map((cacheName) => {
-            // Delete ALL old caches - force complete refresh for v5.0.0
+            // Delete ALL old caches - force complete refresh for v5.1.0
             if (cacheName !== CACHE_NAME && cacheName !== STATIC_CACHE && cacheName !== DYNAMIC_CACHE) {
               console.log('Deleting old cache:', cacheName);
               return caches.delete(cacheName);
@@ -87,7 +87,7 @@ self.addEventListener('activate', (event) => {
         );
       })
       .then(() => {
-        console.log('All old caches cleaned up for v5.0.0');
+        console.log('All old caches cleaned up for v5.1.0');
         return self.clients.claim();
       })
       .then(() => {

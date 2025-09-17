@@ -2,7 +2,7 @@
 
 class ButterflyCountApp {
   constructor() {
-    this.version = '5.0.0';
+    this.version = '5.1.0';
     this.currentView = 'butterflies';
     this.currentButterflyView = 'family'; // 'family' or 'species'
     this.currentList = null;
@@ -284,7 +284,7 @@ class ButterflyCountApp {
     try {
       const locationData = {
         metadata: {
-          version: "5.0.0",
+          version: "5.1.0",
           lastUpdated: new Date().toISOString(),
           totalLocations: this.allLocations.length,
           description: "Butterfly observation locations in Karnataka and South India"
@@ -4222,7 +4222,69 @@ class ButterflyCountApp {
     }
   }
 
-
+  // Capture chart images as base64 for embedding in HTML reports
+  async captureChartImages(listId) {
+    const chartImages = {};
+    
+    try {
+      console.log('📸 Attempting to capture chart images for list:', listId);
+      
+      // Wait for any pending chart renders
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Try to find pie chart canvas - use multiple selectors
+      let pieCanvas = document.querySelector(`canvas[id*="pieChart"]`);
+      if (!pieCanvas) {
+        // Alternative selector patterns
+        pieCanvas = document.querySelector('.chart-container canvas');
+        if (!pieCanvas) {
+          pieCanvas = document.querySelector('#statsModal canvas');
+        }
+      }
+      
+      if (pieCanvas && pieCanvas.chartInstance) {
+        try {
+          chartImages.pieChart = pieCanvas.toDataURL('image/png', 1.0);
+          console.log('✅ Pie chart captured successfully');
+        } catch (error) {
+          console.warn('Failed to capture pie chart:', error);
+        }
+      } else {
+        console.log('⚠️ Pie chart canvas not found or no chart instance');
+      }
+      
+      // Try to find interval chart canvas
+      let intervalCanvas = document.querySelector(`canvas[id*="intervalChart"]`);
+      if (!intervalCanvas) {
+        // Alternative selector patterns
+        intervalCanvas = document.querySelector('.interval-chart-container canvas');
+        if (!intervalCanvas) {
+          // Look for any second canvas in the stats modal
+          const allCanvases = document.querySelectorAll('#statsModal canvas');
+          if (allCanvases.length > 1) {
+            intervalCanvas = allCanvases[1];
+          }
+        }
+      }
+      
+      if (intervalCanvas && intervalCanvas.chartInstance) {
+        try {
+          chartImages.intervalChart = intervalCanvas.toDataURL('image/png', 1.0);
+          console.log('✅ Interval chart captured successfully');
+        } catch (error) {
+          console.warn('Failed to capture interval chart:', error);
+        }
+      } else {
+        console.log('⚠️ Interval chart canvas not found or no chart instance');
+      }
+      
+    } catch (error) {
+      console.error('Error capturing chart images:', error);
+    }
+    
+    console.log('Chart capture complete. Images captured:', Object.keys(chartImages));
+    return chartImages;
+  }
 
   // Generate HTML report for download
   async generateHTMLReport(providedList = null) {
@@ -4263,6 +4325,14 @@ class ButterflyCountApp {
         console.log('Error: list =', list, 'observations.length =', observations.length);
         return;
       }
+
+      // Show loading message
+      this.showToast('Generating report with embedded charts...', 'info', 2000);
+      
+      // Capture current chart images before generating HTML
+      console.log('📸 Capturing chart images...');
+      const chartImages = await this.captureChartImages(list.id);
+      console.log('Chart images captured:', Object.keys(chartImages));
       
       // Calculate comprehensive statistics (same as showListStats)
       const speciesCount = new Map();
@@ -4517,21 +4587,25 @@ class ButterflyCountApp {
         </div>
     </section>
 
+    ${chartImages.pieChart ? `
     <section>
         <h2>🥧 Top 10 Species Distribution</h2>
-        <div style="width: 100%; max-width: 600px; margin: 20px auto;">
-            <canvas id="pieChart" width="600" height="400"></canvas>
+        <div style="text-align: center; margin: 30px 0; padding: 20px; background: #f8f9fa; border-radius: 8px; border: 1px solid #ddd;">
+            <div style="font-size: 1.2em; font-weight: bold; color: #E67E22; margin-bottom: 15px;">Species Count Distribution</div>
+            <img src="${chartImages.pieChart}" alt="Top 10 Species Pie Chart" style="max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
         </div>
     </section>
+    ` : ''}
 
-    ${list.status === 'closed' && intervalData.length > 0 ? `
+    ${list.status === 'closed' && intervalData.length > 0 && chartImages.intervalChart ? `
     <section>
         <h2>📊 Activity Pattern Analysis</h2>
         <p style="color: #666; font-style: italic; margin-bottom: 20px;">
             Chart shows only 30-minute periods where observations were recorded, optimized for better readability.
         </p>
-        <div style="width: 100%; margin: 20px 0;">
-            <canvas id="intervalChart" width="800" height="400"></canvas>
+        <div style="text-align: center; margin: 30px 0; padding: 20px; background: #f8f9fa; border-radius: 8px; border: 1px solid #ddd;">
+            <div style="font-size: 1.2em; font-weight: bold; color: #E67E22; margin-bottom: 15px;">Observation Activity Over Time</div>
+            <img src="${chartImages.intervalChart}" alt="30-Minute Interval Activity Chart" style="max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
         </div>
         
         <h3>Time Interval Breakdown</h3>
@@ -4666,182 +4740,10 @@ class ButterflyCountApp {
     </section>
 
     <div class="footer">
-        <p>Generated by Butterfly Count (India) PWA v5.0.0</p>
+        <p>Generated by Butterfly Count (India) PWA v5.1.0</p>
         <p>Report contains ${observations.length} observations of ${uniqueSpecies} species</p>
+        <p>📊 Charts embedded as high-quality images for offline viewing</p>
     </div>
-
-    <!-- Chart.js for interactive charts -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        // Generate colors for pie chart
-        const colors = [
-            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF',
-            '#FF9F40', '#FF6384', '#C9CBCF', '#4BC0C0', '#FF6384'
-        ];
-
-        // Create pie chart for top species
-        const pieCanvas = document.getElementById('pieChart');
-        if (pieCanvas && window.Chart) {
-            const pieCtx = pieCanvas.getContext('2d');
-            const topSpecies = ${JSON.stringify(sortedSpecies.slice(0, 10))};
-            
-            new Chart(pieCtx, {
-                type: 'pie',
-                data: {
-                    labels: topSpecies.map(([name]) => name),
-                    datasets: [{
-                        data: topSpecies.map(([, count]) => count),
-                        backgroundColor: colors.slice(0, topSpecies.length),
-                        borderColor: '#fff',
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                padding: 15,
-                                usePointStyle: true,
-                                font: { size: 12 }
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                    const percentage = ((context.parsed / total) * 100).toFixed(1);
-                                    return context.label + ': ' + context.parsed + ' (' + percentage + '%)';
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        ${list.status === 'closed' && intervalData.length > 0 ? `
-        // Create interval chart for closed lists
-        const intervalCanvas = document.getElementById('intervalChart');
-        if (intervalCanvas && window.Chart) {
-            const intervalCtx = intervalCanvas.getContext('2d');
-            const intervalChartData = ${JSON.stringify(intervalData)};
-            
-            const labels = intervalChartData.map(interval => interval.timeRange);
-            const uniqueSpeciesData = intervalChartData.map(interval => interval.uniqueSpecies);
-            const totalCountData = intervalChartData.map(interval => interval.totalCount);
-
-            new Chart(intervalCtx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: 'Unique Species',
-                            data: uniqueSpeciesData,
-                            borderColor: '#4CAF50',
-                            backgroundColor: 'rgba(76, 175, 80, 0.1)',
-                            borderWidth: 3,
-                            fill: false,
-                            tension: 0.1,
-                            pointRadius: 6,
-                            pointHoverRadius: 8,
-                            pointBackgroundColor: '#4CAF50',
-                            pointBorderColor: '#ffffff',
-                            pointBorderWidth: 2
-                        },
-                        {
-                            label: 'Total Count',
-                            data: totalCountData,
-                            borderColor: '#FF9800',
-                            backgroundColor: 'rgba(255, 152, 0, 0.1)',
-                            borderWidth: 3,
-                            fill: false,
-                            tension: 0.1,
-                            pointRadius: 6,
-                            pointHoverRadius: 8,
-                            pointBackgroundColor: '#FF9800',
-                            pointBorderColor: '#ffffff',
-                            pointBorderWidth: 2
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Active Observation Periods (30-min intervals)',
-                                font: { size: 14, weight: 'bold' }
-                            },
-                            ticks: {
-                                maxRotation: 45,
-                                font: { size: 11 }
-                            }
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Count',
-                                font: { size: 14, weight: 'bold' }
-                            },
-                            beginAtZero: true,
-                            ticks: {
-                                stepSize: 1,
-                                font: { size: 11 }
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top',
-                            labels: {
-                                font: { size: 12, weight: 'bold' },
-                                padding: 20,
-                                usePointStyle: true
-                            }
-                        },
-                        tooltip: {
-                            mode: 'index',
-                            intersect: false,
-                            callbacks: {
-                                title: function(context) {
-                                    return 'Time Period: ' + context[0].label;
-                                },
-                                label: function(context) {
-                                    const datasetLabel = context.dataset.label;
-                                    if (datasetLabel === 'Unique Species') {
-                                        return 'Unique Species: ' + context.parsed.y;
-                                    } else {
-                                        return 'Total Count: ' + context.parsed.y;
-                                    }
-                                },
-                                afterLabel: function(context) {
-                                    const intervalIndex = context.dataIndex;
-                                    const interval = intervalChartData[intervalIndex];
-                                    
-                                    if (context.datasetIndex === 0) {
-                                        return 'Most Common: ' + (interval.mostCommon || 'None');
-                                    }
-                                    return null;
-                                }
-                            }
-                        }
-                    },
-                    animation: {
-                        duration: 1500,
-                        easing: 'easeOutQuart'
-                    }
-                }
-            });
-        }
-        ` : ''}
-    </script>
 </body>
 </html>`;
 

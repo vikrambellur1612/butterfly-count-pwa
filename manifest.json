@@ -1,8 +1,8 @@
 {
   "name": "Butterfly Count (India)",
   "short_name": "Butterfly Count (India)",
-  "description": "Progressive Web App for butterfly observation and counting during nature walks - v5.0.0 with enhanced India butterfly dataset (1446 species), comprehensive HTML reports, and advanced analytics",
-  "version": "5.0.0",
+  "description": "Progressive Web App for butterfly observation and counting during nature walks - v5.1.0 with enhanced India butterfly dataset (1446 species), comprehensive HTML reports, advanced analytics, and chart embedding in downloadable reports",
+  "version": "5.1.0",
   "start_url": "./",
   "display": "standalone",
   "theme_color": "#E67E22",

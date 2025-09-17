@@ -1,8 +1,16 @@
-# Butterfly Count (India) PWA - v5.0.0
+# Butterfly Count (India) PWA - v5.1.0
 
-This folder contains all the files for the Butterfly Count (India) Progressive Web App v5.0.0 with comprehensive data export capabilities, advanced analytics, and enhanced list management for butterfly observation activities.
+This folder contains all the files for the Butterfly Count (India) Progressive Web App v5.1.0 with comprehensive data export capabilities, advanced analytics, enhanced list management, and chart embedding in downloadable HTML reports for butterfly observation activities.
 
-## Version 5.0.0 Features
+## Version 5.1.0 Features
+
+### 🎉 Latest Enhancements (v5.1.0)
+- **📊 Chart Embedding in HTML Reports**: Charts are now embedded as high-quality Base64 images in downloadable HTML files, ensuring they display correctly when saved offline
+- **🔧 Bottom Navigation Fix**: Fixed floating bottom navigation issue during scrolling on mobile devices
+- **💾 Offline Chart Viewing**: HTML reports now work perfectly when saved locally without internet connection
+- **🎯 Enhanced User Experience**: Improved chart capture and embedding system for better report generation
+
+## Previous Version Features
 
 ### 🎉 Major Enhancements (v5.0.0)
 - **Smart List Management**: Lists can now be closed to preserve data integrity with unique species summaries
