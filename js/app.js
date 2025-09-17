@@ -4229,53 +4229,117 @@ class ButterflyCountApp {
     try {
       console.log('📸 Attempting to capture chart images for list:', listId);
       
-      // Wait for any pending chart renders
-      await new Promise(resolve => setTimeout(resolve, 500));
+      // Wait longer for chart renders to complete
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Try to find pie chart canvas - use multiple selectors
-      let pieCanvas = document.querySelector(`canvas[id*="pieChart"]`);
+      // Get all canvases in the stats modal for debugging
+      const allCanvases = document.querySelectorAll('#statsModal canvas');
+      console.log(`Found ${allCanvases.length} canvas elements in stats modal`);
+      
+      // Debug: Log all canvas IDs and chart instances
+      allCanvases.forEach((canvas, index) => {
+        console.log(`Canvas ${index}: id="${canvas.id}", hasChartInstance=${!!canvas.chartInstance}`);
+      });
+      
+      // Try to find pie chart canvas with improved selectors
+      let pieCanvas = null;
+      
+      // Method 1: Try by ID pattern (most specific)
+      pieCanvas = document.querySelector(`canvas[id*="pieChart_${listId}"]`);
+      console.log('Method 1 - pie chart by list ID:', !!pieCanvas);
+      
       if (!pieCanvas) {
-        // Alternative selector patterns
+        // Method 2: Try general pie chart pattern
+        pieCanvas = document.querySelector(`canvas[id*="pieChart"]`);
+        console.log('Method 2 - pie chart by general pattern:', !!pieCanvas);
+      }
+      
+      if (!pieCanvas) {
+        // Method 3: Try first canvas in chart container
         pieCanvas = document.querySelector('.chart-container canvas');
-        if (!pieCanvas) {
-          pieCanvas = document.querySelector('#statsModal canvas');
-        }
+        console.log('Method 3 - first canvas in chart container:', !!pieCanvas);
       }
       
-      if (pieCanvas && pieCanvas.chartInstance) {
-        try {
-          chartImages.pieChart = pieCanvas.toDataURL('image/png', 1.0);
-          console.log('✅ Pie chart captured successfully');
-        } catch (error) {
-          console.warn('Failed to capture pie chart:', error);
+      if (!pieCanvas) {
+        // Method 4: Try first canvas in stats modal
+        const firstCanvas = document.querySelector('#statsModal canvas');
+        if (firstCanvas && firstCanvas.id.includes('pieChart')) {
+          pieCanvas = firstCanvas;
         }
-      } else {
-        console.log('⚠️ Pie chart canvas not found or no chart instance');
+        console.log('Method 4 - first canvas in stats modal (if pie):', !!pieCanvas);
       }
       
-      // Try to find interval chart canvas
-      let intervalCanvas = document.querySelector(`canvas[id*="intervalChart"]`);
-      if (!intervalCanvas) {
-        // Alternative selector patterns
-        intervalCanvas = document.querySelector('.interval-chart-container canvas');
-        if (!intervalCanvas) {
-          // Look for any second canvas in the stats modal
-          const allCanvases = document.querySelectorAll('#statsModal canvas');
-          if (allCanvases.length > 1) {
-            intervalCanvas = allCanvases[1];
+      if (pieCanvas) {
+        console.log(`Found pie chart canvas: id="${pieCanvas.id}", chartInstance=${!!pieCanvas.chartInstance}`);
+        
+        if (pieCanvas.chartInstance) {
+          try {
+            // Wait a bit more to ensure chart is fully rendered
+            await new Promise(resolve => setTimeout(resolve, 200));
+            chartImages.pieChart = pieCanvas.toDataURL('image/png', 1.0);
+            console.log('✅ Pie chart captured successfully');
+          } catch (error) {
+            console.warn('Failed to capture pie chart:', error);
+          }
+        } else {
+          console.log('⚠️ Pie chart canvas found but no chart instance attached');
+          
+          // Try to capture anyway in case chart instance is stored differently
+          try {
+            chartImages.pieChart = pieCanvas.toDataURL('image/png', 1.0);
+            console.log('✅ Pie chart captured without chart instance reference');
+          } catch (error) {
+            console.warn('Failed to capture pie chart without chart instance:', error);
           }
         }
+      } else {
+        console.log('⚠️ Pie chart canvas not found with any method');
       }
       
-      if (intervalCanvas && intervalCanvas.chartInstance) {
-        try {
-          chartImages.intervalChart = intervalCanvas.toDataURL('image/png', 1.0);
-          console.log('✅ Interval chart captured successfully');
-        } catch (error) {
-          console.warn('Failed to capture interval chart:', error);
+      // Try to find interval chart canvas with improved selectors
+      let intervalCanvas = null;
+      
+      // Method 1: Try by ID pattern (most specific)
+      intervalCanvas = document.querySelector(`canvas[id*="intervalChart_${listId}"]`);
+      console.log('Method 1 - interval chart by list ID:', !!intervalCanvas);
+      
+      if (!intervalCanvas) {
+        // Method 2: Try general interval chart pattern
+        intervalCanvas = document.querySelector(`canvas[id*="intervalChart"]`);
+        console.log('Method 2 - interval chart by general pattern:', !!intervalCanvas);
+      }
+      
+      if (!intervalCanvas) {
+        // Method 3: Try canvas in interval chart container
+        intervalCanvas = document.querySelector('.interval-chart-container canvas');
+        console.log('Method 3 - canvas in interval chart container:', !!intervalCanvas);
+      }
+      
+      if (!intervalCanvas) {
+        // Method 4: Try second canvas in stats modal (if there are multiple)
+        if (allCanvases.length > 1) {
+          intervalCanvas = allCanvases[1];
+        }
+        console.log('Method 4 - second canvas in stats modal:', !!intervalCanvas);
+      }
+      
+      if (intervalCanvas) {
+        console.log(`Found interval chart canvas: id="${intervalCanvas.id}", chartInstance=${!!intervalCanvas.chartInstance}`);
+        
+        if (intervalCanvas.chartInstance || intervalCanvas.getContext('2d')) {
+          try {
+            // Wait a bit more to ensure chart is fully rendered
+            await new Promise(resolve => setTimeout(resolve, 200));
+            chartImages.intervalChart = intervalCanvas.toDataURL('image/png', 1.0);
+            console.log('✅ Interval chart captured successfully');
+          } catch (error) {
+            console.warn('Failed to capture interval chart:', error);
+          }
+        } else {
+          console.log('⚠️ Interval chart canvas found but no chart instance or context');
         }
       } else {
-        console.log('⚠️ Interval chart canvas not found or no chart instance');
+        console.log('⚠️ Interval chart canvas not found');
       }
       
     } catch (error) {
@@ -4283,6 +4347,9 @@ class ButterflyCountApp {
     }
     
     console.log('Chart capture complete. Images captured:', Object.keys(chartImages));
+    console.log('Pie chart size:', chartImages.pieChart ? `${chartImages.pieChart.length} chars` : 'not captured');
+    console.log('Interval chart size:', chartImages.intervalChart ? `${chartImages.intervalChart.length} chars` : 'not captured');
+    
     return chartImages;
   }
 
@@ -4333,6 +4400,8 @@ class ButterflyCountApp {
       console.log('📸 Capturing chart images...');
       const chartImages = await this.captureChartImages(list.id);
       console.log('Chart images captured:', Object.keys(chartImages));
+      console.log('Pie chart available for HTML:', !!chartImages.pieChart);
+      console.log('Interval chart available for HTML:', !!chartImages.intervalChart);
       
       // Calculate comprehensive statistics (same as showListStats)
       const speciesCount = new Map();
@@ -4595,7 +4664,43 @@ class ButterflyCountApp {
             <img src="${chartImages.pieChart}" alt="Top 10 Species Pie Chart" style="max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
         </div>
     </section>
-    ` : ''}
+    ` : `
+    <section>
+        <h2>🥧 Top 10 Species Distribution</h2>
+        <div style="text-align: center; margin: 30px 0; padding: 20px; background: #f8f9fa; border-radius: 8px; border: 1px solid #ddd;">
+            <div style="font-size: 1.2em; font-weight: bold; color: #E67E22; margin-bottom: 15px;">Species Count Distribution</div>
+            <div style="background: #fff; padding: 20px; border-radius: 4px; border: 2px dashed #ddd;">
+                <p style="color: #666; margin: 0; font-style: italic;">📊 Pie chart could not be captured. Please ensure charts are fully loaded before generating the report.</p>
+                <div style="margin-top: 15px;">
+                    <h4>Top 10 Species (Data View)</h4>
+                    <table style="width: 100%; margin-top: 10px; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: #E67E22; color: white;">
+                                <th style="padding: 8px; text-align: left;">Rank</th>
+                                <th style="padding: 8px; text-align: left;">Species</th>
+                                <th style="padding: 8px; text-align: center;">Count</th>
+                                <th style="padding: 8px; text-align: center;">%</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${sortedSpecies.slice(0, 10).map(([name, count], index) => {
+                                const percentage = ((count / totalCount) * 100).toFixed(1);
+                                return `
+                                    <tr style="border-bottom: 1px solid #ddd;">
+                                        <td style="padding: 8px; font-weight: bold;">#${index + 1}</td>
+                                        <td style="padding: 8px;">${name}</td>
+                                        <td style="padding: 8px; text-align: center; font-weight: bold;">${count}</td>
+                                        <td style="padding: 8px; text-align: center;">${percentage}%</td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    `}
 
     ${list.status === 'closed' && intervalData.length > 0 && chartImages.intervalChart ? `
     <section>
